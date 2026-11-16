@@ -6645,4 +6645,506 @@ Correct diagnostic approach: Use the OEM topology and wiring diagrams to establi
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.8 ECU Communication and Network Management (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.8: ECU Communication and Network Management
+
+Professional EV & Hybrid Master Technician Training
+
+An electronic control unit does not communicate continuously under every operating condition. Modern vehicles use communication-management strategies to control when ECUs wake up, exchange information, enter standby and return to sleep.
+
+This is particularly important in electric vehicles because unnecessary ECU activity can discharge the low-voltage battery, prevent the vehicle from entering sleep mode and create communication faults.
+
+### Official lesson structure
+
+* 2.8.1 ECU wake-up and sleep
+
+* 2.8.2 Power-state communication
+
+* 2.8.3 Message timing
+
+* 2.8.4 Missing messages
+
+* 2.8.5 Network management faults
+
+### 2.8.1 ECU wake-up and sleep
+
+### A. Why do ECUs need wake-up and sleep modes?
+
+An EV contains many electronic controllers. If all ECUs remained fully active continuously, they would consume unnecessary electrical energy.
+
+To manage this, vehicle manufacturers implement operating states that control ECU activity.
+
+Typical states include:
+
+* Active: ECU performs its normal functions.
+
+* Standby: ECU reduces activity but remains ready to respond.
+
+* Sleep: ECU enters a low-power condition.
+
+* Wake-up: ECU transitions from a low-power condition to an active state.
+
+### B. What wakes an ECU?
+
+Depending on vehicle architecture, an ECU can wake up through several mechanisms:
+
+1\. Ignition or vehicle-state input
+
+An ignition-state signal or vehicle start request can activate relevant controllers.
+
+2\. CAN network wake-up
+
+A valid network wake-up event can cause connected controllers to become active.
+
+3\. LIN wake-up
+
+A LIN bus wake-up signal can initiate communication with a LIN slave device.
+
+4\. Door or access activity
+
+Opening a door, operating a keyless-entry system or unlocking the vehicle can wake selected modules.
+
+5\. Charging connection
+
+Connecting a charging cable can wake battery-management and charging-related systems.
+
+6\. Scheduled or internal events
+
+Some controllers use internal timers or programmed conditions to wake up.
+
+### C. ECU sleep procedure
+
+A simplified vehicle sleep sequence:
+
+Vehicle active
+
+ECUs exchange normal operating messages
+
+Vehicle switched off
+
+ECUs begin shutdown procedures
+
+Network inactivity and sleep coordination
+
+Controllers exchange shutdown or sleep-management information
+
+ECUs enter sleep
+
+Low-power operation reduces battery consumption
+
+Actual shutdown sequences and timing are manufacturer-specific. Some ECUs sleep earlier than others.
+
+### D. Workshop diagnostic example
+
+Complaint: An EV's 12 V battery repeatedly becomes discharged after the vehicle is parked.
+
+One possible cause is an ECU that does not enter sleep mode.
+
+Potential causes include:
+
+* A module repeatedly waking the network.
+
+* A door or boot switch incorrectly reporting an open condition.
+
+* A faulty charging-connection detection circuit.
+
+* A communication fault preventing sleep coordination.
+
+* An ECU software or hardware problem.
+
+* An aftermarket accessory keeping the network active.
+
+The technician should investigate vehicle sleep status and low-voltage current consumption according to the OEM procedure.
+
+### 2.8.2 Power-state communication
+
+### A. What is power-state communication?
+
+Power-state communication is the exchange of information between ECUs about the vehicle's operating condition and power-management state.
+
+Controllers need to know whether the vehicle is:
+
+* Switched off.
+
+* Awake.
+
+* In accessory mode.
+
+* Ready to drive.
+
+* Charging.
+
+* Preparing to shut down.
+
+* Entering sleep mode.
+
+The exact states and their names vary by manufacturer.
+
+### B. Why is this important in EVs?
+
+An EV generally has two important electrical power systems:
+
+* High-voltage battery system.
+
+* Low-voltage electrical system.
+
+The low-voltage system powers many ECUs, relays, contactor-control circuits and vehicle accessories.
+
+The DC-DC converter normally supplies the low-voltage network from the high-voltage battery when the vehicle operating strategy permits.
+
+Therefore, power-state communication helps coordinate:
+
+* DC-DC converter operation.
+
+* Battery-management functions.
+
+* Vehicle wake-up.
+
+* Charging activity.
+
+* ECU shutdown.
+
+* Low-voltage energy management.
+
+### C. Example: Vehicle entering READY mode
+
+A simplified sequence:
+
+* Driver requests vehicle start.
+
+* Vehicle control systems check operating conditions.
+
+* Relevant ECUs wake up.
+
+* BMS communicates battery availability and power limits.
+
+* High-voltage system performs its required checks and contactor-control sequence.
+
+* DC-DC converter operation is enabled according to vehicle strategy.
+
+* VCU confirms that the conditions for READY mode are satisfied.
+
+This is a simplified functional description, not a universal OEM sequence. High-voltage contactor operation and DC-DC activation differ between vehicle designs.
+
+Technician's principle: A communication fault during vehicle power-state transitions may prevent READY mode even when the battery itself is not defective.
+
+### 2.8.3 Message timing
+
+### A. What is message timing?
+
+ECUs transmit information at defined intervals or when particular events occur.
+
+Message timing determines:
+
+* When a message is transmitted.
+
+* How frequently it is transmitted.
+
+* How long the receiving ECU waits for a message.
+
+* When a missing message is considered a communication fault.
+
+For example, a motor controller may periodically transmit motor speed and operating status to the VCU.
+
+The VCU expects these messages within a defined time window.
+
+### B. Periodic and event-triggered messages
+
+1\. Periodic messages
+
+These are transmitted at regular intervals.
+
+Example:
+
+A controller transmits a status message every 10 milliseconds.
+
+`f = 1 / T`
+
+Where:
+
+* `f` = message frequency in hertz.
+
+* `T` = transmission interval in seconds.
+
+If the interval is 10 ms:
+
+`T = 0.010 s`
+
+`f = 1 / 0.010 = 100 Hz`
+
+The message is transmitted 100 times per second.
+
+Illustrative calculation
+
+2\. Event-triggered messages
+
+These are transmitted when a particular event occurs.
+
+Examples:
+
+* Brake pedal pressed.
+
+* Charging connector detected.
+
+* Vehicle door opened.
+
+* Battery fault detected.
+
+Some systems combine periodic and event-triggered communication.
+
+### C. Message timeout
+
+A receiving ECU may use a timeout to determine whether expected communication has stopped.
+
+For example:
+
+* Expected message interval: 10 ms.
+
+* Configured timeout: 100 ms.
+
+If no valid message arrives within the specified timeout, the receiving ECU may register a communication fault.
+
+The exact timeout is manufacturer- and message-specific.
+
+### D. Why message timing matters in EV diagnostics
+
+Incorrect message timing can produce:
+
+* Intermittent communication DTCs.
+
+* Delayed torque responses.
+
+* Missing vehicle-status information.
+
+* Incorrect operating-state decisions.
+
+* Unexpected system shutdown or restricted operation.
+
+A message may physically exist on the CAN bus but still be considered invalid because it arrives too late, has an incorrect counter or fails its data-integrity checks.
+
+### 2.8.4 Missing messages
+
+### A. What is a missing-message fault?
+
+A missing-message fault occurs when an ECU does not receive an expected message from another controller within the required time.
+
+For example:
+
+The VCU expects a motor-controller status message.
+
+If that message disappears, the VCU may detect a communication timeout.
+
+### B. Common causes
+
+| Possible cause          | Diagnostic explanation                                 |
+| ----------------------- | ------------------------------------------------------ |
+| ECU power supply fault  | Transmitting ECU may shut down                         |
+| Ground fault            | ECU operation or transceiver may become unstable       |
+| Open CAN wire           | Communication path is interrupted                      |
+| CAN short circuit       | Bus signalling becomes abnormal                        |
+| Faulty connector        | Intermittent contact interrupts communication          |
+| ECU internal fault      | Controller may stop transmitting                       |
+| Incorrect configuration | Message may not be transmitted or recognised correctly |
+| Gateway fault           | Message may not reach the receiving network            |
+| Network overload        | Communication may be delayed                           |
+| Software fault          | Incorrect message scheduling or processing             |
+
+### C. Understanding transmitter and receiver faults
+
+This distinction is essential.
+
+Suppose:
+
+* ECU A transmits a message.
+
+* ECU B expects that message.
+
+* ECU B registers a missing-message DTC.
+
+The DTC is stored in ECU B, but the original problem may be in ECU A, the network wiring or a gateway between them.
+
+Therefore:
+
+The ECU reporting a missing message is not necessarily the ECU causing the fault.
+
+### D. Professional diagnostic method
+
+* Identify the missing message and its transmitting ECU.
+
+* Identify the receiving ECU that records the fault.
+
+* Check the relevant network topology.
+
+* Confirm whether the transmitting ECU is powered and operational.
+
+* Check whether the message is visible on the network using suitable equipment.
+
+* Investigate gateway routing if the ECUs are on different network segments.
+
+* Check message timing and configuration.
+
+* Verify the repair under the conditions that originally caused the fault.
+
+### E. Scanner live-data investigation
+
+Where supported, examine parameters such as:
+
+* ECU communication status.
+
+* Network management state.
+
+* Message timeout status.
+
+* Last valid message information.
+
+* ECU operating state.
+
+* Communication error counters.
+
+* Gateway routing status.
+
+Not every diagnostic scanner exposes all these parameters. Some require OEM engineering software or network-analysis equipment.
+
+### 2.8.5 Network management faults
+
+### A. What is network management?
+
+Network management is the set of communication and control functions used to coordinate the operating state of networked ECUs.
+
+It helps determine when ECUs should:
+
+* Participate in communication.
+
+* Remain awake.
+
+* Enter standby.
+
+* Enter sleep.
+
+* Wake up again.
+
+The objective is to maintain necessary communication while reducing unnecessary electrical consumption.
+
+### B. Common network management faults
+
+| Fault                            | Possible result                         |
+| -------------------------------- | --------------------------------------- |
+| ECU does not enter sleep         | Excessive 12 V battery consumption      |
+| ECU repeatedly wakes network     | Repeated current-consumption spikes     |
+| Wake-up signal missing           | Required ECU remains asleep             |
+| Incorrect sleep coordination     | Vehicle fails to shut down normally     |
+| Communication timeout            | Network management DTC                  |
+| Gateway remains active           | Other network sections may remain awake |
+| Incorrect software configuration | Abnormal wake-up or shutdown behaviour  |
+
+### C. Parasitic current and network sleep
+
+Parasitic current is the electrical current consumed by a vehicle when it is supposed to be switched off.
+
+Some standby consumption is normal. The permitted current and sleep time depend on the manufacturer.
+
+For an EV, excessive standby current can discharge the low-voltage battery even if the high-voltage traction battery has plenty of energy.
+
+A simplified current-consumption relationship is:
+
+`Q = I × t`
+
+Where:
+
+* `Q` = electrical charge consumed in ampere-hours (Ah).
+
+* `I` = current in amperes.
+
+* `t` = time in hours.
+
+Example:
+
+Suppose an EV consumes 0.20 A continuously while parked for 24 hours.
+
+`Q = 0.20 × 24 = 4.8 Ah`
+
+Illustrative calculation
+
+This means 4.8 Ah of charge has been consumed in 24 hours.
+
+Actual battery discharge behaviour also depends on battery condition, temperature, battery-management strategy and other loads.
+
+### D. Professional parasitic-current diagnostic procedure
+
+* Confirm the 12 V battery condition and state of charge.
+
+* Check the manufacturer's specified vehicle shutdown and sleep procedure.
+
+* Close or simulate closed doors, bonnet and boot as directed by the OEM.
+
+* Allow the vehicle to complete its shutdown sequence.
+
+* Monitor low-voltage current using an appropriate low-current clamp or approved measurement method.
+
+* Compare measured current and sleep time against OEM specifications.
+
+* Identify whether a particular network or ECU remains awake.
+
+* Use scanner data and network measurements to isolate the cause.
+
+* Repair the actual fault and repeat the sleep-current test.
+
+Important safety point: Do not disconnect the 12 V battery or interrupt power to ECUs during a sleep-current test unless the OEM procedure specifically requires it. Doing so can reset the network state and hide the original problem.
+
+### Practical EV workshop case
+
+Simulated diagnostic case — not real vehicle data
+
+Vehicle complaint: An EV starts normally but its 12 V battery becomes discharged after being parked overnight.
+
+Diagnostic observations:
+
+| Parameter          | Simulated observation              |
+| ------------------ | ---------------------------------- |
+| Vehicle state      | OFF                                |
+| Parking duration   | 8 hours                            |
+| Network status     | Some ECUs remain awake             |
+| Battery current    | 0.35 A                             |
+| Customer complaint | Vehicle sometimes fails to wake up |
+
+### Diagnostic reasoning
+
+First calculate the approximate charge consumed:
+
+`Q = 0.35 × 8 = 2.8 Ah`
+
+The vehicle has consumed approximately 2.8 Ah over eight hours at the observed current.
+
+Possible causes include:
+
+* An ECU preventing normal sleep.
+
+* A faulty door or access sensor repeatedly generating wake-up requests.
+
+* A gateway that remains active.
+
+* An aftermarket accessory keeping the network awake.
+
+* A software or network-management fault.
+
+The technician must identify which ECU or event is preventing sleep rather than simply replacing the 12 V battery.
+
+### Module 2.8 — Key technical knowledge
+
+| Subject                   | Essential principle                                          |
+| ------------------------- | ------------------------------------------------------------ |
+| ECU wake-up               | Moves an ECU from low-power operation to an active state     |
+| ECU sleep                 | Reduces electrical consumption                               |
+| Power-state communication | Coordinates vehicle operating conditions between controllers |
+| Periodic messages         | Transmitted at regular intervals                             |
+| Event-triggered messages  | Transmitted when an event occurs                             |
+| Message timeout           | Detects missing or delayed communication                     |
+| Missing-message fault     | Receiver does not receive expected information               |
+| Network management        | Coordinates ECU communication, wake-up and sleep             |
+
+Master technician principle: A vehicle communication fault is not always caused by damaged CAN wiring. Incorrect ECU power states, missing messages, wake-up requests and network-management problems can produce similar symptoms.
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.9 Advanced Network Diagnostic Procedures (append below) -->
