@@ -1552,4 +1552,400 @@ This distinction prevents unnecessary ECU replacement and helps identify the act
 
 ---
 
-<!-- NEXT: Lesson 1.5 — Diagnostic Trouble Code Retrieval and Interpretation (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.5: Diagnostic Trouble Code Retrieval and Interpretation
+
+A Diagnostic Trouble Code (DTC) is a standardized or manufacturer-defined identifier stored by a vehicle control module when it detects an abnormal operating condition.
+
+For an EV technician, DTC interpretation is one of the most important diagnostic skills. A DTC identifies a detected problem or abnormal condition, but it does not automatically identify the component that must be replaced.
+
+For example, a battery-management DTC may indicate abnormal cell voltage. The underlying cause could be:
+
+* A genuinely degraded cell.
+
+* A poor electrical connection.
+
+* A voltage-sensing circuit fault.
+
+* A wiring or connector problem.
+
+* An internal BMS measurement fault.
+
+The technician must interpret the code in its operating context and establish the root cause through testing.
+
+This lesson follows the four sections in your handbook.
+
+### 1.5.1 Stored, Pending and Permanent DTCs
+
+These three DTC categories describe different stages or conditions of fault detection and storage.
+
+### A. Stored DTC
+
+A stored DTC is a fault code that has been recorded by a control module after its diagnostic monitoring logic has met the required fault-detection criteria.
+
+Depending on the vehicle and diagnostic system, the fault may still be present or may have occurred previously.
+
+Example:
+
+A BMS detects a cell-voltage measurement outside its permitted range and records a DTC.
+
+The scanner may display:
+
+| Parameter   | Illustrative result                                                        |
+| ----------- | -------------------------------------------------------------------------- |
+| Module      | BMS                                                                        |
+| DTC         | P0A80                                                                      |
+| Description | Replace hybrid/EV battery pack (generic description; applicability varies) |
+| Status      | Stored                                                                     |
+
+The code does not prove that the battery pack must be replaced. Further diagnosis is necessary.
+
+### B. Pending DTC
+
+A pending DTC indicates that a diagnostic monitor has detected a fault condition, but the requirements for confirming or storing it as a mature fault have not necessarily been met.
+
+For example:
+
+* A sensor signal becomes abnormal.
+
+* The ECU detects the abnormal condition.
+
+* The monitor records a pending fault.
+
+* The fault may be confirmed if the required detection conditions occur again.
+
+The exact confirmation logic depends on the manufacturer's diagnostic strategy.
+
+Why pending codes matter
+
+Pending DTCs can help identify intermittent faults before they become confirmed faults.
+
+A technician should not ignore them simply because the warning light is not illuminated.
+
+### C. Permanent DTC
+
+A permanent DTC is a code that cannot normally be erased using a conventional scan-tool clear command or by disconnecting the battery.
+
+It is commonly associated with emissions-related OBD monitoring requirements.
+
+The relevant ECU removes the permanent DTC after the prescribed diagnostic monitor has successfully completed and the system determines that the fault has been corrected.
+
+Important distinction: Permanent DTC behavior is governed by the applicable OBD implementation. Do not assume every manufacturer-specific EV fault uses permanent-DTC logic.
+
+### Comparison
+
+| Characteristic             | Stored                              | Pending                             | Permanent                                |
+| -------------------------- | ----------------------------------- | ----------------------------------- | ---------------------------------------- |
+| Fault detected             | Yes                                 | Yes                                 | Previously confirmed                     |
+| Confirmation requirements  | Met according to monitor logic      | Not necessarily met                 | Previously met                           |
+| Conventional clear command | Usually possible, subject to system | Usually possible, subject to system | Normally cannot directly erase           |
+| Automatic removal          | Depends on ECU logic                | Depends on monitor results          | After prescribed successful monitoring   |
+| Diagnostic importance      | High                                | Important for intermittent faults   | Evidence of a previously confirmed fault |
+
+### 1.5.2 Active and Historical Faults
+
+Stored, pending and permanent describe DTC categories. Active and historical describe the fault's current or previous occurrence status.
+
+These terms are not necessarily displayed identically across all manufacturers.
+
+### A. Active fault
+
+An active fault is a fault condition that is currently detected or remains present according to the ECU's diagnostic logic.
+
+Example:
+
+An inverter temperature sensor circuit has an open circuit.
+
+The inverter controller continuously monitors the sensor input and detects that its signal is outside the expected electrical range.
+
+The scanner may display:
+
+* DTC: Sensor circuit fault.
+
+* Status: Current or active.
+
+* System: Inverter controller.
+
+* Operating condition: READY, depending on the vehicle and fault.
+
+The technician should investigate the sensor circuit, connector, wiring, reference supply and ground according to the manufacturer's wiring diagram.
+
+### B. Historical fault
+
+A historical fault is a fault that occurred previously but is not currently detected.
+
+Example:
+
+A vehicle experienced a temporary low-voltage supply condition during startup.
+
+The VCU recorded a communication-related DTC. After the 12 V supply recovered, communication returned to normal.
+
+The fault may remain in memory as historical.
+
+### Active versus historical
+
+| Feature                 | Active                               | Historical                                     |
+| ----------------------- | ------------------------------------ | ---------------------------------------------- |
+| Present fault condition | Currently detected                   | Not currently detected                         |
+| Diagnostic priority     | Usually high                         | Depends on severity and recurrence             |
+| Investigation           | Check current conditions             | Investigate occurrence history                 |
+| Possible cause          | Current circuit or component problem | Intermittent or previously corrected condition |
+
+### Workshop example: Intermittent CAN communication fault
+
+Imagine that the VCU records a communication fault with the BMS.
+
+At the time of inspection:
+
+* VCU communication: Available.
+
+* BMS communication: Available.
+
+* Communication DTC: Historical.
+
+* Current vehicle operation: Normal.
+
+Do not immediately replace the BMS.
+
+Investigate:
+
+* Whether the fault repeatedly returns.
+
+* Whether the 12 V supply experienced a previous voltage drop.
+
+* Whether the CAN network has intermittent wiring or connector problems.
+
+* Whether other ECUs recorded related communication faults.
+
+* Whether the fault occurred during a particular operating condition.
+
+The objective is to identify the circumstances that caused the original communication loss.
+
+### 1.5.3 Manufacturer-Specific Descriptions
+
+DTCs are not always interpreted correctly using a generic code description.
+
+There are two important categories:
+
+Generic DTCs
+
+These use standardized diagnostic definitions where applicable. They are commonly associated with OBD-II/EOBD systems.
+
+Manufacturer-specific DTCs
+
+These are defined or interpreted according to the vehicle manufacturer's diagnostic strategy. Their descriptions, failure conditions and diagnostic procedures may differ between manufacturers.
+
+### Example of DTC structure
+
+A five-character powertrain DTC commonly follows this structure:
+
+### Example: P0A80
+
+### P
+
+System category
+
+### 0
+
+Generic / standardized
+
+### A
+
+Fault grouping
+
+### 8
+
+Fault identification
+
+### 0
+
+Fault identification
+
+Simplified structural illustration. Exact DTC interpretation must be checked against the applicable standard and OEM information.
+
+The first character identifies the general system category:
+
+| First character | System                |
+| --------------- | --------------------- |
+| P               | Powertrain            |
+| B               | Body                  |
+| C               | Chassis               |
+| U               | Network communication |
+
+The second character commonly indicates whether the code is generic or manufacturer-controlled within the relevant DTC family.
+
+### Why generic descriptions can mislead EV technicians
+
+Consider a scanner displaying a battery-related DTC.
+
+A generic scanner may provide only a short description. An OEM diagnostic system may provide additional information, including:
+
+* Exact failure subtype.
+
+* Detection conditions.
+
+* Affected battery section or circuit.
+
+* Associated DTCs.
+
+* Required live-data parameters.
+
+* Manufacturer diagnostic test procedure.
+
+* Repair and verification instructions.
+
+Professional rule: Use the generic description as an initial reference, not as the final diagnosis.
+
+For EV and hybrid systems, confirm the exact code against manufacturer service information for the specific vehicle, model year and software configuration.
+
+### 1.5.4 DTC Priority and Fault Relationships
+
+A vehicle can record several DTCs at the same time.
+
+The technician must determine which code represents the primary fault and which codes may be consequences of that fault.
+
+This is particularly important in EVs because multiple control modules depend on shared power supplies and communication networks.
+
+### A. DTC priority
+
+A useful diagnostic priority assessment considers:
+
+* Safety implications.
+
+* Whether the fault is currently active.
+
+* Whether the fault affects vehicle operation.
+
+* Whether the fault causes other systems to shut down.
+
+* Whether the fault is supported by additional evidence.
+
+* Whether the manufacturer identifies a priority diagnostic procedure.
+
+For example, an HV isolation fault may require immediate attention because of the potential electrical safety implications.
+
+A minor body-control communication fault may have a lower operational priority.
+
+However, never assume that a code is low priority simply because the vehicle still drives.
+
+### B. Primary and secondary DTCs
+
+A primary DTC represents the original fault or condition responsible for a group of symptoms.
+
+A secondary DTC may be generated because another system is no longer receiving the expected signal or message.
+
+Example: Simulated EV diagnostic case
+
+A vehicle reports three faults:
+
+| Module             | DTC description                    | Status |
+| ------------------ | ---------------------------------- | ------ |
+| BMS                | Battery communication interruption | Active |
+| VCU                | BMS message missing                | Active |
+| Instrument cluster | Powertrain warning message         | Active |
+
+A possible relationship is:
+
+Possible primary fault
+
+BMS communication interruption
+
+Secondary consequence
+
+VCU does not receive expected BMS messages
+
+Driver notification
+
+Instrument cluster displays powertrain warning
+
+This is a possible fault relationship, not proof of the actual cause.
+
+The BMS itself may have lost power, the network may have failed, or a gateway may be preventing communication.
+
+The technician must test the actual system.
+
+### C. How to establish DTC relationships
+
+Use this diagnostic approach:
+
+Step 1 — Retrieve all DTCs
+
+Perform a full-system scan rather than relying on one ECU.
+
+Step 2 — Record fault status
+
+Identify active, stored, pending and historical information as supported by the scanner.
+
+Step 3 — Compare affected modules
+
+Look for faults that appear across multiple ECUs.
+
+Step 4 — Identify shared dependencies
+
+Check common power supplies, grounds, network connections and shared sensor signals.
+
+Step 5 — Establish the sequence
+
+Use timestamps, freeze-frame information and available event records to establish which fault occurred first. These records may not be available on every vehicle.
+
+Step 6 — Test the suspected root cause
+
+Use OEM procedures, wiring diagrams, live data and appropriate electrical measurements.
+
+Step 7 — Verify the repair
+
+Repeat the scan and confirm that the original fault does not return under the relevant test conditions.
+
+### Professional diagnostic example: Multiple DTCs
+
+Simulated training data
+
+A hybrid vehicle arrives with a powertrain warning.
+
+A complete scan produces:
+
+| ECU                | DTC                              | Status |
+| ------------------ | -------------------------------- | ------ |
+| BMS                | Battery voltage monitoring fault | Active |
+| VCU                | Battery data invalid             | Active |
+| Inverter           | Torque limitation request        | Stored |
+| Instrument cluster | Powertrain warning               | Active |
+
+A weak diagnostic approach would be to replace the battery, VCU and inverter.
+
+A professional approach is different:
+
+* Investigate the BMS voltage-monitoring fault first.
+
+* Check whether the VCU's invalid battery data is a consequence of the BMS fault.
+
+* Determine whether inverter torque limitation resulted from unavailable battery information.
+
+* Examine the OEM-defined battery monitoring data and related electrical circuits.
+
+* Confirm the root cause before replacing any component.
+
+This is the difference between code replacement and evidence-based diagnosis.
+
+### Key workshop principles
+
+* A DTC identifies a detected condition, not necessarily a failed component.
+
+* Pending faults can reveal intermittent problems.
+
+* Permanent DTCs follow specific monitoring and clearing requirements.
+
+* Active and historical status must be interpreted separately from DTC category.
+
+* Generic descriptions may not provide enough information for EV diagnosis.
+
+* Multiple DTCs can share one underlying cause.
+
+* Always preserve the original scan before clearing codes.
+
+* Verify repairs using the manufacturer's specified test procedure.
+
+---
+
+<!-- NEXT: Lesson 1.6 — Freeze-Frame and Live Data Analysis (append below) -->
