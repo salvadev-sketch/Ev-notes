@@ -4882,4 +4882,512 @@ The detailed electrical tests for termination resistance, voltage measurements, 
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.4 CAN Bus Electrical Diagnosis (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.4: CAN Bus Electrical Diagnosis
+
+In Lesson 2.3, we studied how CAN communication works. Now we move to practical electrical diagnosis.
+
+As an EV technician, you must be able to determine whether a communication problem is caused by:
+
+* Incorrect network termination.
+
+* Excessive or insufficient network resistance.
+
+* Abnormal CAN voltage.
+
+* Open-circuit wiring.
+
+* Short-circuit wiring.
+
+* Signal distortion or communication interference.
+
+A scanner may report lost communication with an ECU, but electrical testing is needed to establish the actual cause.
+
+Important safety requirement: These procedures concern the vehicle's low-voltage communication network. Do not probe high-voltage traction circuits. Follow the manufacturer's wiring diagrams, isolation requirements and measurement procedures. Never disconnect or reconnect CAN connectors with the circuit powered unless the OEM procedure specifically permits it.
+
+### 2.4.1 Termination Resistors
+
+A CAN network requires correct electrical termination to prevent signal reflections.
+
+A termination resistor is installed at each physical end of a conventional high-speed CAN bus.
+
+In a typical high-speed CAN network, each termination resistor has a value of:
+
+`R = 120 Ω`
+
+The two resistors are connected in parallel.
+
+### Basic CAN termination arrangement
+
+Simplified electrical arrangement:
+
+```text
+120 Ω                                  120 Ω
+  |                                      |
+CAN-H ===================================
+CAN-L ===================================
+  |                                      |
+End resistor                         End resistor
+```
+
+The diagram is conceptual. Actual resistor connections are between CAN-H and CAN-L at the two ends of the network.
+
+### Why termination is necessary
+
+When a CAN signal travels along a cable, changes in electrical impedance can cause part of the signal to reflect back towards its source.
+
+These reflections can distort the signal and interfere with reliable communication.
+
+Termination resistors reduce reflections by matching the characteristic impedance of the network cable.
+
+### Expected total resistance
+
+The two 120 Ω resistors are connected in parallel.
+
+The parallel resistance formula is:
+
+`1/R_T = 1/R_1 + 1/R_2`
+
+For two equal resistors:
+
+`R_T = (120 × 120) / (120 + 120) = 14400 / 240 = 60 Ω`
+
+Approximately 60 Ω between CAN-H and CAN-L on a conventional, correctly terminated high-speed CAN segment, measured with the network powered down and isolated as specified by the OEM.
+
+### What different resistance readings may indicate
+
+| Measured resistance      | Possible interpretation                                            |
+| ------------------------ | ------------------------------------------------------------------ |
+| Approximately 60 Ω       | Both 120 Ω terminations appear present                             |
+| Approximately 120 Ω      | One termination may be missing or disconnected                     |
+| Very high / OL           | Open circuit, missing terminations or disconnected network segment |
+| Significantly below 60 Ω | Additional termination, wiring fault or another parallel path      |
+| Near 0 Ω                 | Possible short between CAN-H and CAN-L                             |
+
+These are diagnostic clues, not definitive conclusions. Network topology, gateway design, ECU electronics and measurement location can affect the result.
+
+### 2.4.2 Network Resistance Testing
+
+Resistance testing is used to assess the electrical condition of a CAN network.
+
+A digital multimeter (DMM) can measure resistance between CAN-H and CAN-L when the network is in the correct powered-down condition.
+
+### Equipment required
+
+* Digital multimeter with resistance measurement.
+
+* Correct vehicle wiring diagram.
+
+* OEM service information.
+
+* Appropriate diagnostic connector breakout leads where required.
+
+* Vehicle-specific isolation and shutdown procedure.
+
+### Procedure
+
+Step 1 — Identify the correct network
+
+Use the wiring diagram to confirm:
+
+* Which CAN network is involved.
+
+* Which ECUs are connected.
+
+* Where the network termination resistors are located.
+
+* The correct measurement points.
+
+Do not assume every CAN network in the vehicle uses the same topology or termination arrangement.
+
+Step 2 — Prepare the vehicle
+
+* Switch the vehicle off.
+
+* Follow the OEM shutdown procedure.
+
+* Allow the required ECU sleep period.
+
+* Ensure the circuit is de-energized as specified.
+
+* Confirm that the measurement points are safe to access.
+
+Step 3 — Measure resistance
+
+On a conventional high-speed CAN network accessible through the standard DLC:
+
+* Red multimeter lead: pin 6 (CAN-H).
+
+* Black multimeter lead: pin 14 (CAN-L).
+
+* Multimeter setting: resistance (Ω).
+
+Only perform this measurement when the network is powered down and the manufacturer's procedure permits testing at the DLC.
+
+Step 4 — Interpret the reading
+
+Example:
+
+Simulated measurement
+
+Illustrative DMM display
+
+### 60.4 Ω
+
+Consistent with two nominal 120 Ω terminations in parallel
+
+This does not prove that the network is free of wiring faults or signal distortion.
+
+### Worked calculation: Missing termination
+
+Suppose one 120 Ω termination resistor becomes disconnected.
+
+The remaining termination is:
+
+`R_T = 120 Ω`
+
+A resistance reading near 120 Ω may therefore indicate that one termination is missing.
+
+However, verify the actual network layout before removing or replacing any component.
+
+Critical: Never use resistance mode on a powered CAN network. Doing so can damage the multimeter or electronic circuitry and produce misleading results.
+
+### 2.4.3 CAN Voltage Measurements
+
+Voltage measurements help identify abnormal electrical conditions on CAN-H and CAN-L.
+
+Unlike resistance testing, voltage measurements are made with the network powered and operating under the conditions specified by the manufacturer.
+
+### Typical high-speed CAN voltage levels
+
+During normal communication, the voltage levels change between recessive and dominant states.
+
+| CAN state | CAN-H               | CAN-L               |
+| --------- | ------------------- | ------------------- |
+| Recessive | Approximately 2.5 V | Approximately 2.5 V |
+| Dominant  | Approximately 3.5 V | Approximately 1.5 V |
+
+A normal multimeter may display an average voltage rather than showing the individual high-speed pulses.
+
+Therefore, a DMM is useful for preliminary checks, but an oscilloscope is more appropriate for analysing signal behaviour.
+
+### Measurement 1 — CAN-H to ground
+
+Measure CAN-H relative to the specified ground reference.
+
+You may observe an average voltage that changes with network activity.
+
+### Measurement 2 — CAN-L to ground
+
+Measure CAN-L relative to the same reference.
+
+The voltage should show complementary behaviour to CAN-H on a conventional high-speed CAN network.
+
+### Measurement 3 — Differential voltage
+
+The differential voltage is:
+
+`V_diff = V_CAN-H − V_CAN-L`
+
+During the typical dominant state:
+
+`V_diff = 3.5 − 1.5 = 2.0 V`
+
+During the typical recessive state:
+
+`V_diff = 2.5 − 2.5 = 0 V`
+
+### Interpreting abnormal voltage readings
+
+| Observation                    | Possible cause                                   |
+| ------------------------------ | ------------------------------------------------ |
+| CAN-H and CAN-L both near 0 V  | Possible short to ground or loss of network bias |
+| Both lines near supply voltage | Possible short to voltage                        |
+| CAN-H stuck high               | Possible CAN-H circuit fault                     |
+| CAN-L stuck low                | Possible CAN-L circuit fault                     |
+| Unstable or distorted readings | Possible wiring, connection or network fault     |
+
+These are preliminary indications. Always compare measurements with OEM specifications and the correct network architecture.
+
+### 2.4.4 Open and Short Circuits
+
+CAN communication depends on electrical continuity and correct signal transmission.
+
+An open or short circuit can prevent ECUs from communicating correctly.
+
+### A. Open-circuit fault
+
+An open circuit occurs when electrical continuity is interrupted.
+
+Possible causes include:
+
+* Broken CAN-H wire.
+
+* Broken CAN-L wire.
+
+* Loose connector terminal.
+
+* Corroded terminal.
+
+* Damaged wiring harness.
+
+* Poor crimp connection.
+
+Possible symptoms:
+
+* One or more ECUs unavailable.
+
+* Intermittent communication.
+
+* Multiple U-series communication DTCs.
+
+* Network operation affected on one side of the break, depending on topology.
+
+### B. Short circuit between CAN-H and CAN-L
+
+This occurs when the two communication conductors make unintended electrical contact.
+
+Possible symptoms:
+
+* Network communication failure.
+
+* Multiple ECUs unavailable.
+
+* Abnormal CAN voltage.
+
+* Incorrect resistance measurement.
+
+### C. Short circuit to ground
+
+One CAN conductor becomes electrically connected to ground.
+
+Possible symptoms include:
+
+* CAN-H or CAN-L held at an abnormal voltage.
+
+* Communication errors.
+
+* Loss of communication with several ECUs.
+
+### D. Short circuit to supply voltage
+
+A CAN conductor becomes connected to a voltage supply.
+
+This can force the signal outside its normal operating range and disrupt communication.
+
+### Diagnostic procedure for open and short circuits
+
+* Identify the affected CAN network from the wiring diagram.
+
+* Identify the ECUs and connectors on that network.
+
+* Check ECU power supply and ground before condemning communication wiring.
+
+* Inspect accessible connectors and harness sections.
+
+* Follow the OEM shutdown and isolation procedure.
+
+* Disconnect the appropriate components only as instructed.
+
+* Perform continuity and short-circuit checks using the specified test points.
+
+* Divide the network into sections if the procedure permits.
+
+* Locate the faulty section.
+
+* Repair using the manufacturer's wiring-repair requirements.
+
+* Reconnect the network and verify communication.
+
+Workshop principle: Do not replace an ECU merely because it has stopped communicating. First establish that it has the correct power supply, ground and network connection.
+
+### 2.4.5 Oscilloscope Waveform Analysis
+
+An oscilloscope is one of the most useful tools for advanced CAN electrical diagnosis.
+
+Unlike a multimeter, it displays voltage changes over time.
+
+This allows the technician to examine:
+
+* CAN-H waveform.
+
+* CAN-L waveform.
+
+* Differential signal.
+
+* Dominant and recessive states.
+
+* Noise and interference.
+
+* Signal distortion.
+
+* Missing or abnormal communication activity.
+
+### Normal CAN waveform
+
+A typical high-speed CAN waveform has two complementary signals.
+
+Conceptual waveform — not measured vehicle data
+
+CAN-H
+
+CAN-L
+
+Conceptual representation of complementary CAN signals. Not to scale and not a captured oscilloscope trace.
+
+### How to connect the oscilloscope
+
+For a conventional two-channel differential waveform inspection:
+
+* Channel 1: CAN-H relative to the approved ground reference.
+
+* Channel 2: CAN-L relative to the same reference.
+
+* Use suitable probes and input settings.
+
+* Select an appropriate time base and voltage range.
+
+* Use the manufacturer's recommended test point.
+
+The differential waveform can then be calculated using the oscilloscope's mathematical function:
+
+CH1-CH2
+
+This displays the voltage difference between CAN-H and CAN-L.
+
+Important: Use an appropriately rated, correctly grounded automotive oscilloscope. Do not attach ordinary earth-referenced oscilloscope ground clips to different vehicle circuit points without understanding the instrument's grounding arrangement. This can create an unintended short circuit.
+
+### Common waveform abnormalities
+
+1\. Normal communication
+
+Expected pattern
+
+Complementary CAN-H and CAN-L signals with clearly distinguishable dominant and recessive states.
+
+2\. Noise interference
+
+Abnormal pattern
+
+Unwanted voltage fluctuations appear on the waveform. Possible causes include poor wiring, grounding problems, electromagnetic interference or incorrect termination.
+
+3\. Missing signal activity
+
+Abnormal pattern
+
+One or both lines remain relatively static when communication is expected. Possible causes include an open circuit, short circuit, loss of network power or a failed communication node.
+
+4\. Signal distortion
+
+Abnormal pattern
+
+Rounded edges, ringing or abnormal voltage levels may indicate impedance problems, excessive wiring capacitance, termination faults or other network defects.
+
+### Important waveform diagnostic rule
+
+Do not diagnose a CAN network from one waveform feature alone.
+
+Consider:
+
+* Vehicle operating condition.
+
+* Network speed.
+
+* Probe connection.
+
+* Oscilloscope settings.
+
+* Network topology.
+
+* OEM voltage specifications.
+
+* Whether the network is actively transmitting.
+
+### Complete workshop diagnostic case
+
+Simulated case — all readings are illustrative
+
+Vehicle: Battery-electric vehicle.
+
+Customer complaint: Vehicle displays a communication warning and intermittently loses power.
+
+Scanner result: U0100 — Lost Communication With ECM/PCM, reported by another control unit.
+
+### Initial electrical findings
+
+| Test                      | Simulated result               |
+| ------------------------- | ------------------------------ |
+| DLC pin 16 supply         | 12.4 V                         |
+| DLC pin 4 ground          | Ground circuit present         |
+| CAN-H to CAN-L resistance | 120 Ω                          |
+| CAN-H voltage behaviour   | Abnormal                       |
+| CAN-L voltage behaviour   | Communication activity present |
+
+### Diagnostic reasoning
+
+A resistance reading of approximately 120 Ω on a conventional two-termination high-speed CAN segment suggests that only one 120 Ω termination may be connected.
+
+This could indicate:
+
+* A disconnected termination.
+
+* An open circuit separating one termination from the measurement point.
+
+* A disconnected network branch.
+
+* A topology-specific design that differs from the assumed arrangement.
+
+### Next diagnostic actions
+
+* Confirm the exact CAN network from the OEM wiring diagram.
+
+* Identify both termination locations.
+
+* Check the wiring continuity to each termination.
+
+* Inspect connectors and harness sections.
+
+* Use the oscilloscope to examine signal quality.
+
+* Locate and repair the verified fault.
+
+* Repeat resistance and waveform tests as appropriate.
+
+* Perform a complete vehicle scan and functional verification.
+
+Conclusion: The 120 Ω reading is a clue, not proof of a particular failed component. The fault must be localized before repair.
+
+### Professional workshop reference
+
+| Test                     | Instrument          | Main purpose                                          |
+| ------------------------ | ------------------- | ----------------------------------------------------- |
+| Termination resistance   | DMM                 | Check network termination                             |
+| CAN-H voltage            | DMM or oscilloscope | Assess high-side signal                               |
+| CAN-L voltage            | DMM or oscilloscope | Assess low-side signal                                |
+| Continuity               | DMM                 | Identify open conductors                              |
+| Short-to-ground test     | DMM                 | Identify unintended ground connection                 |
+| Short-between-lines test | DMM                 | Check CAN-H to CAN-L                                  |
+| Waveform analysis        | Oscilloscope        | Identify signal distortion and communication activity |
+
+### Technician's key principles
+
+* Identify the correct CAN network before testing.
+
+* Never measure resistance on an energized network.
+
+* Do not assume every vehicle has the same CAN topology.
+
+* Check ECU power and ground before condemning the ECU.
+
+* Use the DMM for preliminary electrical checks.
+
+* Use the oscilloscope for detailed signal analysis.
+
+* Compare all results with OEM specifications.
+
+* Verify the repair with a complete scan and functional test.
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.5 Advanced CAN Communication (append below) -->
