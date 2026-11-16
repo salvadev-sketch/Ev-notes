@@ -5390,4 +5390,412 @@ Conclusion: The 120 Ω reading is a clue, not proof of a particular failed compo
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.5 Advanced CAN Communication (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.5: Advanced CAN Communication
+
+Professional EV & Hybrid Master Technician Training
+
+This lesson develops your ability to diagnose advanced CAN communication problems, particularly in modern vehicles where multiple electronic control units exchange large amounts of real-time data.
+
+We will follow the official handbook structure:
+
+* 2.5.1 CAN FD
+
+* 2.5.2 Speed and bandwidth
+
+* 2.5.3 Error frames and bus-off
+
+* 2.5.4 Network loading
+
+* 2.5.5 Fault isolation
+
+### 2.5.1 CAN FD — Controller Area Network Flexible Data-Rate
+
+### A. What is CAN FD?
+
+CAN FD is an advanced version of the conventional CAN communication protocol.
+
+FD means Flexible Data-Rate.
+
+Traditional CAN generally supports:
+
+* Maximum payload: 8 data bytes per frame.
+
+* A single nominal bit rate throughout the frame.
+
+* Common speeds such as 125 kbit/s, 250 kbit/s and 500 kbit/s.
+
+CAN FD improves communication by supporting:
+
+* Up to 64 data bytes per frame.
+
+* A higher data-phase bit rate.
+
+* More efficient transfer of larger diagnostic and control messages.
+
+### B. Why is CAN FD important in EVs?
+
+Modern electric vehicles have complex electronic systems, including:
+
+* Battery Management System (BMS)
+
+* Vehicle Control Unit (VCU)
+
+* Motor Control Unit (MCU)
+
+* Onboard Charger (OBC)
+
+* DC-DC converter
+
+* Advanced Driver Assistance Systems (ADAS)
+
+These systems exchange information continuously.
+
+For example, the BMS may communicate:
+
+* Battery voltage.
+
+* Battery current.
+
+* Cell temperature.
+
+* State of Charge (SoC).
+
+* State of Health (SoH).
+
+* Maximum permitted charge and discharge power.
+
+CAN FD can carry more information in each frame, reducing the number of frames needed for larger data transfers.
+
+### C. CAN FD frame structure
+
+Important CAN FD fields include:
+
+| Field             | Function                                      |
+| ----------------- | --------------------------------------------- |
+| SOF               | Start of Frame                                |
+| Arbitration field | Determines message priority                   |
+| FDF               | Identifies an FD frame                        |
+| BRS               | Enables faster bit rate during the data phase |
+| Data field        | Carries up to 64 bytes                        |
+| CRC               | Detects transmission errors                   |
+| ACK               | Acknowledgement                               |
+| EOF               | End of Frame                                  |
+
+Important: CAN FD does not mean the entire frame necessarily runs at a higher speed. When bit-rate switching is enabled, the arbitration phase uses the nominal bit rate, while the data phase can use a higher bit rate.
+
+### 2.5.2 Speed and bandwidth
+
+### A. Understanding bit rate
+
+Bit rate is the number of bits transmitted per second.
+
+For example:
+
+`500 kbit/s = 500,000 bits/s`
+
+A conventional high-speed CAN network commonly operates at 500 kbit/s, although actual vehicle configurations vary.
+
+CAN FD may use:
+
+* Nominal bit rate: 500 kbit/s.
+
+* Data-phase bit rate: 2 Mbit/s or higher, depending on network design.
+
+These are illustrative configurations, not universal OEM specifications.
+
+### B. What is bandwidth?
+
+Bandwidth describes the amount of information a communication network can transfer over time.
+
+A simplified example:
+
+A conventional CAN frame carries up to 8 bytes of payload.
+
+A CAN FD frame carries up to 64 bytes.
+
+`64 / 8 = 8`
+
+Therefore, CAN FD can carry up to eight times the payload in one frame compared with classical CAN.
+
+This does not mean the complete network is automatically eight times faster. Actual throughput depends on bit rates, frame overhead, arbitration, network traffic and error retransmissions.
+
+### C. Workshop diagnostic significance
+
+Suppose an EV experiences intermittent communication faults between the VCU and motor controller.
+
+You should investigate:
+
+* Whether the correct CAN protocol is being used.
+
+* Whether the nominal and data-phase bit rates match the network specification.
+
+* Whether the diagnostic equipment supports CAN FD.
+
+* Whether the network has excessive errors or loading.
+
+* Whether the wiring and termination are correct.
+
+A scanner that supports only classical CAN may not communicate correctly with a CAN FD network.
+
+### 2.5.3 Error frames and bus-off
+
+This is particularly important in professional network diagnosis.
+
+CAN communication includes mechanisms for detecting transmission errors.
+
+### A. CAN error types
+
+The main CAN error categories are:
+
+| Error type  | Meaning                                                                           |
+| ----------- | --------------------------------------------------------------------------------- |
+| Bit error   | Transmitted and monitored bit values do not match, subject to protocol exceptions |
+| Stuff error | Invalid bit-stuffing sequence                                                     |
+| CRC error   | Received frame fails cyclic redundancy check                                      |
+| Form error  | A fixed-format field contains an invalid bit                                      |
+| ACK error   | No node acknowledges the transmitted frame                                        |
+
+### B. Error frames
+
+When a CAN controller detects certain transmission errors, it signals the error using an error frame.
+
+Two important forms are:
+
+* Active error flag: typically six consecutive dominant bits.
+
+* Passive error flag: typically six consecutive recessive bits.
+
+The exact behaviour depends on the CAN controller's error state.
+
+Error frames disrupt the current transmission and cause the affected frame to be retransmitted where appropriate.
+
+### C. Error counters
+
+CAN controllers maintain two important counters:
+
+* TEC — Transmit Error Counter.
+
+* REC — Receive Error Counter.
+
+These counters help the controller determine its communication error state.
+
+The three major states are:
+
+| State         | Description                                                                    |
+| ------------- | ------------------------------------------------------------------------------ |
+| Error-active  | Normal communication with active error signalling                              |
+| Error-passive | Communication continues, but the controller has accumulated significant errors |
+| Bus-off       | Controller stops participating in bus communication                            |
+
+The commonly defined transition thresholds include:
+
+* Error-passive: TEC or REC reaches 128.
+
+* Bus-off: TEC reaches 256.
+
+These thresholds are part of the CAN error-confinement mechanism. Special rules apply to counter updates and recovery.
+
+### D. What causes bus-off?
+
+Common workshop causes include:
+
+* CAN-H or CAN-L short circuit.
+
+* Open circuit in a network conductor.
+
+* Incorrect termination resistance.
+
+* Poor connector contact.
+
+* Electrical interference.
+
+* Incorrect bit-rate configuration.
+
+* Faulty transceiver or ECU.
+
+* Incorrect network topology or wiring repairs.
+
+Important diagnostic principle: A bus-off DTC does not automatically mean the ECU is defective. The ECU may simply be reacting to a physical network fault.
+
+### 2.5.4 Network loading
+
+### A. What is network loading?
+
+Network loading describes how much of the available communication capacity is being used by messages on the network.
+
+A CAN network can become heavily loaded when many ECUs transmit messages frequently.
+
+For example:
+
+* BMS transmits battery measurements.
+
+* VCU transmits torque requests.
+
+* Motor controller transmits motor feedback.
+
+* ABS/ESC transmits vehicle-speed information.
+
+* Thermal controller transmits temperature and cooling requests.
+
+All these messages compete for access to the same bus.
+
+### B. CAN arbitration
+
+CAN uses message arbitration to determine which message is transmitted first.
+
+The message with the highest priority wins arbitration. In standard CAN identifier arbitration, a lower numerical identifier generally has higher priority.
+
+For example:
+
+| CAN identifier | Priority |
+| -------------- | -------- |
+| 0x080          | Higher   |
+| 0x120          | Lower    |
+| 0x350          | Lower    |
+| 0x600          | Lower    |
+
+If two ECUs begin transmitting simultaneously, the higher-priority message continues while the other ECU stops and retries.
+
+This is non-destructive arbitration: the winning message is not corrupted by the losing transmitter.
+
+### C. Symptoms of excessive network loading
+
+Possible symptoms include:
+
+* Delayed torque requests.
+
+* Intermittent communication DTCs.
+
+* Slow diagnostic scanner response.
+
+* Delayed ECU status updates.
+
+* Missing or outdated data.
+
+* Reduced communication performance.
+
+However, these symptoms can also result from wiring faults, faulty ECUs or incorrect configuration.
+
+### D. Calculating network loading
+
+A simplified bus-utilization formula is:
+
+`Bus Load = (Time occupied by transmitted frames / Total observation time) × 100`
+
+Example:
+
+Suppose CAN traffic occupies 35 milliseconds during a 100-millisecond observation period.
+
+`35 / 100 × 100 = 35 %`
+
+Illustrative calculation
+
+The measured network loading is 35%.
+
+This calculation is simplified. A proper measurement must account for frame timing, bit rate, inter-frame spacing and retransmissions.
+
+### 2.5.5 Fault isolation
+
+Fault isolation means identifying the specific section, component or ECU responsible for a communication problem.
+
+The objective is to identify the root cause without replacing components unnecessarily.
+
+### A. Professional diagnostic sequence
+
+* Step 1 — Confirm the complaint
+
+    Record the customer complaint and operating conditions. Establish whether the problem is permanent or intermittent.
+
+* Step 2 — Perform a complete vehicle scan
+
+    Retrieve communication DTCs from all accessible ECUs. Record which modules cannot communicate.
+
+* Step 3 — Analyse the DTC pattern
+
+    Determine whether several modules report the same network fault. Multiple affected ECUs may indicate a shared network problem.
+
+* Step 4 — Inspect the physical network
+
+    Check connectors, harness routing, corrosion, water ingress, damaged twisted pairs and previous repairs.
+
+* Step 5 — Perform electrical measurements
+
+    Following the OEM procedure, inspect termination resistance, CAN-H and CAN-L voltages, supply voltage and grounds.
+
+* Step 6 — Use an oscilloscope
+
+    Examine signal quality, differential voltage, distortion, reflections and intermittent disturbances.
+
+* Step 7 — Isolate the faulty section
+
+    Use the OEM wiring diagram and network topology. Disconnect or isolate sections only as specified by the manufacturer.
+
+* Step 8 — Verify the repair
+
+    Restore the network, clear DTCs where appropriate, repeat the scan and confirm stable communication under the original fault conditions.
+
+### B. Understanding a practical EV fault
+
+Simulated workshop case — not real vehicle data
+
+Vehicle: Electric vehicle with a high-speed CAN network.
+
+Customer complaint: Vehicle displays a drivetrain warning and intermittently loses drive readiness.
+
+Diagnostic scan:
+
+| ECU              | Reported condition                        |
+| ---------------- | ----------------------------------------- |
+| VCU              | Communication fault with motor controller |
+| BMS              | Communication fault with VCU              |
+| Motor controller | Intermittent network communication fault  |
+| ABS/ESC          | No communication fault                    |
+
+Initial observations:
+
+* Fault occurs intermittently.
+
+* Several drivetrain-related ECUs report communication problems.
+
+* ABS/ESC remains accessible.
+
+A technician should not immediately replace the VCU, BMS or motor controller.
+
+The correct next steps are to examine the relevant network topology, identify whether these modules share a CAN branch, inspect the common wiring and connectors, and measure the network according to the OEM procedure.
+
+The ABS/ESC remaining operational may help narrow the affected network segment, but only after confirming the actual vehicle architecture.
+
+### C. Safety and measurement precautions
+
+* Follow the manufacturer's high-voltage isolation procedure before work that requires access to HV components or circuits.
+
+* Do not perform resistance measurements on an energised CAN circuit.
+
+* Observe OEM instructions before disconnecting ECUs.
+
+* Use an automotive-approved oscilloscope and suitable differential measurement equipment.
+
+* Never connect an earth-referenced oscilloscope ground clip to a CAN conductor without confirming the measurement arrangement is safe.
+
+* Do not use a megohmmeter on CAN communication wiring or connected electronic modules unless an OEM procedure explicitly specifies an approved test.
+
+### Key technical points to retain
+
+| Subject         | Essential principle                                         |
+| --------------- | ----------------------------------------------------------- |
+| CAN FD          | Supports up to 64 payload bytes                             |
+| BRS             | Allows a faster data phase                                  |
+| TEC / REC       | Monitor transmission and reception errors                   |
+| Error-passive   | Controller has accumulated significant communication errors |
+| Bus-off         | Controller stops transmitting on the bus                    |
+| Arbitration     | Higher-priority message wins                                |
+| Network loading | Measures the proportion of bus capacity being used          |
+| Fault isolation | Identifies the actual faulty network section or component   |
+
+Master technician perspective: Advanced CAN diagnosis is not simply checking whether communication exists. It requires understanding protocol compatibility, timing, arbitration, error confinement, bus utilisation and physical-layer signal integrity.
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.6 LIN, FlexRay and Automotive Ethernet (append below) -->
