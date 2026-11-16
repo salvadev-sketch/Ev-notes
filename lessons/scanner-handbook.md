@@ -1157,4 +1157,399 @@ These are diagnostic possibilities, not confirmed root causes. Always verify usi
 
 ---
 
-<!-- NEXT: Lesson 1.4 — Complete Vehicle Health Scanning (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.4: Complete Vehicle Health Scanning
+
+A complete vehicle health scan is a systematic electronic inspection of the vehicle's control modules (ECUs). Its purpose is to establish the vehicle's overall electronic condition, identify faults across different systems, and create a reliable diagnostic baseline before repairs begin.
+
+A professional technician does not simply connect a scanner, read a few codes, and start replacing components. The technician first establishes which modules are installed, which modules communicate, which faults are present, and how the faults relate to one another.
+
+### 1.4.1 Initial Vehicle Health Check
+
+Before connecting the diagnostic scanner, perform an initial inspection.
+
+The objective is to understand the vehicle's condition and prevent misleading diagnostic results.
+
+A. Confirm vehicle identity
+
+Record:
+
+* Vehicle identification number (VIN).
+
+* Manufacturer, model and model year.
+
+* Powertrain type: BEV, HEV, PHEV or conventional ICE.
+
+* Odometer reading.
+
+* Customer-reported symptoms.
+
+* Warning indicators displayed on the instrument cluster.
+
+B. Inspect vehicle electrical condition
+
+Check:
+
+* 12 V auxiliary battery condition.
+
+* Battery terminals and connections.
+
+* Relevant fuses and power supply circuits.
+
+* Visible damage to wiring and connectors.
+
+* Signs of water ingress or corrosion.
+
+* Instrument cluster warning messages.
+
+For EVs and hybrids, pay particular attention to the 12 V system. The low-voltage battery supplies power to many control modules and helps operate the high-voltage system's control circuits.
+
+A weak 12 V supply can cause:
+
+* Multiple ECU communication faults.
+
+* Unexpected module resets.
+
+* Contactor control problems.
+
+* Unusual warning messages.
+
+* Intermittent diagnostic communication.
+
+Important: Do not assume that multiple communication DTCs mean multiple defective ECUs. First investigate common power supply, ground and network conditions.
+
+C. Establish vehicle operating condition
+
+Record whether the vehicle is:
+
+* OFF.
+
+* Ignition ON.
+
+* READY.
+
+* Charging.
+
+* In a fault-related shutdown state.
+
+The operating condition matters because some ECUs only communicate or become fully active under particular conditions.
+
+### 1.4.2 ECU Identification
+
+An Electronic Control Unit (ECU) is an electronic controller responsible for monitoring or controlling a particular vehicle function.
+
+Modern EVs may contain many ECUs connected through different vehicle networks.
+
+Examples include:
+
+| ECU / Control module       | Main responsibility                    |
+| -------------------------- | -------------------------------------- |
+| BMS                        | Battery monitoring and protection      |
+| VCU                        | Vehicle-level powertrain coordination  |
+| MCU / Inverter controller  | Electric motor torque control          |
+| OBC                        | AC charging control                    |
+| DC-DC converter controller | High-voltage to low-voltage conversion |
+| ABS / ESC                  | Braking and vehicle stability          |
+| BCM                        | Body electrical functions              |
+| TCM                        | Transmission control, where fitted     |
+| HVAC controller            | Cabin heating and cooling              |
+| EPS                        | Electric power steering                |
+| SRS / Airbag ECU           | Occupant restraint systems             |
+
+### What ECU identification tells the technician
+
+A professional scanner may display:
+
+* ECU name or system designation.
+
+* Manufacturer identification.
+
+* Hardware part number.
+
+* Software identification or calibration ID.
+
+* ECU communication status.
+
+* VIN information, where supported.
+
+* Diagnostic protocol information.
+
+Example — Illustrative scanner data
+
+| Parameter       | Example                   |
+| --------------- | ------------------------- |
+| Module          | Battery Management System |
+| Hardware number | BMS-HW-204                |
+| Software ID     | BMS_3.2.1                 |
+| Communication   | Available                 |
+| ECU voltage     | 13.8 V                    |
+| DTC count       | 2                         |
+
+These values are simulated for training, not readings from a real vehicle.
+
+### Why software identification matters
+
+Two vehicles of the same model and year may have different ECU software versions.
+
+A technician should record software identification before programming or replacing a controller. Incorrect software or calibration can produce compatibility problems, unexpected operation or new DTCs.
+
+### 1.4.3 Full-System Scanning
+
+A full-system scan interrogates all accessible vehicle control modules rather than scanning only the engine or powertrain controller.
+
+For an EV, the scan may include:
+
+* Battery management system.
+
+* Vehicle control unit.
+
+* Inverter and motor controllers.
+
+* Charging controllers.
+
+* DC-DC converter.
+
+* ABS and stability control.
+
+* Electric power steering.
+
+* HVAC.
+
+* Body control.
+
+* Restraint systems.
+
+* Gateway and network controllers.
+
+### Professional full-system scanning procedure
+
+Step 1 — Connect the diagnostic interface
+
+Connect the compatible diagnostic interface to the vehicle's DLC or approved diagnostic connection.
+
+Step 2 — Identify the vehicle
+
+Use VIN identification where supported. Confirm the selected model, year and powertrain manually.
+
+Step 3 — Establish communication
+
+Allow the scanner to identify the available vehicle networks and ECUs.
+
+Step 4 — Select full-system scan
+
+Choose the scanner's complete vehicle health check or equivalent function.
+
+Step 5 — Allow interrogation to finish
+
+Do not disconnect the interface or interrupt the scan while modules are being interrogated.
+
+Step 6 — Save the scan results
+
+Save the original report before clearing DTCs, performing resets or changing ECU settings.
+
+### Example: Simulated EV full-system scan
+
+| Module    | Communication | DTC count |
+| --------- | ------------- | --------- |
+| BMS       | Available     | 2         |
+| VCU       | Available     | 1         |
+| Inverter  | Available     | 0         |
+| OBC       | Available     | 0         |
+| DC-DC     | Available     | 0         |
+| ABS / ESC | Available     | 1         |
+| BCM       | Available     | 0         |
+| HVAC      | No response   | —         |
+
+This example shows why scanning the entire vehicle is important. A fault may exist outside the system initially suspected by the customer.
+
+### 1.4.4 Communication Status and Unavailable Modules
+
+One of the most important parts of a full-system scan is understanding module communication status.
+
+A scanner may report:
+
+* Available / Communicating: The ECU responded to the diagnostic request.
+
+* No communication / No response: The scanner did not receive the expected response.
+
+* Not installed / Not equipped: The vehicle configuration does not include that module.
+
+* Communication error: Communication was attempted but an error occurred.
+
+* Access denied: The diagnostic function may be restricted by security authorization.
+
+These conditions are not interchangeable.
+
+### How to diagnose an unavailable ECU
+
+Imagine that the HVAC controller does not respond.
+
+Do not immediately conclude that the HVAC ECU is defective.
+
+Use a structured investigation:
+
+1\. Confirm equipment configuration
+
+Check whether the vehicle actually has the module.
+
+2\. Check ECU power supply
+
+Use the correct wiring diagram to identify the module's power supply circuits.
+
+3\. Check ground circuits
+
+Perform appropriate voltage-drop testing under the specified operating conditions.
+
+4\. Check network communication
+
+Identify whether the module communicates over CAN, CAN FD, LIN, Ethernet or another supported network.
+
+5\. Inspect the network wiring
+
+Look for damaged wiring, poor terminals, corrosion and connector problems.
+
+6\. Consider gateway and security restrictions
+
+Determine whether the module is inaccessible because of network routing, diagnostic authorization or secure gateway restrictions.
+
+7\. Confirm the fault
+
+Use manufacturer diagnostic procedures before deciding whether the ECU itself has failed.
+
+### Important diagnostic distinction
+
+A module that does not respond to a scanner is not automatically a failed module.
+
+Possible causes include:
+
+* Missing battery supply.
+
+* Missing ignition or wake-up supply.
+
+* Poor ground.
+
+* Open or shorted communication wiring.
+
+* Network termination or topology problems.
+
+* Gateway restrictions.
+
+* Incorrect vehicle selection.
+
+* Faulty diagnostic interface.
+
+* Defective ECU.
+
+Workshop principle: Diagnose the power, ground and communication path before condemning the controller.
+
+### 1.4.5 Diagnostic Report Generation
+
+A diagnostic report is the recorded evidence of the vehicle's electronic condition at the time of inspection.
+
+It is important for:
+
+* Establishing a diagnostic baseline.
+
+* Supporting repair decisions.
+
+* Comparing before-and-after scan results.
+
+* Communicating findings to other technicians.
+
+* Documenting intermittent faults.
+
+* Maintaining workshop service records.
+
+### Information a professional report should contain
+
+| Report section         | Required information                |
+| ---------------------- | ----------------------------------- |
+| Vehicle identification | VIN, model, year, powertrain        |
+| Inspection details     | Date, mileage, operating condition  |
+| Diagnostic equipment   | Scanner and software version        |
+| ECU inventory          | Identified and accessible modules   |
+| Communication status   | Available, unavailable, restricted  |
+| Fault information      | DTCs and their status               |
+| Supporting evidence    | Freeze-frame and relevant live data |
+| Technician findings    | Confirmed observations              |
+| Recommended action     | Further testing or repair           |
+| Verification           | Post-repair scan and test results   |
+
+### Before and after repair comparison
+
+Consider this simulated example:
+
+| Item               | Before repair | After repair |
+| ------------------ | ------------- | ------------ |
+| BMS communication  | Available     | Available    |
+| BMS DTC count      | 2             | 0            |
+| VCU communication  | Available     | Available    |
+| HVAC communication | No response   | Available    |
+| Full-system scan   | Incomplete    | Complete     |
+
+The second scan suggests improvement, but a zero-DTC report alone does not prove that the vehicle is fully repaired. The technician must also confirm correct operation under the relevant operating conditions.
+
+### Professional workshop workflow
+
+### Complete Vehicle Health Scan
+
+* Initial inspection
+
+    Verify vehicle identity, 12 V condition and operating state.
+
+* ECU identification
+
+    Identify installed modules and record their software information.
+
+* Full-system interrogation
+
+    Scan all accessible ECUs and collect DTC information.
+
+* Communication analysis
+
+    Investigate unavailable modules and network-related faults.
+
+* Report generation
+
+    Save the original scan and document diagnostic evidence.
+
+* Repair verification
+
+    Repeat the scan and verify the affected systems operate correctly.
+
+### Important safety considerations for EV and hybrid technicians
+
+* A diagnostic scan does not require opening the high-voltage battery enclosure.
+
+* Never disconnect HV components simply to improve scanner communication.
+
+* Follow the manufacturer's vehicle operating-state requirements before running active tests.
+
+* Do not perform insulation-resistance testing through connected ECUs or sensitive electronics unless the OEM procedure explicitly permits it.
+
+* Use approved PPE and high-voltage isolation procedures whenever physical work on HV components is required.
+
+* Preserve the original scan report before clearing faults.
+
+### Key technical understanding
+
+The purpose of a complete vehicle health scan is to establish a reliable electronic picture of the entire vehicle.
+
+The technician must distinguish between:
+
+* A genuine component fault.
+
+* A power supply or ground fault.
+
+* A network communication fault.
+
+* A module that is not fitted.
+
+* A security or diagnostic access restriction.
+
+This distinction prevents unnecessary ECU replacement and helps identify the actual root cause.
+
+---
+
+<!-- NEXT: Lesson 1.5 — Diagnostic Trouble Code Retrieval and Interpretation (append below) -->
