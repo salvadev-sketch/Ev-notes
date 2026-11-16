@@ -2315,4 +2315,327 @@ Do not replace the battery pack based only on these readings.
 
 ---
 
-<!-- NEXT: Lesson 1.7 (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.7: Active Tests and Bidirectional Controls
+
+This lesson covers how a professional diagnostic scanner can do more than read faults and display sensor data: it can send commands to vehicle control modules and observe how the vehicle responds.
+
+The five sections are:
+
+* Active test principles
+
+* Actuator command testing
+
+* Pump, fan and relay activation
+
+* Commanded versus actual values
+
+* Safety limitations
+
+### 1.7.1 Active Test Principles
+
+An active test is a diagnostic function in which a scan tool requests an ECU to operate or change the state of a specific component.
+
+Unlike ordinary live-data monitoring, active testing involves sending a command to the vehicle.
+
+For example, a technician can use a compatible diagnostic scanner to request:
+
+* Battery coolant pump activation.
+
+* Radiator cooling fan operation.
+
+* Cooling-system valve movement.
+
+* Relay activation.
+
+* Electric water pump speed adjustment.
+
+* Certain actuator positions.
+
+### How an active test works
+
+1\. Diagnostic scanner
+
+Technician selects an available active test
+
+2\. ECU receives command
+
+Checks operating conditions and safety permissions
+
+3\. Output driver operates actuator
+
+ECU controls the relevant electrical output
+
+4\. Actual response is monitored
+
+Scanner displays feedback or measured operating values
+
+Important: A successful command does not prove that the component is mechanically or electrically healthy. The technician must verify the actual response.
+
+### 1.7.2 Actuator Command Testing
+
+An actuator converts an electrical control signal into a physical action.
+
+Examples in EV and hybrid vehicles include:
+
+| Actuator                     | Function                                                 |
+| ---------------------------- | -------------------------------------------------------- |
+| Electric coolant pump        | Circulates coolant                                       |
+| Cooling fan                  | Moves air through a heat exchanger                       |
+| Electronic coolant valve     | Controls coolant flow direction                          |
+| Battery contactor            | Connects or disconnects the HV battery under ECU control |
+| Electric compressor          | Provides refrigerant compression                         |
+| Electronic throttle actuator | Controls throttle plate position in applicable hybrids   |
+
+### Example: Electric coolant pump
+
+A diagnostic scanner may provide a pump activation command.
+
+Simulated diagnostic results:
+
+| Parameter            | Reading     |
+| -------------------- | ----------- |
+| Requested pump speed | 3,000 RPM   |
+| Actual pump speed    | 0 RPM       |
+| Pump command status  | Active      |
+| Pump feedback        | No response |
+
+Possible fault areas:
+
+* Missing electrical supply.
+
+* Poor ground connection.
+
+* Open or shorted wiring.
+
+* Pump motor failure.
+
+* ECU output-stage fault.
+
+* Communication or feedback circuit fault.
+
+### Technician's diagnostic logic
+
+Do not immediately replace the pump.
+
+First establish whether the ECU is issuing the command, whether the electrical circuit responds and whether the pump produces the expected physical output.
+
+### 1.7.3 Pump, Fan and Relay Activation
+
+These are common active tests during EV thermal-management and low-voltage electrical diagnosis.
+
+### A. Electric coolant pump activation
+
+Purpose:
+
+* Verify pump operation.
+
+* Check speed feedback.
+
+* Investigate coolant circulation problems.
+
+* Confirm response to ECU commands.
+
+Observe:
+
+* Requested speed.
+
+* Actual speed.
+
+* Current consumption, if available.
+
+* Pump feedback status.
+
+* Coolant temperature response.
+
+A pump reporting zero RPM despite an activation command requires further investigation.
+
+### B. Cooling fan activation
+
+Purpose:
+
+* Verify fan motor operation.
+
+* Check fan control circuits.
+
+* Confirm variable-speed control.
+
+* Investigate overheating or thermal derating.
+
+Simulated test:
+
+| Parameter          | Result    |
+| ------------------ | --------- |
+| Fan requested duty | 70%       |
+| Fan actual duty    | 70%       |
+| Fan speed          | 1,800 RPM |
+| Fan status         | Operating |
+
+The response appears consistent, but airflow and physical fan operation should also be checked.
+
+### C. Relay activation
+
+Relays are electrically controlled switches used in vehicle electrical systems.
+
+A compatible active test may command a relay ON or OFF.
+
+A technician should investigate:
+
+* Relay control signal.
+
+* Coil supply and ground.
+
+* Contact operation.
+
+* Voltage drop across the contacts under suitable load.
+
+* Wiring and connector condition.
+
+A relay clicking does not necessarily prove that its contacts can carry the required current.
+
+High-voltage contactor warning: HV contactors are not ordinary 12 V relays. Never manually energize, bypass or force an HV contactor. Follow the manufacturer's diagnostic and isolation procedures.
+
+### 1.7.4 Commanded Versus Actual Values
+
+One of the most important skills in bidirectional diagnosis is comparing the requested operation with the actual response.
+
+* Commanded value: What the ECU requests.
+
+* Actual value: What the system reports or measures as happening.
+
+Example:
+
+| Parameter              | Commanded | Actual |
+| ---------------------- | --------- | ------ |
+| Coolant pump speed     | 3,000 RPM | 0 RPM  |
+| Cooling fan duty       | 70%       | 68%    |
+| Coolant valve position | 80%       | 80%    |
+
+Interpretation:
+
+* The pump has a command-response discrepancy.
+
+* The fan response is close to the requested duty.
+
+* The coolant valve position agrees with the requested position, assuming the feedback is valid.
+
+### Understanding the discrepancy
+
+For a speed-controlled actuator:
+
+`Speed error = N_commanded − N_actual`
+
+For the pump:
+
+`3,000 − 0 = 3,000 RPM`
+
+This is a substantial discrepancy.
+
+However, the calculation alone does not identify the failed component. You must verify the feedback signal and electrical circuit.
+
+### Diagnostic decision sequence
+
+* Confirm that the correct actuator was selected.
+
+* Check whether the ECU accepted the command.
+
+* Confirm that the operating conditions permit activation.
+
+* Observe the electrical output and feedback data available.
+
+* Inspect the actuator circuit using the OEM procedure.
+
+* Confirm physical operation.
+
+* Repeat the test after repair.
+
+### 1.7.5 Safety Limitations
+
+Active tests can cause physical movement, electrical switching, heat generation or unexpected changes in vehicle operating state.
+
+They must be performed under controlled workshop conditions.
+
+Essential precautions:
+
+* Confirm vehicle identity and the correct ECU.
+
+* Read relevant DTCs before testing.
+
+* Follow the OEM test procedure.
+
+* Secure the vehicle against unintended movement.
+
+* Keep hands and tools clear of fans, pumps and moving components.
+
+* Ensure coolant and refrigerant systems are operated within approved conditions.
+
+* Use appropriate PPE and approved test equipment.
+
+* Never bypass an interlock or safety protection.
+
+* Never force contactors or energize HV circuits manually.
+
+* Stop immediately if abnormal noise, overheating, leakage or unexpected movement occurs.
+
+High-voltage safety
+
+An active test is not permission to work on exposed HV components. HV isolation, verification of absence of voltage and all other required safety procedures must follow the vehicle manufacturer's instructions and the technician's authorization level.
+
+### Professional workshop case study
+
+Customer complaint: Battery temperature warning appears during charging.
+
+The technician connects an approved diagnostic scanner and retrieves the following simulated data:
+
+| Parameter            | Reading   |
+| -------------------- | --------- |
+| Battery temperature  | 45°C      |
+| Coolant pump command | 80%       |
+| Pump actual speed    | 0 RPM     |
+| Cooling fan command  | 60%       |
+| Fan actual speed     | 1,500 RPM |
+
+Initial interpretation:
+
+* The battery temperature is elevated and must be assessed against OEM limits.
+
+* The pump has no reported speed response.
+
+* The fan appears to be operating.
+
+Diagnostic approach:
+
+* Save DTCs and freeze-frame data.
+
+* Confirm whether the ECU permits pump activation.
+
+* Perform the approved pump active test.
+
+* Check the pump's electrical supply, ground and control circuit according to OEM instructions.
+
+* Verify feedback and physical coolant circulation.
+
+* Repair the confirmed fault.
+
+* Repeat the active test and monitor battery temperatures under approved conditions.
+
+The pump must not be condemned until its electrical supply, control and feedback have been properly assessed.
+
+### Key technician takeaways
+
+* Active tests send commands to vehicle ECUs.
+
+* Bidirectional control allows the scanner to request actuator operation.
+
+* Commanded and actual values must be compared.
+
+* A command being accepted does not prove successful actuator operation.
+
+* Electrical measurements and physical verification are essential.
+
+* OEM safety procedures always take priority.
+
+---
+
+<!-- NEXT: Lesson 1.8 — Special Functions and Service Operations (append below) -->
