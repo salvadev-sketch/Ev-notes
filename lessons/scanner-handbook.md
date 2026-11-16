@@ -1,3 +1,7 @@
+# Professional Diagnostic Scanner Operation — Running Notes
+
+<!-- Append each new lesson at the END of this file, below the last one. -->
+
 ### Module 1 — Professional Diagnostic Scanner Operation
 
 ### Lesson 1.1: Introduction to Professional Diagnostic Scanners
@@ -310,3 +314,7 @@ Follow the vehicle manufacturer's HV isolation procedure, required PPE, lockout/
 Next lesson: Module 1, Lesson 1.2 — Diagnostic Scanner Types and Functions, covering basic code readers, professional multibrand scanners, OEM systems, pass-through programming devices and EV/hybrid-specific equipment.
 
 Source structure: Your uploaded EV & Hybrid Master Technician Handbook – Complete Table of Contents, Module 1, Lesson 1.1.
+
+---
+
+<!-- NEXT: Lesson 1.2 — Diagnostic Scanner Types and Functions (append below) -->
