@@ -3671,4 +3671,308 @@ Important: A DTC disappearing immediately after clearing is not sufficient verif
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.1 Introduction to Automotive Communication Systems (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.1: Introduction to Automotive Communication Systems
+
+In modern electric and hybrid vehicles, electronic control units must exchange information continuously to coordinate the powertrain, battery, braking, charging, thermal management and safety systems.
+
+As a technician, you need to understand how these systems communicate because many vehicle faults are not caused by defective components, but by communication failures, incorrect data or network interruptions.
+
+This lesson follows the four official sections in your handbook.
+
+### 2.1.1 Purpose of Vehicle Networks
+
+A vehicle network is an electronic communication system that allows different ECUs to exchange information.
+
+Without vehicle networks, each ECU would require separate wiring connections to every other ECU with which it needed to communicate. This would create excessive wiring, weight, complexity and cost.
+
+Vehicle networks provide a more efficient way to share information.
+
+### Example: EV acceleration
+
+When a driver presses the accelerator pedal, several systems must work together.
+
+A simplified communication sequence:
+
+* The accelerator pedal position sensor measures pedal movement.
+
+* The relevant control system receives the accelerator position signal.
+
+* The VCU calculates the requested driving torque.
+
+* The VCU communicates the torque request to the motor controller.
+
+* The motor controller controls inverter operation.
+
+* The inverter supplies controlled three-phase electrical power to the traction motor.
+
+* Other ECUs coordinate battery power limits, traction control and braking requirements.
+
+The systems must exchange accurate information at the correct time.
+
+### Main purposes of vehicle networks
+
+| Purpose             | Explanation                                                 |
+| ------------------- | ----------------------------------------------------------- |
+| Data sharing        | Allows ECUs to exchange sensor and operating information    |
+| System coordination | Coordinates different vehicle systems                       |
+| Reduced wiring      | Reduces the need for individual point-to-point wiring       |
+| Fault monitoring    | Allows systems to report communication and operating faults |
+| Safety coordination | Supports coordinated responses to abnormal conditions       |
+| Diagnostic access   | Allows diagnostic equipment to communicate with ECUs        |
+
+Technician's point: A communication DTC does not automatically mean an ECU is defective. The problem may be in its power supply, ground, network wiring, connector or another communicating ECU.
+
+### 2.1.2 Electronic Control Units (ECUs)
+
+An Electronic Control Unit is an embedded electronic controller that monitors inputs, processes information and controls outputs.
+
+An ECU normally contains:
+
+* Microcontroller or processor.
+
+* Memory.
+
+* Power supply and voltage regulation.
+
+* Input signal conditioning circuits.
+
+* Output driver circuits.
+
+* Communication transceivers.
+
+* Software and calibration data.
+
+### Basic ECU operating principle
+
+INPUTS
+
+Sensors, switches and messages from other ECUs
+
+PROCESSING
+
+Microcontroller executes software and control calculations
+
+OUTPUTS
+
+Actuators, control signals and messages to other ECUs
+
+### Important EV and hybrid ECUs
+
+| ECU                       | Main responsibility                              |
+| ------------------------- | ------------------------------------------------ |
+| VCU                       | Coordinates vehicle-level operation              |
+| BMS                       | Monitors and manages the HV battery              |
+| Inverter/Motor Controller | Controls electric motor operation                |
+| OBC Controller            | Manages onboard AC charging functions            |
+| DC-DC Controller          | Manages conversion from HV DC to low-voltage DC  |
+| ABS/ESC ECU               | Controls braking and vehicle stability functions |
+| BCM                       | Manages body electrical functions                |
+| Thermal Management ECU    | Controls cooling and heating functions           |
+
+The exact ECU names and functions vary by manufacturer.
+
+### Example: Battery Management System
+
+The BMS monitors parameters such as:
+
+* Individual cell or cell-group voltages.
+
+* Battery current.
+
+* Battery temperatures.
+
+* State of Charge (SoC).
+
+* State of Health (SoH), where supported.
+
+* Insulation monitoring information, depending on architecture.
+
+It communicates relevant information to other controllers.
+
+For example, if battery temperature or voltage conditions restrict available power, the BMS can communicate a power limitation to the VCU. The VCU can then coordinate the requested motor torque.
+
+This is why communication between ECUs is essential to vehicle operation.
+
+### 2.1.3 Distributed Control Architecture
+
+Distributed control architecture means that vehicle control functions are shared among multiple ECUs instead of being handled by one central controller.
+
+Each ECU has its own responsibilities, but it communicates with other controllers to coordinate vehicle operation.
+
+### Example of a distributed EV architecture
+
+A simplified representation:
+
+Vehicle Control Unit (VCU)
+
+Vehicle-level coordination
+
+Communication network
+
+BMS
+
+Battery monitoring
+
+Inverter ECU
+
+Motor control
+
+ABS/ESC
+
+Braking and stability
+
+OBC ECU
+
+Charging control
+
+Thermal Management ECU
+
+Cooling and heating coordination
+
+Simplified conceptual architecture. Actual network connections and control authority vary by vehicle.
+
+### Advantages of distributed architecture
+
+* Modularity: Each ECU performs specific functions.
+
+* Scalability: Manufacturers can add or change vehicle functions.
+
+* Local processing: Controllers can process their own sensor inputs and control outputs.
+
+* Fault identification: Diagnostic systems can identify faults associated with individual controllers.
+
+* System coordination: ECUs exchange information to coordinate complex functions.
+
+### Diagnostic implications
+
+A distributed architecture also introduces diagnostic challenges.
+
+For example, if the VCU stops receiving valid information from the BMS, it may limit vehicle power or prevent the vehicle from entering READY mode.
+
+Possible causes include:
+
+* BMS power supply failure.
+
+* Poor ECU ground.
+
+* CAN wiring fault.
+
+* Connector damage.
+
+* Network termination problem.
+
+* BMS internal failure.
+
+* Incorrect or missing communication messages.
+
+The correct diagnosis requires checking the entire communication path.
+
+### 2.1.4 Communication Network Development
+
+Automotive communication systems have developed as vehicle electronics have become more complex.
+
+Earlier vehicles used relatively simple electrical connections. Modern vehicles use multiple communication protocols and network architectures.
+
+### General development
+
+| Network technology    | Main characteristics                                                   |
+| --------------------- | ---------------------------------------------------------------------- |
+| Point-to-point wiring | Direct electrical connection between devices                           |
+| LIN                   | Low-cost, relatively low-speed communication for local components      |
+| CAN                   | Robust serial communication widely used between automotive controllers |
+| FlexRay               | Deterministic communication designed for time-critical applications    |
+| Automotive Ethernet   | High-bandwidth communication for advanced vehicle systems              |
+
+### LIN — Local Interconnect Network
+
+LIN is commonly used for lower-cost local communication.
+
+Examples include certain:
+
+* Door modules.
+
+* Seat control systems.
+
+* Mirror adjustment systems.
+
+* Climate-control actuators.
+
+LIN is generally slower and simpler than CAN.
+
+### CAN — Controller Area Network
+
+CAN is a major automotive communication technology.
+
+It allows multiple ECUs to communicate over a shared bus using message identifiers and arbitration.
+
+It is widely used for powertrain, chassis and body-related communication.
+
+We will study CAN in detail later in Module 2.
+
+### FlexRay
+
+FlexRay was developed for applications requiring predictable communication timing and high reliability.
+
+It has been used in some advanced chassis and control applications.
+
+### Automotive Ethernet
+
+Automotive Ethernet provides higher data bandwidth for systems that transfer large quantities of information.
+
+Examples include:
+
+* Advanced driver assistance systems.
+
+* Cameras and sensor systems.
+
+* Infotainment.
+
+* High-speed vehicle gateways.
+
+* Modern zonal and central computing architectures.
+
+Important: These technologies can coexist in one vehicle. A gateway may connect different network types and control the transfer of messages between them.
+
+### Workshop diagnostic example: No communication with BMS
+
+Simulated workshop case
+
+Customer complaint: EV does not enter READY mode.
+
+Scanner observation: VCU communicates, but BMS communication is unavailable.
+
+Initial diagnostic reasoning:
+
+* Confirm that the 12 V supply is stable.
+
+* Check the BMS power supply and ground using the correct wiring diagram.
+
+* Inspect BMS connectors and network wiring.
+
+* Check communication signals using suitable diagnostic equipment.
+
+* Confirm whether the BMS is powered and transmitting messages.
+
+* Follow OEM diagnostic procedures before condemning the ECU.
+
+Do not open or probe HV battery internals as part of this basic communication check. Follow OEM HV safety procedures and use appropriately rated equipment and authorized test points.
+
+### Key technical terms
+
+| Term             | Meaning                                                          |
+| ---------------- | ---------------------------------------------------------------- |
+| ECU              | Electronic Control Unit                                          |
+| VCU              | Vehicle Control Unit                                             |
+| BMS              | Battery Management System                                        |
+| CAN              | Controller Area Network                                          |
+| LIN              | Local Interconnect Network                                       |
+| Gateway          | Controller that routes or manages communication between networks |
+| Transceiver      | Electronic interface that sends and receives network signals     |
+| Bus              | Shared communication pathway                                     |
+| Network topology | Physical or logical arrangement of network devices               |
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.2 OBD-II Architecture and Operation (append below) -->
