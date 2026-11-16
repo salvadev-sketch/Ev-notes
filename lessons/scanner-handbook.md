@@ -3333,4 +3333,342 @@ An advanced diagnostic scanner does not replace engineering judgment. It provide
 
 ---
 
-<!-- NEXT: Lesson 1.10 — Professional Scanner Diagnostic Cases (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.10: Professional Scanner Diagnostic Cases
+
+This lesson brings together the scanner skills from Lessons 1.1–1.9. The objective is to diagnose vehicles systematically, avoid unnecessary component replacement and produce evidence that supports the repair decision.
+
+We will use workshop-style examples with clearly identified simulated data.
+
+### 1.10.1 Initial Inspection and Scan
+
+A professional diagnosis begins before connecting the scanner.
+
+The first objective is to establish the vehicle's condition and preserve the original diagnostic information.
+
+### Step 1 — Initial vehicle inspection
+
+Record:
+
+* VIN and vehicle model.
+
+* Model year and powertrain type.
+
+* Odometer reading.
+
+* Customer-reported symptoms.
+
+* Warning lights and messages.
+
+* Recent repairs or component replacements.
+
+* 12 V battery condition.
+
+For an EV or hybrid, also establish whether there are visible signs of damage, coolant leakage, collision damage or other conditions that could affect high-voltage system safety.
+
+Safety: Do not touch or disconnect high-voltage components during an ordinary scan. If there is suspected HV damage, follow the manufacturer's safety and isolation procedures before further work.
+
+### Step 2 — Connect the diagnostic scanner
+
+* Confirm the scanner supports the vehicle.
+
+* Inspect the diagnostic connector.
+
+* Connect the scanner using the correct interface.
+
+* Switch the vehicle to the required ignition or diagnostic mode.
+
+* Identify the vehicle using the correct VIN and configuration.
+
+* Establish communication with the vehicle ECUs.
+
+### Step 3 — Perform a complete vehicle scan
+
+Do not restrict the initial scan to the engine ECU.
+
+Depending on vehicle architecture, scan:
+
+* Battery Management System (BMS).
+
+* Vehicle Control Unit (VCU).
+
+* Inverter or Motor Control Unit.
+
+* Onboard Charger (OBC).
+
+* DC-DC converter.
+
+* ABS/ESC.
+
+* Body Control Module (BCM).
+
+* Thermal management controller.
+
+* Charging control modules.
+
+### Step 4 — Save the original report
+
+Record DTC status, ECU communication status, freeze-frame data and relevant live data before clearing any codes.
+
+### 1.10.2 Multiple ECU Fault Investigation
+
+Modern EVs and hybrids contain multiple ECUs connected through communication networks. A fault in one system can create faults in several other systems.
+
+The critical skill is distinguishing the root fault from secondary or consequential faults.
+
+### Simulated workshop case
+
+Vehicle complaint
+
+EV displays a warning:
+
+Electric powertrain system fault — reduced power.
+
+Simulated DTC data
+
+| ECU      | DTC   | Description                               |
+| -------- | ----- | ----------------------------------------- |
+| VCU      | U0100 | Lost communication with ECM/PCM           |
+| Inverter | U0121 | Lost communication with ABS module        |
+| BMS      | P0A1F | Battery energy control module performance |
+| ABS      | U0100 | Lost communication with ECM/PCM           |
+
+These codes do not establish four failed ECUs.
+
+### Diagnostic approach
+
+1\. Identify common relationships
+
+Check whether the DTCs involve the same network, ECU or power supply.
+
+2\. Identify communication failures
+
+Determine which modules are communicating and which are not.
+
+3\. Check shared electrical supplies
+
+Inspect relevant 12 V battery supply circuits, fuses, grounds and ECU power feeds using the manufacturer's wiring diagrams.
+
+4\. Investigate the communication network
+
+Depending on the network architecture, inspect:
+
+* CAN-H and CAN-L.
+
+* Network connectors and junctions.
+
+* Termination resistance, where applicable.
+
+* Network waveform using an oscilloscope.
+
+* Short circuits and open circuits.
+
+5\. Establish the primary fault
+
+Use test results to identify the original failure rather than replacing every ECU reporting a communication DTC.
+
+Engineering principle: Multiple communication DTCs can originate from one failed power supply, ground connection, network branch or communication node.
+
+### 1.10.3 Intermittent Fault Analysis
+
+An intermittent fault occurs when a fault appears under certain conditions but disappears at other times.
+
+These faults are particularly challenging because the vehicle may operate normally during workshop inspection.
+
+### Common causes
+
+* Loose connectors.
+
+* Corroded terminals.
+
+* Damaged wiring.
+
+* Thermal expansion and contraction.
+
+* Vibration-related connection failures.
+
+* Moisture intrusion.
+
+* Unstable electrical supply.
+
+* Intermittent sensor signals.
+
+### Diagnostic procedure
+
+Step 1 — Retrieve historical information
+
+Check stored and historical DTCs, freeze-frame records and fault occurrence information where supported.
+
+Step 2 — Identify the operating conditions
+
+Determine whether the fault occurs:
+
+* During acceleration.
+
+* During regenerative braking.
+
+* When the vehicle is cold.
+
+* After the vehicle warms up.
+
+* During AC or DC charging.
+
+* Over rough road surfaces.
+
+Step 3 — Record live data
+
+Select relevant parameters and record them over time.
+
+For example, when investigating a temperature-sensor fault, record the sensor signal, reference voltage and related operating conditions where supported.
+
+Step 4 — Perform controlled inspections
+
+Inspect wiring and connectors. Use approved movement or vibration tests only where safe and permitted by the manufacturer.
+
+Step 5 — Capture the fault
+
+Use scanner recording, an oscilloscope or another suitable instrument to capture the abnormal event.
+
+### Example: Intermittent sensor signal
+
+Illustrative simulated values
+
+| Operating condition | Sensor output |
+| ------------------- | ------------- |
+| Vehicle stationary  | 2.48 V        |
+| Normal driving      | 2.51 V        |
+| Vibration event     | 0.15 V        |
+| After vibration     | 2.49 V        |
+
+The sudden voltage drop may indicate an intermittent circuit problem, but the technician must verify the sensor, reference supply, ground and wiring before deciding which component has failed.
+
+### 1.10.4 Evidence-Based Diagnosis
+
+Evidence-based diagnosis means making repair decisions using measurable and repeatable technical evidence.
+
+A DTC is an indication of a detected condition. It is not automatically proof that the named component is defective.
+
+### Evidence hierarchy
+
+| Evidence                | Diagnostic value                                   |
+| ----------------------- | -------------------------------------------------- |
+| DTC description         | Identifies the detected fault condition            |
+| Freeze-frame data       | Shows conditions when the fault was recorded       |
+| Live data               | Shows current system behaviour                     |
+| Electrical measurements | Verifies voltage, resistance or current conditions |
+| Oscilloscope capture    | Shows signal behaviour over time                   |
+| Physical inspection     | Identifies visible damage or connection defects    |
+| OEM test procedure      | Provides manufacturer-defined acceptance criteria  |
+
+### Example: EV cooling pump fault
+
+A scanner reports a cooling pump performance fault.
+
+A weak diagnostic conclusion would be:
+
+"The scanner reports a pump fault. Replace the pump."
+
+A professional investigation would establish:
+
+* Is the pump receiving its specified supply voltage?
+
+* Is the ground circuit correct under load?
+
+* Is the ECU commanding the pump?
+
+* Is the pump drawing the expected current?
+
+* Is the pump actually operating?
+
+* Is coolant circulating correctly?
+
+* Are there restrictions, air pockets or leaks?
+
+* Does the system meet OEM performance criteria?
+
+Only after these checks should the technician determine whether the pump, wiring, control circuit or another part of the cooling system is responsible.
+
+### 1.10.5 Final Verification
+
+A repair is not complete simply because a DTC has been cleared.
+
+Final verification establishes that the original fault has been corrected and that the vehicle operates as intended.
+
+### Professional post-repair procedure
+
+* Confirm that the repair work is complete.
+
+* Inspect all disturbed connectors, wiring and components.
+
+* Confirm that the vehicle is correctly reassembled.
+
+* Restore any required settings or service configurations.
+
+* Perform the manufacturer's prescribed initialization or calibration, if required.
+
+* Clear DTCs only when appropriate.
+
+* Carry out the required functional test.
+
+* Repeat the complete vehicle scan.
+
+* Compare post-repair data with the original scan.
+
+* Save the final diagnostic report.
+
+### Before-and-after comparison
+
+Simulated example
+
+| Diagnostic item              | Before repair | After repair             |
+| ---------------------------- | ------------- | ------------------------ |
+| Cooling pump DTC             | Present       | Not present              |
+| Pump command                 | 80%           | 80%                      |
+| Pump feedback                | 0%            | 78%                      |
+| Coolant temperature response | Abnormal      | Within OEM specification |
+| System warning               | Active        | Not active               |
+
+The figures are illustrative. Actual acceptable values depend on the vehicle and manufacturer.
+
+Important: A DTC disappearing immediately after clearing is not sufficient verification. The relevant operating conditions and monitoring cycle must be completed as required by the OEM.
+
+### Complete professional diagnostic workflow
+
+### From customer complaint to verified repair
+
+* Initial inspection
+
+    Record symptoms, vehicle identity and safety condition.
+
+* Complete vehicle scan
+
+    Retrieve DTCs and identify communicating and unavailable ECUs.
+
+* Fault analysis
+
+    Examine DTC relationships, freeze-frame data and live data.
+
+* Physical and electrical testing
+
+    Verify suspected faults using suitable diagnostic instruments.
+
+* Root-cause identification
+
+    Establish the failed circuit, component or system condition.
+
+* Repair
+
+    Follow manufacturer procedures and safety requirements.
+
+* Final verification
+
+    Re-test, rescan and compare diagnostic evidence.
+
+* Reporting
+
+    Save the final report and document the repair outcome.
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.1 Introduction to Automotive Communication Systems (append below) -->
