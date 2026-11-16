@@ -1,6 +1,6 @@
-# Professional Diagnostic Scanner Operation — Running Notes
+# Professional Diagnostic Scanner Operation — Lessons 1.1 to 10.10
 
-<!-- Append each new lesson at the END of this file, below the last one. -->
+<!-- ONE file for all lessons 1.1 → 10.10. Append each new lesson at the END, in order. -->
 
 ### Module 1 — Professional Diagnostic Scanner Operation
 
