@@ -8137,4 +8137,527 @@ A professional network repair report should contain:
 
 ---
 
-<!-- NEXT: Module 3 — Lesson 3.1 Electrical Fundamentals (append below) -->
+### Module 3 — Electrical Principles, Measurement & Diagnosis
+
+### Lesson 3.1: Electrical Fundamentals
+
+This lesson establishes the electrical principles used throughout automotive and electric-vehicle diagnosis. A technician must understand how voltage, current, resistance, power and energy interact before interpreting electrical measurements or diagnosing circuit failures.
+
+The five official topics are:
+
+* 3.1.1 Voltage, current and resistance
+
+* 3.1.2 Ohm's Law
+
+* 3.1.3 Power and energy
+
+* 3.1.4 Series and parallel circuits
+
+* 3.1.5 Circuit calculations
+
+### 3.1.1 Voltage, current and resistance
+
+### A. Voltage — electrical potential difference
+
+Voltage is the electrical potential difference between two points in a circuit. It is the energy available per unit of electric charge to drive current through a circuit.
+
+* Symbol: `V`
+
+* Unit: volt (V)
+
+* Measuring instrument: voltmeter or digital multimeter (DMM)
+
+The fundamental relationship is:
+
+`V = W / Q`
+
+Where:
+
+* `V` = voltage in volts
+
+* `W` = energy transferred in joules
+
+* `Q` = electric charge in coulombs
+
+Workshop example:
+
+An EV high-voltage battery has a nominal voltage of 400 V. This means there is a potential difference of approximately 400 volts across its terminals under the specified nominal condition.
+
+It does not mean that 400 V is always present under every operating condition. Actual pack voltage changes with state of charge, load, temperature and cell chemistry.
+
+### B. Current — movement of electric charge
+
+Current is the rate at which electric charge flows through a conductor.
+
+* Symbol: `I`
+
+* Unit: ampere (A)
+
+* Measuring instrument: ammeter or current clamp
+
+`I = Q / t`
+
+Where:
+
+* `I` = current in amperes
+
+* `Q` = charge in coulombs
+
+* `t` = time in seconds
+
+One ampere represents one coulomb of charge passing a point each second.
+
+`1 A = 1 C/s`
+
+Important distinction in EV systems:
+
+In the external electrical circuit, conventional current is defined as flowing from positive to negative. Electron movement in a metallic conductor is in the opposite direction.
+
+Inside a lithium-ion battery, lithium ions move through the electrolyte between electrodes during charging and discharging. Electrons travel through the external electrical circuit rather than through the electrolyte.
+
+### C. Resistance — opposition to current flow
+
+Resistance is the opposition a material or component presents to electric current.
+
+* Symbol: `R`
+
+* Unit: ohm (Ω)
+
+* Measuring instrument: ohmmeter or DMM resistance mode
+
+Resistance depends on several factors:
+
+* Conductor material.
+
+* Conductor length.
+
+* Cross-sectional area.
+
+* Temperature.
+
+For a uniform conductor:
+
+`R = ρ × (L / A)`
+
+Where:
+
+* `R` = resistance in ohms
+
+* `ρ` = resistivity of the material
+
+* `L` = conductor length
+
+* `A` = cross-sectional area
+
+A longer conductor generally has higher resistance. A larger cross-sectional area generally reduces resistance.
+
+Workshop example:
+
+A damaged or corroded connector can introduce unwanted resistance into a circuit. Under load, this resistance produces a voltage drop and heat.
+
+This can cause:
+
+* Reduced motor performance.
+
+* Slow or failed actuator operation.
+
+* Charging faults.
+
+* ECU undervoltage faults.
+
+* Localized connector overheating.
+
+### 3.1.2 Ohm's Law
+
+Ohm's Law describes the relationship between voltage, current and resistance in an ohmic circuit under specified conditions.
+
+`V = I × R`
+
+The three rearrangements are:
+
+`I = V / R`
+
+`R = V / I`
+
+### Example 1 — Calculate current
+
+A 12 V electrical circuit has a total resistance of 6 Ω.
+
+Given:
+
+`V = 12 V, R = 6 Ω`
+
+Calculate current:
+
+`I = 12 / 6 = 2 A`
+
+The circuit current is 2 amperes.
+
+### Example 2 — Calculate resistance
+
+A component receives 12 V and draws 3 A.
+
+`R = 12 / 3 = 4 Ω`
+
+### Example 3 — Calculate voltage
+
+A circuit carries 5 A through a resistance of 2 Ω.
+
+`V = 5 × 2 = 10 V`
+
+### Technician's interpretation
+
+Suppose an actuator is designed to draw 4 A at 12 V.
+
+Its effective resistance, assuming an ohmic approximation, is:
+
+`R = 12 / 4 = 3 Ω`
+
+If the circuit develops additional resistance, current may decrease and the actuator may operate slowly or fail.
+
+However, not every automotive load behaves as a fixed resistor. Motors, electronic controllers, semiconductor devices and switching circuits can have changing or nonlinear electrical characteristics. Apply Ohm's Law using the correct operating conditions.
+
+### 3.1.3 Power and energy
+
+### A. Electrical power
+
+Electrical power is the rate at which electrical energy is transferred or converted.
+
+* Symbol: `P`
+
+* Unit: watt (W)
+
+The fundamental DC power equation is:
+
+`P = V × I`
+
+Where:
+
+* `P` = power in watts
+
+* `V` = voltage in volts
+
+* `I` = current in amperes
+
+Other useful forms, derived using Ohm's Law, are:
+
+`P = I² × R`
+
+`P = V² / R`
+
+### Example 1 — EV auxiliary electrical load
+
+A 12 V auxiliary electrical component draws 10 A.
+
+`P = 12 × 10 = 120 W`
+
+The component consumes 120 watts of electrical power while operating under those conditions.
+
+### B. Electrical energy
+
+Electrical energy is the total amount of energy transferred over a period of time.
+
+* Symbol: `E`
+
+* SI unit: joule (J)
+
+* Common electrical unit: kilowatt-hour (kWh)
+
+`E = P × t`
+
+When power is expressed in kilowatts and time in hours:
+
+`E (kWh) = P (kW) × t (h)`
+
+Example 2 — EV battery energy consumption
+
+An EV draws an average electrical power of 20 kW for 1.5 hours.
+
+`E = 20 × 1.5 = 30 kWh`
+
+The vehicle has consumed 30 kWh of electrical energy during that period, assuming the 20 kW figure represents the relevant average battery-side power.
+
+### C. Power versus energy
+
+| Parameter | Meaning                         | Unit     |
+| --------- | ------------------------------- | -------- |
+| Power     | Rate of energy transfer         | W or kW  |
+| Energy    | Total energy transferred        | J or kWh |
+| Voltage   | Electrical potential difference | V        |
+| Current   | Rate of charge flow             | A        |
+
+Important EV diagnostic application:
+
+A battery can have a high voltage but still be unable to deliver the required power if its current capability is restricted by cell degradation, excessive internal resistance, temperature limitations or BMS control.
+
+For example, a battery operating at 400 V and delivering 100 A provides:
+
+`P = 400 × 100 = 40,000 W = 40 kW`
+
+This is the electrical power at the stated battery-side operating point, before considering downstream conversion losses.
+
+### D. Electrical losses and heat
+
+When current passes through resistance, electrical energy is converted into heat.
+
+`P_loss = I² × R`
+
+Example:
+
+A connector has an unwanted resistance of 0.05 Ω and carries 20 A.
+
+`P_loss = 20² × 0.05 = 400 × 0.05 = 20 W`
+
+Twenty watts of heat generated at a small connector can cause significant localized heating.
+
+This is why a circuit may show a normal voltage when disconnected but fail when the actual load is operating.
+
+### 3.1.4 Series and parallel circuits
+
+Understanding circuit configuration is essential when diagnosing battery packs, sensor circuits, power distribution and electrical loads.
+
+### A. Series circuits
+
+In a series circuit, components are connected one after another, forming a single current path.
+
+Characteristics:
+
+* Current is the same through every component.
+
+* Supply voltage is divided across the components.
+
+* Total resistance is the sum of individual resistances.
+
+`R_T = R_1 + R_2 + R_3`
+
+Example:
+
+Three resistors are connected in series:
+
+`R_1 = 2 Ω`, `R_2 = 3 Ω`, `R_3 = 5 Ω`
+
+Total resistance:
+
+`R_T = 2 + 3 + 5 = 10 Ω`
+
+If the supply voltage is 20 V:
+
+`I = 20 / 10 = 2 A`
+
+Voltage across each resistor:
+
+`V_1 = 2 × 2 = 4 V`
+
+`V_2 = 2 × 3 = 6 V`
+
+`V_3 = 2 × 5 = 10 V`
+
+Check:
+
+`4 + 6 + 10 = 20 V`
+
+The individual voltage drops add up to the supply voltage.
+
+### B. Parallel circuits
+
+In a parallel circuit, components are connected across the same two electrical nodes, creating multiple current paths.
+
+Characteristics:
+
+* Voltage across each branch is the same.
+
+* Total current is the sum of branch currents.
+
+* Total resistance is calculated using reciprocal addition.
+
+For three resistors:
+
+`1/R_T = 1/R_1 + 1/R_2 + 1/R_3`
+
+Example:
+
+Two resistors are connected in parallel:
+
+`R_1 = 6 Ω`, `R_2 = 3 Ω`
+
+`1/R_T = 1/6 + 1/3 = 1/6 + 2/6 = 3/6`
+
+`R_T = 2 Ω`
+
+If the supply voltage is 12 V:
+
+`I_T = 12 / 2 = 6 A`
+
+Branch currents:
+
+`I_1 = 12 / 6 = 2 A`
+
+`I_2 = 12 / 3 = 4 A`
+
+Check:
+
+`I_T = 2 + 4 = 6 A`
+
+### C. Series and parallel connections in EV battery packs
+
+Battery cells are connected in series, parallel or combinations of both to achieve the required pack voltage and capacity.
+
+Series connection
+
+For identical cells:
+
+* Voltages add.
+
+* Amp-hour capacity remains the same.
+
+`V_T = N_s × V_cell`
+
+Parallel connection
+
+For identical cells:
+
+* Voltage remains the same.
+
+* Amp-hour capacities add.
+
+`Ah_T = N_p × Ah_cell`
+
+Where:
+
+* `N_s` = number of cells in series.
+
+* `N_p` = number of cells in parallel.
+
+Worked battery example
+
+Assume identical cells, each rated at 3.7 V and 50 Ah.
+
+A configuration contains 96 cells in series and 2 parallel strings.
+
+Series voltage:
+
+`V_T = 96 × 3.7 = 355.2 V`
+
+Parallel capacity:
+
+`Ah_T = 2 × 50 = 100 Ah`
+
+Nominal energy:
+
+`E = 355.2 × 100 = 35,520 Wh = 35.52 kWh`
+
+This is a simplified theoretical calculation. Actual pack energy and usable capacity depend on cell characteristics, operating limits, temperature, BMS restrictions and pack design.
+
+### 3.1.5 Circuit calculations
+
+A professional technician must be able to calculate electrical values before and during diagnosis. These calculations help identify abnormal current draw, excessive resistance, voltage drop, power losses and battery energy requirements.
+
+### A. The essential calculation formulas
+
+| Parameter                           | Formula |
+| ----------------------------------- | ------- |
+| Voltage                             | `V = I × R` |
+| Current                             | `I = V / R` |
+| Resistance                          | `R = V / I` |
+| Power                               | `P = V × I` |
+| Power loss                          | `P_loss = I² × R` |
+| Energy                              | `E = P × t` |
+| Series resistance                   | `R_T = R_1 + R_2 + R_3` |
+| Parallel resistance (two resistors) | `1/R_T = 1/R_1 + 1/R_2` |
+
+### B. Voltage-drop calculation
+
+Voltage drop is the reduction in electrical potential across a conductor or connection when current flows through its resistance.
+
+`V_drop = I × R`
+
+Workshop example:
+
+A circuit carries 15 A through a connection with 0.08 Ω resistance.
+
+`V_drop = 15 × 0.08 = 1.2 V`
+
+If the supply is 12 V, the voltage available after this connection is approximately:
+
+`12 − 1.2 = 10.8 V`
+
+A 1.2 V loss may be excessive for the particular circuit. Always compare with the manufacturer's voltage-drop specification.
+
+### C. Internal resistance and battery performance
+
+Battery internal resistance causes a voltage difference between open-circuit voltage and terminal voltage under load.
+
+For a simplified discharge model:
+
+`V_terminal = V_OC − I × R_internal`
+
+Where:
+
+* `V_terminal` = loaded terminal voltage.
+
+* `V_OC` = open-circuit voltage.
+
+* `I` = discharge current.
+
+* `R_internal` = effective internal resistance.
+
+Example:
+
+A battery has:
+
+* Open-circuit voltage = 400 V
+
+* Discharge current = 100 A
+
+* Effective internal resistance = 0.05 Ω
+
+Voltage drop:
+
+`V_drop = 100 × 0.05 = 5 V`
+
+Terminal voltage:
+
+`V_terminal = 400 − 5 = 395 V`
+
+This simplified model helps explain why an aged or high-resistance battery can experience greater voltage sag under acceleration.
+
+### D. Professional diagnostic application
+
+Consider an EV that experiences reduced acceleration under high load.
+
+A technician should investigate:
+
+* Battery voltage before and during load.
+
+* Battery current during acceleration.
+
+* Voltage difference between relevant battery measurements.
+
+* Battery temperature.
+
+* BMS power limitation and cell-voltage data.
+
+* Relevant DTCs and freeze-frame information.
+
+Do not conclude that the battery is defective from voltage sag alone. The inverter, motor, cooling system, BMS control strategy and other power limitations may also affect available traction power.
+
+### Lesson 3.1 — Technical summary
+
+| Electrical principle | What the technician must understand                  |
+| -------------------- | ---------------------------------------------------- |
+| Voltage              | Potential difference driving current                 |
+| Current              | Rate of electric charge flow                         |
+| Resistance           | Opposition to current                                |
+| Ohm's Law            | Relationship between voltage, current and resistance |
+| Power                | Rate of electrical energy transfer                   |
+| Energy               | Total electrical energy transferred                  |
+| Series circuit       | Same current through each component                  |
+| Parallel circuit     | Same voltage across each branch                      |
+| Voltage drop         | Potential lost across circuit resistance             |
+| Internal resistance  | Contributes to battery voltage sag and heat          |
+
+Professional technician takeaway: Electrical diagnosis is not simply measuring voltage. It requires understanding how voltage, current and resistance interact under actual operating conditions. A circuit that appears normal without a load may fail when current flows.
+
+---
+
+<!-- NEXT: Module 3 — Lesson 3.2 DC and AC Electrical Systems (append below) -->
