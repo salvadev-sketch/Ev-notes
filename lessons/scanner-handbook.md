@@ -311,10 +311,6 @@ Follow the vehicle manufacturer's HV isolation procedure, required PPE, lockout/
 
 * Diagnostic scanning is one part of a complete evidence-based diagnostic process.
 
-Next lesson: Module 1, Lesson 1.2 — Diagnostic Scanner Types and Functions, covering basic code readers, professional multibrand scanners, OEM systems, pass-through programming devices and EV/hybrid-specific equipment.
-
-Source structure: Your uploaded EV & Hybrid Master Technician Handbook – Complete Table of Contents, Module 1, Lesson 1.1.
-
 ---
 
 ### Module 1 — Professional Diagnostic Scanner Operation
@@ -721,11 +717,7 @@ Do not assume that a battery warning means the battery pack itself has failed. T
 
 * Equipment selection must be based on the vehicle, ECU, diagnostic objective and manufacturer procedure.
 
-Next lesson: Module 1, Lesson 1.3 — Vehicle Identification and Diagnostic Connection.
-
 This will cover VIN identification and decoding, vehicle selection, DLC connector identification, communication protocols and secure gateway access.
-
-Official lesson structure: uploaded handbook, Module 1, Section 1.2.
 
 ---
 
