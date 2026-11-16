@@ -729,4 +729,440 @@ Official lesson structure: uploaded handbook, Module 1, Section 1.2.
 
 ---
 
-<!-- NEXT: Lesson 1.3 — Vehicle Identification and Diagnostic Connection (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.3: Vehicle Identification and Diagnostic Connection
+
+This lesson follows your handbook's five sections:
+
+1.3.1 VIN identification and decoding 1.3.2 Vehicle model, year and powertrain selection 1.3.3 DLC connector identification 1.3.4 Communication protocols 1.3.5 Secure gateway access
+
+Workshop objective: Correctly identify the vehicle, select the appropriate diagnostic software and establish reliable communication with the intended control modules.
+
+A diagnostic connection should never begin with randomly selecting a vehicle or connecting an incompatible interface. Incorrect vehicle identification can lead to incorrect ECU selection, misleading fault descriptions and inappropriate service procedures.
+
+### 1.3.1 VIN identification and decoding
+
+### What is a VIN?
+
+The Vehicle Identification Number (VIN) is a standardized vehicle identification code used to distinguish an individual vehicle.
+
+For most modern road vehicles, the VIN contains 17 characters.
+
+It provides identification information that can include:
+
+* Manufacturer.
+
+* Vehicle attributes.
+
+* Model or vehicle family.
+
+* Model-year identifier.
+
+* Assembly plant.
+
+* Production sequence number.
+
+### VIN structure
+
+The VIN is commonly divided into three sections.
+
+| Section | Character positions | Meaning                       |
+| ------- | ------------------- | ----------------------------- |
+| WMI     | 1–3                 | World Manufacturer Identifier |
+| VDS     | 4–9                 | Vehicle Descriptor Section    |
+| VIS     | 10–17               | Vehicle Identifier Section    |
+
+Illustrative VIN structure
+
+1–3
+
+### WMI
+
+Manufacturer
+
+4–9
+
+### VDS
+
+Vehicle description
+
+10–17
+
+### VIS
+
+Vehicle identity
+
+The diagram shows the standard 17-character VIN division, not the exact meaning of every manufacturer's individual character.
+
+### Where to locate the VIN
+
+Common locations include:
+
+* Lower dashboard, visible through the windscreen.
+
+* Driver-side door aperture or door pillar.
+
+* Manufacturer identification plate.
+
+* Vehicle registration documents.
+
+* Manufacturer-specific electronic vehicle information.
+
+Always compare the physical vehicle identification with the documentation and scanner-reported identification where available.
+
+### Model-year identification
+
+The 10th VIN character commonly identifies the model year in VIN systems using the standard model-year coding convention.
+
+However, do not confuse:
+
+* Model year.
+
+* Calendar year of manufacture.
+
+* First registration year.
+
+They can be different.
+
+Technician's rule: Use the manufacturer's vehicle identification information when a VIN decoder does not provide enough detail for selecting the correct diagnostic system.
+
+### 1.3.2 Vehicle model, year and powertrain selection
+
+After identifying the VIN, the technician must select the correct vehicle in the diagnostic scanner.
+
+### Information required
+
+The scanner may request:
+
+* Vehicle manufacturer.
+
+* Model and model variant.
+
+* Model year.
+
+* Market or region.
+
+* Engine or motor configuration.
+
+* Transmission type.
+
+* Powertrain type.
+
+* ECU or system to be diagnosed.
+
+### Why powertrain selection matters
+
+A manufacturer may produce several versions of the same vehicle model:
+
+| Vehicle version        | Diagnostic architecture                                     |
+| ---------------------- | ----------------------------------------------------------- |
+| Conventional petrol    | Engine ECU and conventional drivetrain modules              |
+| Conventional diesel    | Diesel engine management and emissions systems              |
+| Mild hybrid (MHEV)     | Engine ECU plus 48 V or other hybrid-related systems        |
+| Full hybrid (HEV)      | Engine, motor-generator and hybrid control systems          |
+| Plug-in hybrid (PHEV)  | Hybrid system plus externally rechargeable traction battery |
+| Battery electric (BEV) | HV battery, inverter, motor and EV charging systems         |
+
+Selecting the wrong version can result in:
+
+* Incorrect ECU list.
+
+* Missing diagnostic functions.
+
+* Incorrect wiring information.
+
+* Unsupported active tests.
+
+* Incorrect service procedures.
+
+### Professional selection procedure
+
+* Read and record the VIN.
+
+* Confirm the manufacturer and model.
+
+* Confirm the model year and market.
+
+* Identify the actual powertrain configuration.
+
+* Select the matching vehicle in the scanner.
+
+* Where supported, perform automatic VIN identification.
+
+* Cross-check the scanner's identification against the physical vehicle.
+
+Important: Automatic VIN recognition is useful, but it must be verified. Do not assume that automatic identification has correctly selected every vehicle variant.
+
+### 1.3.3 DLC connector identification
+
+### What is a DLC?
+
+DLC means Data Link Connector.
+
+It is the physical connection point through which compatible diagnostic equipment communicates with vehicle electronic systems.
+
+Many modern vehicles use the standardized 16-pin OBD-II connector, also called the SAE J1962 connector.
+
+### Common OBD-II connector pin functions
+
+| Pin | Common function         |
+| --- | ----------------------- |
+| 4   | Chassis ground          |
+| 5   | Signal ground           |
+| 6   | CAN High                |
+| 14  | CAN Low                 |
+| 16  | Battery positive supply |
+
+Other pins may be used for manufacturer-specific functions or other supported communication systems.
+
+Not every pin is populated on every vehicle.
+
+### Diagnostic connection procedure
+
+* Locate the DLC using manufacturer service information.
+
+* Inspect the connector for damaged pins, corrosion, contamination or loose terminals.
+
+* Confirm the scanner cable and VCI are compatible.
+
+* Connect the interface without forcing the connector.
+
+* Establish the required vehicle ignition or power state.
+
+* Select the correct vehicle and initiate communication.
+
+* Confirm that the intended ECU responds.
+
+### DLC power-supply considerations
+
+The common pin 16 supply is normally provided by the vehicle's low-voltage electrical system.
+
+If the scanner does not power up or cannot establish communication, investigate:
+
+* Pin 16 supply.
+
+* Pins 4 and 5 ground integrity.
+
+* DLC fuse and supply circuit.
+
+* Connector terminal condition.
+
+* VCI and cable condition.
+
+Do not assume that a communication failure means the ECU is defective.
+
+Professional caution: Do not probe DLC terminals with oversized test probes or bridge pins. Use suitable breakout equipment and the correct wiring information.
+
+### 1.3.4 Communication protocols
+
+A communication protocol defines the rules that allow diagnostic equipment and vehicle ECUs to exchange data.
+
+Different vehicles and electronic architectures may use different protocols.
+
+### Common automotive diagnostic protocols
+
+| Protocol                          | Main application                               |
+| --------------------------------- | ---------------------------------------------- |
+| ISO 9141-2                        | Older OBD communication                        |
+| SAE J1850                         | Older OBD communication on supported vehicles  |
+| ISO 14230 (KWP2000)               | Keyword Protocol 2000 diagnostic communication |
+| ISO 15765 (CAN-based diagnostics) | Diagnostics over CAN                           |
+| ISO 11898                         | CAN network technology                         |
+| ISO 13400 (DoIP)                  | Diagnostics over Internet Protocol             |
+| CAN FD                            | Higher-data-rate CAN communication             |
+
+These standards are related but are not interchangeable. For example, ISO 11898 defines CAN communication technology, while ISO 15765 specifies diagnostic communication over CAN.
+
+### A. CAN — Controller Area Network
+
+CAN is widely used for communication between automotive electronic control units.
+
+Important characteristics:
+
+* Differential signalling using CAN High and CAN Low.
+
+* Message-based communication.
+
+* Multiple ECUs can share a network.
+
+* Message priority is handled through arbitration.
+
+* Diagnostic requests and responses can be transmitted over the network.
+
+### B. CAN FD — CAN with Flexible Data Rate
+
+CAN FD extends conventional CAN capabilities.
+
+It supports:
+
+* Larger data payloads per frame.
+
+* Higher data rates during the data phase.
+
+* More efficient transfer of larger diagnostic information.
+
+A CAN FD-compatible vehicle interface is required when the diagnostic operation depends on CAN FD communication.
+
+### C. DoIP — Diagnostics over Internet Protocol
+
+DoIP enables automotive diagnostic communication over IP-based vehicle networks, commonly using Ethernet physical connections.
+
+It can support high-bandwidth diagnostic communication, including programming operations on compatible vehicles.
+
+### How the scanner identifies the protocol
+
+Depending on the vehicle and scanner, protocol selection may be:
+
+* Automatic.
+
+* Determined by the selected vehicle profile.
+
+* Configured through the diagnostic software.
+
+* Specified by the manufacturer.
+
+The technician should not manually select a protocol without confirming that it matches the vehicle's diagnostic architecture.
+
+### 1.3.5 Secure gateway access
+
+### What is a Secure Gateway?
+
+A Secure Gateway (SGW) is a vehicle security mechanism that controls access to selected diagnostic functions and communication pathways.
+
+It helps prevent unauthorized diagnostic commands from being sent to vehicle control modules.
+
+Some manufacturers restrict certain diagnostic operations unless the technician or diagnostic tool has been authenticated.
+
+### Why manufacturers use secure gateways
+
+A vehicle diagnostic connector can provide access to important electronic systems. Without appropriate access controls, unauthorized users could potentially:
+
+* Clear certain fault codes.
+
+* Change ECU configurations.
+
+* Activate selected actuators.
+
+* Perform restricted service functions.
+
+* Attempt unauthorized programming.
+
+A secure gateway helps protect these systems.
+
+### Diagnostic functions that may be restricted
+
+Depending on the manufacturer and vehicle:
+
+* DTC clearing.
+
+* Active tests.
+
+* Service resets.
+
+* ECU coding.
+
+* Adaptations.
+
+* Programming and configuration.
+
+Read-only functions may remain available, but this varies by platform.
+
+### Secure gateway authorization process
+
+A typical authorized workflow is:
+
+* Connect a compatible diagnostic scanner.
+
+* Identify the vehicle correctly.
+
+* Establish communication with the gateway.
+
+* Select the required restricted diagnostic function.
+
+* Authenticate using the manufacturer's approved authorization method.
+
+* Obtain permission for the requested operation.
+
+* Perform the permitted diagnostic procedure.
+
+* Verify the result and retain diagnostic records.
+
+Authentication methods may include an approved online account, manufacturer subscription, security certificate or authorized diagnostic service.
+
+### Important distinction
+
+A secure gateway is not the same as a communication fault.
+
+For example:
+
+* Communication fault: The scanner cannot communicate because of a wiring, power, network or interface problem.
+
+* Security restriction: The ECU or gateway is communicating, but the requested operation is not authorized.
+
+A technician must distinguish these conditions before replacing modules or investigating wiring.
+
+### Professional workshop procedure — Complete diagnostic connection
+
+Consider a BEV arriving with a powertrain warning.
+
+### Vehicle identification and connection workflow
+
+* Identify the vehicle
+
+    Record VIN, manufacturer, model, model year and powertrain.
+
+* Select the vehicle profile
+
+    Confirm the correct BEV variant and market in the scanner.
+
+* Inspect the DLC
+
+    Check connector condition, power supply and grounds using the correct procedure.
+
+* Connect the VCI
+
+    Use a compatible communication interface and cable.
+
+* Establish communication
+
+    Confirm the communication protocol and vehicle network access.
+
+* Authenticate if required
+
+    Use authorized secure gateway access for restricted functions.
+
+* Confirm ECU communication
+
+    Verify that the intended modules are responding before starting diagnosis.
+
+### Common connection problems and diagnostic direction
+
+| Symptom                                      | Possible cause to investigate                                       |
+| -------------------------------------------- | ------------------------------------------------------------------- |
+| Scanner does not power up                    | DLC supply, fuse, ground, cable or scanner fault                    |
+| Vehicle identification incorrect             | Wrong VIN or vehicle profile                                        |
+| No communication with any ECU                | Power supply, ground, network, VCI or gateway issue                 |
+| Some ECUs respond, others do not             | ECU power, local network, gateway routing or module fault           |
+| Read-only access works, active tests blocked | Secure gateway authorization or function restriction                |
+| Communication drops intermittently           | Connector condition, voltage stability, wiring or network integrity |
+
+These are diagnostic possibilities, not confirmed root causes. Always verify using the manufacturer's wiring diagrams and procedures.
+
+### Lesson 1.3 — Key technical points
+
+* The VIN is the starting point for correct vehicle identification.
+
+* Model year, market and powertrain configuration must be verified.
+
+* The DLC provides the physical diagnostic connection.
+
+* CAN, CAN FD and DoIP are important communication technologies in modern vehicles.
+
+* A communication failure must be distinguished from a secure gateway restriction.
+
+* Correct vehicle identification and compatible diagnostic equipment are essential before performing tests or programming.
+
+---
+
+<!-- NEXT: Lesson 1.4 — Complete Vehicle Health Scanning (append below) -->
