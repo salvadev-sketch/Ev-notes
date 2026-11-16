@@ -1948,4 +1948,371 @@ This is the difference between code replacement and evidence-based diagnosis.
 
 ---
 
-<!-- NEXT: Lesson 1.6 — Freeze-Frame and Live Data Analysis (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.6: Freeze-Frame and Live Data Analysis
+
+The purpose of this lesson is to teach you how to use diagnostic data to identify what happened when a fault occurred, what is happening now, and how to distinguish a genuine component failure from a sensor or electrical circuit problem.
+
+### 1.6.1 Freeze-Frame Data
+
+Freeze-frame data is a recorded snapshot of selected operating parameters when an ECU detects a fault under the applicable monitoring conditions.
+
+It helps establish the conditions under which the fault occurred.
+
+Typical recorded parameters include:
+
+* Battery voltage.
+
+* Vehicle speed.
+
+* Battery current.
+
+* Motor speed.
+
+* Coolant temperature.
+
+* Accelerator position.
+
+* Charging status.
+
+* Sensor measurements.
+
+Example: Battery temperature fault
+
+Simulated diagnostic data
+
+| Parameter                   | Recorded value |
+| --------------------------- | -------------- |
+| Maximum battery temperature | 54°C           |
+| Minimum battery temperature | 31°C           |
+| Vehicle speed               | 0 km/h         |
+| Charging status             | Charging       |
+| Battery current             | 42 A           |
+| Pack voltage                | 386 V          |
+
+Temperature difference:
+
+`ΔT = T_max − T_min = 54 − 31 = 23 °C`
+
+The battery had a recorded temperature spread of 23°C.
+
+Technician interpretation:
+
+The fault occurred while the vehicle was stationary and charging. Investigate temperature-sensor accuracy, coolant circulation and thermal-management operation.
+
+Do not conclude that the battery is defective from this snapshot alone.
+
+### 1.6.2 Live Data Parameters
+
+Live data consists of measurements and calculated values communicated by vehicle ECUs while the vehicle is operating.
+
+It helps the technician monitor system behavior in real time or near real time.
+
+Important EV parameters include:
+
+| System         | Parameter           | Purpose                          |
+| -------------- | ------------------- | -------------------------------- |
+| BMS            | Pack voltage        | Monitor total battery voltage    |
+| BMS            | Cell voltage        | Identify cell voltage deviations |
+| BMS            | Battery current     | Monitor charge/discharge current |
+| BMS            | SoC                 | Estimate remaining charge        |
+| BMS            | SoH                 | Estimate battery condition       |
+| Inverter       | DC-link voltage     | Monitor inverter DC supply       |
+| Motor          | Motor speed         | Monitor rotational speed         |
+| DC-DC          | Output voltage      | Monitor low-voltage supply       |
+| Thermal system | Coolant temperature | Monitor cooling performance      |
+| OBC            | Charging current    | Monitor AC charging operation    |
+
+### Important engineering calculations
+
+Battery pack voltage
+
+For series-connected cell groups:
+
+`V_pack = Σ V_cell groups`
+
+If 96 series-connected groups each measure 4.0 V:
+
+`V_pack = 96 × 4.0 V = 384 V`
+
+Cell voltage deviation
+
+Suppose the BMS reports:
+
+| Cell group | Voltage |
+| ---------- | ------- |
+| 1          | 3.72 V  |
+| 2          | 3.73 V  |
+| 3          | 3.71 V  |
+| 4          | 3.52 V  |
+
+`ΔV = V_max − V_min = 3.73 − 3.52 = 0.21 V`
+
+The deviation is 210 mV. Its significance must be evaluated against OEM limits, battery chemistry, temperature, SoC and load conditions.
+
+### 1.6.3 Sensor Values and Operating Conditions
+
+An ECU depends on sensor information to control vehicle systems.
+
+A sensor reading must always be interpreted in relation to the operating condition.
+
+### A. Temperature sensors
+
+Many automotive temperature sensors use NTC thermistors.
+
+An NTC thermistor has:
+
+* Higher resistance at lower temperature.
+
+* Lower resistance at higher temperature.
+
+Example:
+
+| Sensor           | Reading |
+| ---------------- | ------- |
+| Battery sensor 1 | 28°C    |
+| Battery sensor 2 | 29°C    |
+| Battery sensor 3 | -40°C   |
+
+A -40°C reading may indicate an open circuit on some systems. Confirm the manufacturer's diagnostic criteria before deciding.
+
+### B. Voltage sensors
+
+Voltage measurements are used to monitor:
+
+* Battery pack voltage.
+
+* Cell-group voltage.
+
+* DC-link voltage.
+
+* 12 V auxiliary supply.
+
+An abnormal reading may result from a genuine electrical condition, a poor connection, wiring damage or a measurement-circuit fault.
+
+### C. Current sensors
+
+Current measurement systems may use Hall-effect sensors or shunt resistors.
+
+They help the BMS monitor current entering and leaving the battery.
+
+Always confirm whether the manufacturer's data convention uses positive current for charging or discharging.
+
+### D. Operating conditions to record
+
+When investigating abnormal data, record:
+
+* Vehicle operating mode.
+
+* Ambient temperature.
+
+* Battery SoC.
+
+* Charging or driving status.
+
+* Electrical load.
+
+* Coolant-system status.
+
+* Time since shutdown, where relevant.
+
+Key principle: A sensor reading cannot be judged accurately without understanding the conditions under which it was measured.
+
+### 1.6.4 Data Graphing and Recording
+
+A graph shows how a parameter changes over time.
+
+This is useful for identifying intermittent faults, sudden voltage drops, unstable sensors and temperature trends.
+
+### Example: Battery temperature trend
+
+Simulated data
+
+| Time   | Temperature |
+| ------ | ----------- |
+| 0 min  | 28°C        |
+| 5 min  | 30°C        |
+| 10 min | 34°C        |
+| 15 min | 39°C        |
+| 20 min | 46°C        |
+| 25 min | 52°C        |
+
+The graph shows a continuous increase.
+
+Investigate:
+
+* Coolant circulation.
+
+* Pump operation.
+
+* Heat exchanger performance.
+
+* Temperature sensor accuracy.
+
+* Thermal-management control strategy.
+
+### Recording live data
+
+During an approved diagnostic test, record relevant parameters together.
+
+For example:
+
+* Battery voltage.
+
+* Battery current.
+
+* Cell voltages.
+
+* Motor speed.
+
+* Inverter temperature.
+
+* Battery temperature.
+
+* Vehicle speed.
+
+This allows the technician to correlate different measurements and identify when the fault occurs.
+
+Sampling limitation: A scan tool may refresh too slowly to capture fast electrical transients. Use an appropriate oscilloscope when higher sampling speed or waveform detail is required.
+
+### 1.6.5 Abnormal Reading Interpretation
+
+An abnormal reading is a value that falls outside the expected range or conflicts with other measurements.
+
+It does not automatically mean that the sensor is defective.
+
+### Example A: Implausible temperature
+
+| Parameter            | Reading |
+| -------------------- | ------- |
+| Temperature sensor 1 | 27°C    |
+| Temperature sensor 2 | 28°C    |
+| Temperature sensor 3 | 27°C    |
+| Temperature sensor 4 | 150°C   |
+
+Possible causes:
+
+* Sensor failure.
+
+* Short circuit.
+
+* Damaged wiring.
+
+* Connector corrosion.
+
+* Incorrect reference voltage.
+
+* ECU measurement fault.
+
+* Genuine abnormal temperature.
+
+The technician must establish whether the reading represents a real physical condition or an electrical measurement error.
+
+### Example B: Abnormal battery voltage
+
+A BMS reports one cell group significantly lower than the others.
+
+Possible causes:
+
+* Cell degradation.
+
+* High internal resistance.
+
+* Interconnection resistance.
+
+* Voltage-sensing harness fault.
+
+* BMS measurement-channel fault.
+
+Compare the data under suitable conditions and follow the OEM diagnostic procedure.
+
+### Example C: Abnormal current
+
+A vehicle appears inactive, but the current sensor reports significant current.
+
+Possible explanations:
+
+* An auxiliary electrical load is operating.
+
+* The vehicle is not actually in the assumed operating state.
+
+* Current-sensor offset.
+
+* Sensor calibration issue.
+
+* BMS measurement fault.
+
+Confirm the vehicle's electrical state before interpreting the reading.
+
+### Professional workshop case study
+
+Simulated diagnostic case
+
+Customer complaint: Battery temperature warning during charging.
+
+Initial scan:
+
+| Parameter         | Result                       |
+| ----------------- | ---------------------------- |
+| ECU               | BMS                          |
+| DTC               | Battery temperature abnormal |
+| Status            | Active                       |
+| Vehicle condition | Charging                     |
+
+Live data:
+
+| Parameter            | Reading |
+| -------------------- | ------- |
+| Temperature sensor 1 | 31°C    |
+| Temperature sensor 2 | 32°C    |
+| Temperature sensor 3 | 33°C    |
+| Temperature sensor 4 | 68°C    |
+| Pump command         | 75%     |
+| Pump actual speed    | 0 RPM   |
+
+Professional interpretation
+
+Two abnormalities require investigation:
+
+* Sensor 4 reports a much higher temperature than the other sensors.
+
+* The coolant pump is commanded to operate, but reported speed is zero.
+
+Possible fault paths include a genuine localized temperature increase, a sensor circuit problem, a pump electrical fault or a feedback fault.
+
+Diagnostic procedure:
+
+* Save the original DTC and freeze-frame information.
+
+* Check the OEM temperature limits and plausibility criteria.
+
+* Inspect the temperature sensor circuit.
+
+* Verify pump supply, ground, control and feedback circuits.
+
+* Check coolant circulation using the approved procedure.
+
+* Recheck live data after repair.
+
+* Perform a final scan and verify charging operation.
+
+Do not replace the battery pack based only on these readings.
+
+### Final technical points
+
+* Freeze-frame data explains the conditions associated with a fault.
+
+* Live data shows current or near-current measurements.
+
+* Sensor values must be compared with OEM specifications.
+
+* Graphs help identify trends and intermittent problems.
+
+* A scan-tool reading is not always sufficient to diagnose a fast electrical fault.
+
+* An abnormal sensor value may originate from the sensor, wiring, ECU or genuine physical condition.
+
+---
+
+<!-- NEXT: Lesson 1.7 (append below) -->
