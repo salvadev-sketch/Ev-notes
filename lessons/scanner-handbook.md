@@ -5798,4 +5798,412 @@ Master technician perspective: Advanced CAN diagnosis is not simply checking whe
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.6 LIN, FlexRay and Automotive Ethernet (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.6: LIN, FlexRay and Automotive Ethernet
+
+Professional EV & Hybrid Master Technician Training
+
+In modern EVs, CAN is not the only communication network. Different vehicle systems require different communication speeds, network structures and levels of reliability.
+
+For example:
+
+* A window regulator does not need the same communication bandwidth as an advanced driver-assistance camera.
+
+* A battery management system needs reliable communication with the vehicle controller.
+
+* High-performance control systems may require predictable, time-critical communication.
+
+Automotive manufacturers therefore use several communication technologies together.
+
+### Official lesson structure
+
+* 2.6.1 LIN principles and master/slave architecture
+
+* 2.6.2 FlexRay
+
+* 2.6.3 Automotive Ethernet
+
+* 2.6.4 Network comparison
+
+### 2.6.1 LIN principles and master/slave architecture
+
+### A. What is LIN?
+
+LIN stands for Local Interconnect Network.
+
+It is a low-cost serial communication protocol designed for relatively simple automotive electronic systems.
+
+LIN is commonly used for:
+
+* Electric window controls.
+
+* Door-lock actuators.
+
+* Mirror adjustment motors.
+
+* Seat adjustment systems.
+
+* Rain and light sensors.
+
+* Steering-wheel switches.
+
+* HVAC flap actuators.
+
+These devices generally do not require the high communication performance of CAN or Ethernet.
+
+### B. LIN master/slave architecture
+
+LIN uses a master/slave communication architecture.
+
+There is:
+
+* One master node.
+
+* One or more slave nodes.
+
+Master node
+
+The master controls communication scheduling.
+
+It determines when messages are transmitted and initiates communication through the LIN header.
+
+The master may be integrated into a Body Control Module (BCM), door control module or another ECU.
+
+Slave nodes
+
+Slave nodes respond when their scheduled messages are requested.
+
+Examples include:
+
+* Window motor controller.
+
+* Mirror controller.
+
+* Door-lock controller.
+
+* Seat adjustment module.
+
+### C. How LIN communication works
+
+A typical LIN frame contains:
+
+| Field    | Function                                      |
+| -------- | --------------------------------------------- |
+| Break    | Signals the beginning of a new frame          |
+| Sync     | Allows nodes to synchronise their timing      |
+| PID      | Protected Identifier, identifying the message |
+| Data     | Carries the information                       |
+| Checksum | Helps detect transmission errors              |
+
+The master sends the header, and the designated slave or master publishes the response, depending on the message schedule.
+
+### D. LIN electrical characteristics
+
+Typical LIN characteristics include:
+
+| Parameter             | Typical characteristic                               |
+| --------------------- | ---------------------------------------------------- |
+| Communication         | Single-wire serial                                   |
+| Architecture          | Master/slave                                         |
+| Nominal maximum speed | Up to 20 kbit/s                                      |
+| Physical signalling   | Dominant and recessive voltage states                |
+| Wiring                | Single communication conductor with ground reference |
+| Application           | Low-speed body and comfort systems                   |
+
+The LIN bus is generally pulled up towards battery voltage through the master node's circuitry.
+
+A simplified description of the signal states:
+
+* Recessive: bus voltage near battery voltage.
+
+* Dominant: bus voltage near ground.
+
+Actual measured voltages depend on the vehicle's electrical system and LIN transceiver design.
+
+### E. Workshop diagnostic example
+
+Complaint: Driver-side electric mirror does not adjust.
+
+Possible diagnostic sequence:
+
+* Confirm that the mirror adjustment switch operates.
+
+* Scan the BCM or door control module.
+
+* Check whether the scanner reports a LIN communication DTC.
+
+* Examine the LIN wiring between the master and slave.
+
+* Check supply voltage and ground at the mirror module.
+
+* Use an oscilloscope to check LIN activity.
+
+* Confirm whether the slave module responds to scheduled communication.
+
+Important: A LIN communication fault does not automatically mean the mirror motor is defective. The fault may be in the master, wiring, supply, ground or slave module.
+
+### 2.6.2 FlexRay
+
+### A. What is FlexRay?
+
+FlexRay is a high-speed automotive communication protocol designed for systems requiring predictable timing and high reliability.
+
+It was developed for demanding automotive control applications where communication timing is important.
+
+FlexRay provides:
+
+* High-speed communication.
+
+* Deterministic communication scheduling.
+
+* Time-triggered communication.
+
+* Event-triggered communication.
+
+* Optional redundant communication channels.
+
+### B. FlexRay communication speed
+
+A typical FlexRay channel supports up to:
+
+`10 Mbit/s`
+
+FlexRay can use two channels, A and B.
+
+When configured for redundant operation, both channels can carry the same information to improve communication reliability.
+
+When configured for increased capacity, the channels may carry different information.
+
+Dual-channel operation does not automatically mean every vehicle achieves 20 Mbit/s of useful application throughput.
+
+### C. Time-triggered communication
+
+One of the most important FlexRay characteristics is its communication cycle.
+
+The network divides communication into scheduled time slots.
+
+Two important segments are:
+
+1\. Static segment
+
+* Communication occurs in predetermined time slots.
+
+* Timing is predictable.
+
+* Suitable for periodic, time-critical messages.
+
+2\. Dynamic segment
+
+* Uses a more flexible transmission method.
+
+* Messages are transmitted according to available time and scheduling rules.
+
+* Suitable for less predictable communication requirements.
+
+This combination allows FlexRay to support both predictable and more flexible communication.
+
+### D. Why use FlexRay?
+
+Some vehicle applications require strict timing requirements.
+
+Examples include:
+
+* Advanced chassis control.
+
+* Coordinated vehicle dynamics systems.
+
+* Certain safety-related control architectures.
+
+* Systems requiring redundant communication paths.
+
+FlexRay has been used in specialised automotive architectures, although CAN and Automotive Ethernet are more prominent in many newer vehicle designs.
+
+### E. Workshop diagnostic considerations
+
+When diagnosing a FlexRay network, consider:
+
+* Channel A and Channel B wiring.
+
+* Network topology and termination.
+
+* ECU power and ground.
+
+* Communication synchronisation.
+
+* Network configuration.
+
+* Fault codes from participating controllers.
+
+Do not assume FlexRay has the same electrical measurements or diagnostic procedures as CAN. Always use the vehicle-specific wiring diagram and OEM specifications.
+
+### 2.6.3 Automotive Ethernet
+
+### A. What is Automotive Ethernet?
+
+Automotive Ethernet is a vehicle communication technology based on Ethernet networking principles, adapted for automotive environments.
+
+It provides much higher data-transfer capacity than traditional CAN and LIN.
+
+It is especially important because modern vehicles generate large quantities of data from:
+
+* Cameras.
+
+* Radar systems.
+
+* LiDAR systems.
+
+* Infotainment systems.
+
+* High-resolution displays.
+
+* Central vehicle computers.
+
+* Advanced Driver Assistance Systems (ADAS).
+
+For example, a camera can generate a continuous stream of image data. Traditional low-speed vehicle networks are not suitable for transporting that amount of information efficiently.
+
+### B. Automotive Ethernet speeds
+
+Automotive Ethernet supports different data rates depending on the physical-layer standard.
+
+Examples include:
+
+| Standard    | Nominal data rate |
+| ----------- | ----------------- |
+| 100BASE-T1  | 100 Mbit/s        |
+| 1000BASE-T1 | 1 Gbit/s          |
+| 2.5GBASE-T1 | 2.5 Gbit/s        |
+| 5GBASE-T1   | 5 Gbit/s          |
+| 10GBASE-T1  | 10 Gbit/s         |
+
+Not every vehicle supports all these standards.
+
+### C. Single-pair Ethernet
+
+An important automotive development is Single-Pair Ethernet (SPE).
+
+Traditional office Ethernet commonly uses multiple twisted pairs.
+
+Automotive Ethernet standards such as 100BASE-T1 use a single balanced twisted pair.
+
+Advantages include:
+
+* Reduced wiring weight.
+
+* Reduced harness complexity.
+
+* High communication bandwidth.
+
+* Suitability for automotive packaging requirements.
+
+### D. Automotive Ethernet applications
+
+Common applications include:
+
+| Vehicle system     | Ethernet application                    |
+| ------------------ | --------------------------------------- |
+| ADAS cameras       | High-volume image data                  |
+| Radar systems      | Sensor information                      |
+| Central gateway    | High-speed data routing                 |
+| Infotainment       | Multimedia communication                |
+| Central computer   | Communication between computing domains |
+| Diagnostic systems | High-speed diagnostic data transfer     |
+
+### E. Ethernet diagnostic principles
+
+Automotive Ethernet diagnosis differs from basic CAN diagnosis.
+
+A technician may need to inspect:
+
+* Physical-layer link status.
+
+* Cable continuity and condition.
+
+* Connector integrity.
+
+* ECU power and ground.
+
+* Link negotiation and configuration.
+
+* Network switches.
+
+* Communication errors and packet loss.
+
+Specialised Ethernet diagnostic equipment may be required.
+
+Important: A conventional multimeter cannot fully diagnose high-speed Ethernet signal integrity. Use the OEM-approved test equipment and procedures.
+
+### 2.6.4 Network comparison
+
+The following comparison is important when deciding which diagnostic approach to use.
+
+| Characteristic      | LIN                   | CAN                                       | FlexRay                                    | Automotive Ethernet              |
+| ------------------- | --------------------- | ----------------------------------------- | ------------------------------------------ | -------------------------------- |
+| Main purpose        | Simple local controls | General ECU communication                 | Predictable high-reliability communication | High-volume data transfer        |
+| Typical speed       | Up to 20 kbit/s       | Commonly up to 1 Mbit/s for Classical CAN | Up to 10 Mbit/s per channel                | 100 Mbit/s to multi-Gbit/s       |
+| Wiring              | Single wire           | Differential pair                         | Differential channel wiring                | Automotive twisted pair          |
+| Communication       | Master/slave          | Multi-master                              | Scheduled and dynamic                      | Ethernet networking              |
+| Typical application | Windows, mirrors      | BMS, VCU, motor control                   | Specialised chassis/control systems        | ADAS, cameras, central computing |
+
+### How these networks work together in an EV
+
+Consider a modern electric vehicle:
+
+A simplified architecture could look like this:
+
+* LIN: Door switches and mirror actuators.
+
+* CAN: Battery, motor controller and vehicle control communication.
+
+* FlexRay: Specialised time-critical control applications, where fitted.
+
+* Automotive Ethernet: Cameras, central computing and high-speed data communication.
+
+A gateway or central controller may connect different network segments.
+
+This allows the vehicle to use the most suitable communication technology for each system.
+
+### Professional workshop diagnostic example
+
+Simulated diagnostic case
+
+Vehicle complaint: Multiple electrical functions are unavailable.
+
+The diagnostic scanner reports:
+
+* No communication with one door control module.
+
+* Intermittent communication with the central gateway.
+
+* ADAS camera communication fault.
+
+A technician must avoid treating these three faults as one identical network problem.
+
+| Fault               | Network to investigate                                 |
+| ------------------- | ------------------------------------------------------ |
+| Door control module | Possibly LIN or CAN, depending on vehicle architecture |
+| Central gateway     | Investigate its power, ground and network connections  |
+| ADAS camera         | Possibly Automotive Ethernet, depending on design      |
+
+The correct approach is to obtain the OEM network topology, identify the actual communication path for each ECU, and diagnose each network segment separately.
+
+Do not assume the ADAS camera uses Ethernet or the door module uses LIN without confirming the vehicle architecture.
+
+### Key knowledge for a master technician
+
+* LIN is a low-cost, single-wire, master/slave communication network.
+
+* FlexRay provides scheduled communication and optional dual-channel redundancy.
+
+* Automotive Ethernet supports high-bandwidth communication for cameras, ADAS and central computing.
+
+* CAN remains widely used for vehicle control communication.
+
+* Different networks require different electrical test methods and diagnostic equipment.
+
+* A gateway can connect multiple vehicle communication networks.
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.7 Vehicle Network Topology (append below) -->
