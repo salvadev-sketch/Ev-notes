@@ -3975,4 +3975,447 @@ Do not open or probe HV battery internals as part of this basic communication ch
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.2 OBD-II Architecture and Operation (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.2: OBD-II Architecture and Operation
+
+OBD-II (On-Board Diagnostics II) is a standardized vehicle diagnostic system that allows external diagnostic equipment to retrieve emissions-related information, diagnostic trouble codes and operating data.
+
+For an EV and hybrid technician, understanding OBD-II is essential because the diagnostic connector can provide access to vehicle information through standardized and manufacturer-specific communication systems.
+
+Important distinction: OBD-II is not the same as the complete vehicle diagnostic system. A professional scanner may access many ECUs and functions that are outside standardized OBD-II requirements.
+
+### 2.2.1 OBD-II Architecture
+
+OBD-II architecture consists of several elements that work together to provide diagnostic access.
+
+The main elements are:
+
+* Vehicle sensors and monitored systems.
+
+* Electronic Control Units (ECUs).
+
+* Diagnostic software and communication interfaces.
+
+* Diagnostic connector (DLC).
+
+* External diagnostic scanner.
+
+### Simplified architecture
+
+Vehicle sensors and monitored systems
+
+Temperature, pressure, voltage, speed and other signals
+
+ECU
+
+Monitors parameters and executes diagnostic logic
+
+Vehicle communication network
+
+CAN or another supported communication protocol
+
+Diagnostic Link Connector (DLC)
+
+Standardized diagnostic connection point
+
+Diagnostic scanner
+
+Requests and displays available diagnostic information
+
+### How OBD-II works
+
+Consider a monitored temperature sensor.
+
+* The sensor provides an electrical signal to the ECU.
+
+* The ECU converts the signal into a temperature value.
+
+* The ECU compares the measured value with its programmed diagnostic criteria.
+
+* If a monitored condition meets fault-detection criteria, the ECU may store a DTC.
+
+* The scanner requests diagnostic information through the DLC.
+
+* The ECU responds with supported information.
+
+A fault code is therefore the result of the ECU's diagnostic logic. It does not necessarily identify the exact defective component.
+
+### EV and hybrid application
+
+OBD-II-related diagnostic access may provide information such as:
+
+* Powertrain DTCs.
+
+* Emissions-related monitor status.
+
+* Supported live data.
+
+* Freeze-frame data.
+
+* Vehicle identification information.
+
+Additional EV and hybrid information, such as individual battery cell voltages, inverter temperatures and manufacturer-specific power limits, may require enhanced OEM or multibrand diagnostic functions.
+
+### 2.2.2 Diagnostic Connector Pins
+
+The standard OBD-II connector is known as the 16-pin Diagnostic Link Connector (DLC).
+
+The connector uses a standardized pin arrangement, although not every manufacturer uses every pin.
+
+### Important DLC pin assignments
+
+| Pin | Standardized function             |
+| --- | --------------------------------- |
+| 2   | SAE J1850 Bus +                   |
+| 4   | Chassis ground                    |
+| 5   | Signal ground                     |
+| 6   | CAN High (ISO 15765-4)            |
+| 7   | K-Line (ISO 9141-2 / ISO 14230-4) |
+| 10  | SAE J1850 Bus −                   |
+| 14  | CAN Low (ISO 15765-4)             |
+| 15  | L-Line, where applicable          |
+| 16  | Battery positive supply           |
+
+Technician's note: Pins 6 and 14 are commonly used for high-speed CAN diagnostic communication. Pins 4 and 5 provide different ground references and should not be assumed interchangeable for every measurement.
+
+### DLC electrical checks
+
+Before connecting a scanner to a vehicle with suspected communication problems, inspect the connector and verify the relevant electrical conditions.
+
+Pin 16 — Battery supply
+
+A digital multimeter can be used to measure the supply voltage between pin 16 and an appropriate ground reference.
+
+The measured voltage should be consistent with the vehicle's low-voltage electrical system and operating condition.
+
+Pins 4 and 5 — Ground
+
+Check the appropriate ground circuits using the manufacturer's procedures. A loaded voltage-drop test can reveal poor ground connections that a simple continuity check may miss.
+
+Pins 6 and 14 — CAN
+
+These are CAN differential communication lines on vehicles using the standardized CAN diagnostic connection.
+
+Their electrical condition and signal behaviour will be covered in greater detail in Lessons 2.3 and 2.4.
+
+Safety
+
+Never apply battery voltage to communication pins. Do not use an insulation tester or high-voltage test equipment on DLC communication circuits.
+
+### 2.2.3 Communication Protocols
+
+A communication protocol defines how electronic devices exchange information.
+
+It specifies matters such as:
+
+* Electrical signalling.
+
+* Message structure.
+
+* Data transmission.
+
+* Addressing.
+
+* Error detection.
+
+* Communication timing.
+
+Several protocols have been used for OBD-II communication.
+
+### Main OBD-II communication protocols
+
+| Protocol      | Technical description                        |
+| ------------- | -------------------------------------------- |
+| SAE J1850 PWM | Pulse Width Modulation communication         |
+| SAE J1850 VPW | Variable Pulse Width communication           |
+| ISO 9141-2    | Serial diagnostic communication using K-Line |
+| ISO 14230-4   | Keyword Protocol 2000 (KWP2000)              |
+| ISO 15765-4   | Diagnostic communication over CAN            |
+
+### CAN-based OBD-II communication
+
+On a CAN-based vehicle, the scanner sends a diagnostic request through the DLC.
+
+The request travels over the vehicle communication network to the relevant ECU or diagnostic gateway.
+
+The ECU processes the request and returns a response.
+
+For example, a scanner may request a supported engine or powertrain parameter using an OBD-II diagnostic service.
+
+The ECU responds with data that the scanner decodes and displays.
+
+### Why protocol identification matters
+
+Suppose a scanner powers up when connected but cannot communicate with the vehicle.
+
+Possible causes include:
+
+* Incorrect vehicle selection.
+
+* Unsupported communication protocol.
+
+* Missing DLC power or ground.
+
+* Damaged communication wiring.
+
+* ECU power supply failure.
+
+* Gateway access restrictions.
+
+* Network faults.
+
+A powered scanner does not prove that communication is working.
+
+### 2.2.4 Diagnostic Service Modes
+
+OBD-II diagnostic services are commonly called modes in traditional OBD-II terminology.
+
+They define the type of diagnostic information being requested or the operation being performed.
+
+The traditional OBD-II service modes include:
+
+| Mode     | Function                                                       |
+| -------- | -------------------------------------------------------------- |
+| Mode $01 | Request current powertrain diagnostic data                     |
+| Mode $02 | Request freeze-frame data                                      |
+| Mode $03 | Request stored emission-related DTCs                           |
+| Mode $04 | Clear/reset emission-related diagnostic information            |
+| Mode $05 | Request oxygen sensor monitoring test results, where supported |
+| Mode $06 | Request results of monitored on-board diagnostic tests         |
+| Mode $07 | Request pending emission-related DTCs                          |
+| Mode $08 | Request control of on-board systems, where supported           |
+| Mode $09 | Request vehicle information                                    |
+| Mode $0A | Request permanent emission-related DTCs                        |
+
+### Mode $01 — Current diagnostic data
+
+This mode retrieves supported current powertrain data.
+
+Examples may include:
+
+* Engine speed.
+
+* Vehicle speed.
+
+* Coolant temperature.
+
+* Intake air temperature.
+
+* Calculated load.
+
+* Supported fuel-system information.
+
+For a conventional hybrid, some engine-related parameters may be available. A battery-electric vehicle may support a different subset of standardized data.
+
+### Mode $02 — Freeze-frame data
+
+Freeze-frame data is a stored snapshot of operating conditions associated with a detected fault.
+
+It may contain information such as:
+
+* Vehicle speed.
+
+* Engine speed, where applicable.
+
+* Temperature.
+
+* Calculated load.
+
+* Other supported parameters.
+
+This helps the technician understand the conditions under which the fault was detected.
+
+### Mode $03 — Stored DTCs
+
+Requests stored emission-related diagnostic trouble codes.
+
+A scanner may display a code such as:
+
+Illustrative example
+
+### P0420
+
+Catalyst System Efficiency Below Threshold (Bank 1)
+
+This is an emissions-related example, not a general EV battery fault.
+
+### Mode $04 — Clear/reset diagnostic information
+
+This service requests clearing or resetting supported emission-related diagnostic information.
+
+Clearing codes may also reset readiness-monitor information.
+
+Professional rule: Save the original scan, freeze-frame data and relevant evidence before clearing codes.
+
+### Mode $06 — On-board monitoring test results
+
+This mode retrieves results from supported diagnostic monitoring tests.
+
+It can be useful for investigating a monitored system that has not necessarily generated a confirmed DTC.
+
+The scanner must correctly interpret the test identification, component identification and result values.
+
+### Mode $07 — Pending DTCs
+
+Requests pending emission-related fault codes.
+
+These indicate detected fault conditions that have not necessarily met all criteria for confirmation.
+
+### Mode $09 — Vehicle information
+
+Can provide supported identification information, including:
+
+* VIN.
+
+* Calibration identification.
+
+* Calibration verification information.
+
+The exact available data depends on the vehicle.
+
+### Mode $0A — Permanent DTCs
+
+Requests permanent emission-related DTCs.
+
+These codes are designed not to be removed simply by using a normal clear-code command or disconnecting the battery. Their removal generally depends on the vehicle successfully completing the required monitoring and confirming that the fault condition has been corrected.
+
+Important: These standardized modes do not represent every function available through a professional scanner. Manufacturer-specific diagnostic services may provide access to much broader vehicle functions.
+
+### 2.2.5 OBD-II Limitations
+
+OBD-II is useful, but it does not provide complete diagnostic access to every vehicle system.
+
+A technician must understand its limitations to avoid drawing incorrect conclusions.
+
+### 1\. Limited ECU coverage
+
+Standard OBD-II primarily focuses on emissions-related diagnostics.
+
+A basic generic scanner may not access:
+
+* Individual BMS cell data.
+
+* Inverter internal temperatures.
+
+* Battery contactor status.
+
+* HV interlock status.
+
+* Charging-system detailed parameters.
+
+* Manufacturer-specific hybrid functions.
+
+These often require enhanced diagnostic access.
+
+### 2\. Limited manufacturer-specific information
+
+Standardized DTC definitions and data do not cover all manufacturer-specific fault information.
+
+An OEM diagnostic tool may provide:
+
+* Detailed DTC descriptions.
+
+* Additional fault subcodes.
+
+* ECU-specific live data.
+
+* Guided diagnostic procedures.
+
+* Component tests.
+
+* Software and configuration information.
+
+### 3\. Limited active testing
+
+A basic OBD-II reader normally focuses on retrieving standardized information.
+
+It may not support bidirectional control of pumps, fans, relays, valves or other actuators.
+
+### 4\. Limited programming access
+
+Generic OBD-II access does not automatically provide the ability to:
+
+* Flash ECU software.
+
+* Perform ECU coding.
+
+* Register replacement components.
+
+* Carry out advanced calibrations.
+
+* Execute security-authorized functions.
+
+### 5\. Gateway and security restrictions
+
+Some modern vehicles restrict access to diagnostic functions through secure gateways.
+
+The technician may need manufacturer authorization or an approved diagnostic access method.
+
+### Generic scanner versus professional diagnostic scanner
+
+| Function                   | Basic generic scanner | Professional enhanced scanner                  |
+| -------------------------- | --------------------- | ---------------------------------------------- |
+| Standard OBD-II DTCs       | Usually               | Yes                                            |
+| Standard live data         | Usually               | Yes                                            |
+| Freeze-frame data          | Usually               | Yes                                            |
+| Manufacturer-specific DTCs | Limited               | Often supported                                |
+| BMS detailed data          | Usually limited       | Vehicle-dependent                              |
+| Bidirectional tests        | Usually limited       | Vehicle-dependent                              |
+| ECU coding                 | Usually unavailable   | Supported on selected vehicles                 |
+| ECU programming            | Usually unavailable   | Requires compatible hardware and authorization |
+
+### Practical workshop scenario
+
+Simulated case
+
+Vehicle: Battery-electric vehicle
+
+Complaint: Dashboard displays a powertrain warning.
+
+Scanner result: Generic OBD-II scanner communicates with the vehicle but reports no standardized emission-related DTCs.
+
+Question: Does this prove the EV has no faults?
+
+No.
+
+The generic scanner may have accessed only the standardized diagnostic functions and may not have accessed the VCU, BMS, inverter or charging controller's enhanced diagnostic information.
+
+### Correct diagnostic approach
+
+* Confirm scanner compatibility.
+
+* Perform a complete vehicle scan using a suitable enhanced diagnostic tool.
+
+* Check ECU communication status.
+
+* Retrieve manufacturer-specific DTCs.
+
+* Review relevant freeze-frame and live data.
+
+* Follow the applicable OEM diagnostic procedure.
+
+The absence of a generic OBD-II fault code is not proof that the vehicle is fault-free.
+
+### Key workshop reference
+
+| Item     | What you should remember                 |
+| -------- | ---------------------------------------- |
+| DLC      | Standardized 16-pin diagnostic connector |
+| Pin 16   | Low-voltage battery supply               |
+| Pin 4    | Chassis ground                           |
+| Pin 5    | Signal ground                            |
+| Pin 6    | CAN High                                 |
+| Pin 14   | CAN Low                                  |
+| Mode $01 | Current diagnostic data                  |
+| Mode $02 | Freeze-frame data                        |
+| Mode $03 | Stored DTCs                              |
+| Mode $04 | Clear/reset diagnostic information       |
+| Mode $06 | On-board monitoring results              |
+| Mode $07 | Pending DTCs                             |
+| Mode $09 | Vehicle information                      |
+| Mode $0A | Permanent DTCs                           |
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.3 Controller Area Network (CAN Bus) (append below) -->
