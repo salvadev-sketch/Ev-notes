@@ -2638,4 +2638,400 @@ The pump must not be condemned until its electrical supply, control and feedback
 
 ---
 
-<!-- NEXT: Lesson 1.8 — Special Functions and Service Operations (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.8: Special Functions and Service Operations
+
+A professional diagnostic scanner does more than retrieve DTCs, display live data and activate actuators. It can also perform service operations that change ECU settings, erase maintenance information, initialize replacement components and recalibrate electronic systems.
+
+These operations are important after repairs, component replacement and certain maintenance procedures.
+
+This lesson follows the five sections in your official handbook.
+
+### 1.8.1 Service Resets
+
+A service reset is a diagnostic operation that clears or updates specific maintenance-related information stored in a vehicle control module.
+
+It does not necessarily repair a fault. It updates the vehicle's service records or resets a maintenance counter after the relevant work has been completed.
+
+### Common service resets
+
+| Service reset              | Purpose                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| Oil service reset          | Resets the engine oil maintenance interval in applicable vehicles                     |
+| Brake service reset        | Updates brake maintenance information where supported                                 |
+| Battery replacement reset  | Registers or resets battery-monitoring information                                    |
+| Maintenance interval reset | Restarts a scheduled service counter                                                  |
+| TPMS reset                 | Initiates or updates tire-pressure monitoring procedures, depending on vehicle design |
+| DPF service reset          | Resets applicable diesel particulate filter service information                       |
+
+### EV and hybrid examples
+
+12 V auxiliary battery replacement
+
+Some vehicles use a battery monitoring system to track battery condition, charging behavior and aging.
+
+After replacing the 12 V battery, an OEM procedure may require battery registration or adaptation.
+
+Why?
+
+The energy-management system may need to recognize the new battery and update its charging strategy.
+
+Important: Not every vehicle requires battery registration. Always check the manufacturer's service information.
+
+### Professional procedure
+
+* Confirm vehicle identification.
+
+* Confirm the maintenance or repair has been completed.
+
+* Connect the correct diagnostic scanner.
+
+* Select the relevant ECU and service function.
+
+* Check the displayed conditions and warnings.
+
+* Execute the reset according to OEM instructions.
+
+* Verify that the reset was accepted.
+
+* Save the diagnostic report.
+
+Never reset maintenance data merely to make a warning disappear without completing the required work.
+
+### 1.8.2 Adaptations and Relearning
+
+Adaptation is a process in which an ECU stores or updates learned values to compensate for component variation, wear, operating conditions or replacement parts.
+
+These learned values help the control system operate accurately.
+
+### Why adaptations are necessary
+
+Electronic control systems cannot always assume that every replacement component has exactly the same characteristics as the original.
+
+For example:
+
+* A new sensor may have a slightly different offset.
+
+* A throttle body may require position learning.
+
+* A transmission may need clutch adaptation.
+
+* An electric motor control system may require position-related learning.
+
+### Examples of adaptations
+
+| System              | Adaptation or relearning                  |
+| ------------------- | ----------------------------------------- |
+| Electronic throttle | Throttle position relearning              |
+| Transmission        | Clutch or shift adaptation                |
+| Battery monitoring  | Battery condition or sensor adaptation    |
+| Steering system     | Steering angle relearning                 |
+| Motor control       | Position-related learning where specified |
+| HVAC system         | Air-mix actuator relearning               |
+
+### Example: Electronic throttle adaptation
+
+An electronic throttle body contains an electric actuator and position sensors.
+
+After replacement or certain repairs, the ECU may need to relearn the throttle's reference positions.
+
+A typical conceptual process is:
+
+* Confirm correct installation.
+
+* Confirm electrical connections.
+
+* Connect the OEM-compatible diagnostic tool.
+
+* Select throttle adaptation.
+
+* Meet the specified ignition, voltage and temperature conditions.
+
+* Execute the relearning procedure.
+
+* Confirm successful completion.
+
+* Check throttle position data and relevant DTCs.
+
+The actual procedure varies by manufacturer.
+
+### Adaptation versus programming
+
+These terms must not be confused.
+
+| Adaptation                            | Programming                                          |
+| ------------------------------------- | ---------------------------------------------------- |
+| Updates learned operating values      | Installs or changes ECU software or calibration      |
+| Often follows component replacement   | Often follows software updates or module replacement |
+| Usually does not replace the firmware | May change firmware or calibration data              |
+| Example: throttle relearning          | Example: ECU firmware flashing                       |
+
+An ECU can have correct firmware but incorrect or incomplete adaptations.
+
+### 1.8.3 Component Initialization
+
+Component initialization is a diagnostic procedure that prepares a newly installed or replacement component for operation by the vehicle's control system.
+
+It may establish reference positions, identify the component, configure initial operating conditions or synchronize it with another module.
+
+### Components that may require initialization
+
+| Component                 | Possible initialization requirement           |
+| ------------------------- | --------------------------------------------- |
+| Electric steering system  | Steering reference or position initialization |
+| ABS module                | Configuration or initialization               |
+| Electronic parking brake  | Actuator initialization                       |
+| Battery management system | Replacement battery or module initialization  |
+| Electric coolant valve    | Reference-position initialization             |
+| HVAC actuator             | End-stop or position initialization           |
+
+### Example: Electric coolant valve
+
+An electric coolant valve controls coolant flow between different thermal circuits.
+
+After replacing a valve, an OEM procedure may require initialization.
+
+The control module may need to establish:
+
+* The valve's reference position.
+
+* Its available movement range.
+
+* Position-feedback correlation.
+
+* Correct communication with the actuator.
+
+### What happens if initialization is skipped?
+
+Possible symptoms include:
+
+* Incorrect coolant routing.
+
+* Cooling or heating performance problems.
+
+* Unexpected actuator behavior.
+
+* DTCs related to position or initialization.
+
+* Thermal-management limitations.
+
+The precise effects depend on the vehicle's design.
+
+### Technician's procedure
+
+* Verify the correct replacement part.
+
+* Inspect installation and connectors.
+
+* Confirm the required supply voltage.
+
+* Select the relevant initialization function.
+
+* Follow the displayed OEM conditions.
+
+* Allow the procedure to complete without interruption.
+
+* Verify position feedback and system operation.
+
+### 1.8.4 Calibration Functions
+
+Calibration establishes or adjusts the relationship between a measured value, a reference position or an electronic control system's expected operating condition.
+
+It is particularly important where accurate sensor measurements and component positioning are essential.
+
+### Common calibration functions
+
+| Calibration                     | Purpose                                               |
+| ------------------------------- | ----------------------------------------------------- |
+| Steering angle calibration      | Establishes the steering angle reference              |
+| Yaw-rate sensor calibration     | Establishes the required reference condition          |
+| Acceleration sensor calibration | Establishes a reference for acceleration measurements |
+| Camera calibration              | Aligns camera measurements with vehicle geometry      |
+| Radar calibration               | Establishes correct radar alignment                   |
+| Pressure sensor calibration     | Applies the specified reference procedure             |
+| Motor position calibration      | Establishes motor position information where required |
+
+### Example: Steering angle sensor calibration
+
+The steering angle sensor reports steering-wheel position to vehicle control systems.
+
+This information may be used by:
+
+* Electronic stability control.
+
+* ABS.
+
+* Electric power steering.
+
+* Advanced driver assistance systems.
+
+If the reference position is incorrect, the ECU may interpret straight-ahead driving as a steering input.
+
+A calibration procedure may require:
+
+* Correct wheel alignment and steering geometry.
+
+* Steering wheel positioned as specified.
+
+* Vehicle on the required level surface.
+
+* Correct tire pressures.
+
+* Stable electrical supply.
+
+* Execution of the OEM calibration function.
+
+* Verification of steering angle data and DTC status.
+
+Important distinction: Calibration cannot correct a mechanically misaligned steering system or a damaged sensor. Correct mechanical condition must be established first.
+
+### Calibration versus adaptation versus initialization
+
+| Operation      | Main purpose                                               |
+| -------------- | ---------------------------------------------------------- |
+| Adaptation     | Learns or updates operating values                         |
+| Initialization | Prepares a component for operation                         |
+| Calibration    | Establishes or adjusts a measurement or position reference |
+
+Some manufacturers use these terms differently. The diagnostic function's actual purpose and OEM instructions take priority over its menu label.
+
+### 1.8.5 Electronic Parking Brake Service Modes
+
+An electronic parking brake (EPB) uses electrical actuators and an electronic control system to apply and release the parking brake.
+
+Unlike a conventional handbrake cable, the system may use electric motors integrated into the rear brake calipers or a separate actuator mechanism.
+
+### Why EPB service mode is required
+
+During rear brake pad replacement, the parking brake actuator may need to retract to create sufficient clearance for the new pads.
+
+The diagnostic scanner can provide a dedicated service function on supported vehicles.
+
+Common functions include:
+
+* Enter brake pad replacement mode.
+
+* Retract parking brake actuator.
+
+* Release EPB.
+
+* Exit service mode.
+
+* Close or initialize the actuator.
+
+* Perform required post-service checks.
+
+### General EPB service procedure
+
+Follow vehicle-specific OEM instructions
+
+Stage 1 — Preparation
+
+* Identify the vehicle and EPB system.
+
+* Check relevant DTCs.
+
+* Confirm the correct brake service procedure.
+
+* Secure the vehicle against movement.
+
+* Maintain the required 12 V supply condition.
+
+Stage 2 — Enter service mode
+
+* Connect the compatible diagnostic scanner.
+
+* Select the EPB control module.
+
+* Choose the brake pad replacement or maintenance function.
+
+* Follow the displayed instructions.
+
+* Confirm that the actuators have entered the required service position.
+
+Stage 3 — Mechanical service
+
+Carry out the brake service using the manufacturer's mechanical procedure and appropriate equipment.
+
+Stage 4 — Exit service mode
+
+* Reinstall the components correctly.
+
+* Select the EPB closing or exit-service-mode function.
+
+* Allow the actuator procedure to complete.
+
+* Perform any required initialization or calibration.
+
+* Check for DTCs.
+
+* Verify parking brake application and release according to OEM instructions.
+
+Critical warning: Never force an EPB actuator or attempt to rotate an integrated electric motor mechanism without confirming the correct mechanical procedure. Some systems can be damaged by incorrect manual retraction.
+
+### Professional workshop case study
+
+Vehicle: Electric vehicle with rear electronic parking brake.
+
+Customer complaint: Rear brake pads have been replaced, but the parking brake warning remains illuminated.
+
+Simulated diagnostic scan:
+
+| Parameter            | Result              |
+| -------------------- | ------------------- |
+| EPB module           | Communicating       |
+| Parking brake status | Service mode active |
+| Left actuator        | Retracted           |
+| Right actuator       | Retracted           |
+| Service procedure    | Not completed       |
+
+### Technician's interpretation
+
+The actuators have entered service mode, but the system has not completed the required closing procedure.
+
+Possible causes include:
+
+* Service mode was not exited.
+
+* Initialization was not completed.
+
+* An actuator position was not confirmed.
+
+* An electrical or mechanical fault remains.
+
+### Diagnostic approach
+
+* Confirm that the brake assembly has been correctly installed.
+
+* Inspect the actuator connectors and wiring.
+
+* Review EPB live data and stored DTCs.
+
+* Follow the OEM closing procedure.
+
+* Complete any required initialization.
+
+* Verify application and release.
+
+* Perform a final scan and document the results.
+
+Do not assume that clearing the warning lamp alone completes the repair.
+
+### Key technician takeaways
+
+* Service resets update maintenance-related information.
+
+* Adaptations allow ECUs to learn or update operating values.
+
+* Initialization prepares components for correct operation.
+
+* Calibration establishes accurate reference values or positions.
+
+* EPB service modes allow controlled brake actuator movement during maintenance.
+
+* These functions must be performed using the correct vehicle-specific procedures.
+
+---
+
+<!-- NEXT: Lesson 1.9 — Advanced Scanner Functions (append below) -->
