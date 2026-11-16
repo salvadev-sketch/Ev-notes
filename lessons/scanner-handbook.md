@@ -7147,4 +7147,466 @@ Master technician principle: A vehicle communication fault is not always caused 
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.9 Advanced Network Diagnostic Procedures (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.9: Advanced Network Diagnostic Procedures
+
+Professional EV & Hybrid Master Technician Training
+
+This lesson develops a structured approach to diagnosing vehicle communication networks using professional diagnostic scanners, wiring diagrams, electrical measurements and oscilloscopes.
+
+At this level, the objective is not simply to retrieve communication DTCs. You must identify the affected network, locate the physical or logical failure, establish the root cause and verify that communication has been restored.
+
+### Official lesson structure
+
+* 2.9.1 Network scanning
+
+* 2.9.2 Communication fault tracing
+
+* 2.9.3 Oscilloscope testing
+
+* 2.9.4 Gateway fault investigation
+
+* 2.9.5 Verification
+
+### 2.9.1 Network scanning
+
+### A. What is network scanning?
+
+Network scanning is the process of examining vehicle ECUs to establish which controllers are communicating, which are unavailable and which have stored diagnostic trouble codes.
+
+A professional diagnostic scanner communicates through the vehicle's diagnostic interface and accesses supported control modules.
+
+### B. Complete network scan procedure
+
+Step 1 — Identify the vehicle
+
+Confirm:
+
+* Manufacturer.
+
+* Model.
+
+* Model year.
+
+* VIN.
+
+* Powertrain configuration.
+
+Correct vehicle identification is important because network architecture and diagnostic procedures can differ between model years and variants.
+
+Step 2 — Establish low-voltage supply condition
+
+Before interpreting communication faults, check the 12 V system.
+
+Low or unstable voltage can cause:
+
+* ECU resets.
+
+* Failed module communication.
+
+* Multiple undervoltage DTCs.
+
+* Intermittent network problems.
+
+Step 3 — Perform a complete vehicle scan
+
+Scan all supported modules rather than concentrating only on the engine or powertrain system.
+
+Record:
+
+* Modules communicating normally.
+
+* Modules not responding.
+
+* Communication DTCs.
+
+* Voltage-related DTCs.
+
+* Network-related DTCs.
+
+* Freeze-frame or environmental information, where available.
+
+Step 4 — Examine the communication pattern
+
+For example:
+
+| ECU              | Scanner result   |
+| ---------------- | ---------------- |
+| BMS              | Communicating    |
+| VCU              | Communicating    |
+| Motor controller | No communication |
+| DC-DC converter  | Communicating    |
+| ABS/ESC          | Communicating    |
+| Gateway          | Communicating    |
+
+This pattern suggests that the motor controller or its individual communication path deserves investigation.
+
+However, it does not prove the motor controller is defective.
+
+Step 5 — Save the scan report
+
+Save the original report before clearing any DTCs.
+
+This preserves evidence of the initial fault condition.
+
+### C. Important scanner functions
+
+A suitable diagnostic scanner may provide:
+
+* ECU identification.
+
+* DTC retrieval and clearing.
+
+* Live data.
+
+* ECU communication status.
+
+* Network topology maps.
+
+* ECU coding and configuration information.
+
+* Special tests and active controls.
+
+The functions available depend on the scanner, vehicle and manufacturer's diagnostic access.
+
+### 2.9.2 Communication fault tracing
+
+### A. What is communication fault tracing?
+
+Communication fault tracing is the systematic process of following the communication path between the transmitting ECU and receiving ECU to identify where information is being lost or corrupted.
+
+### B. Professional tracing procedure
+
+Step 1 — Identify the communication DTC
+
+Record the exact code, reporting ECU and fault description.
+
+For example:
+
+* U0100: Lost Communication With ECM/PCM A.
+
+* U0101: Lost Communication With TCM.
+
+* Other U-codes may identify different communication problems.
+
+DTC definitions and applicability must be confirmed using the vehicle-specific diagnostic information.
+
+Step 2 — Identify the transmitting and receiving ECUs
+
+Determine:
+
+* Which ECU should transmit the information?
+
+* Which ECU expects to receive it?
+
+* Are they connected to the same network?
+
+* Is a gateway between them?
+
+Step 3 — Obtain the wiring diagram
+
+Identify:
+
+* CAN-H.
+
+* CAN-L.
+
+* Connector identification.
+
+* Pin numbers.
+
+* Network splices.
+
+* Termination locations.
+
+* Gateway connections.
+
+Step 4 — Inspect the physical wiring
+
+Check for:
+
+* Damaged twisted-pair wiring.
+
+* Corrosion.
+
+* Water ingress.
+
+* Loose terminals.
+
+* Poor previous repairs.
+
+* Harness damage caused by vibration or rubbing.
+
+Step 5 — Perform electrical measurements
+
+Use the OEM procedure to check:
+
+* Network resistance, with the network powered down where specified.
+
+* CAN-H and CAN-L voltage.
+
+* Supply voltage at the affected ECU.
+
+* ECU ground voltage drop.
+
+* Continuity and shorts, using the specified isolation procedure.
+
+Step 6 — Isolate the fault
+
+Use the network diagram to identify whether the problem is:
+
+* In the main backbone.
+
+* In a branch circuit.
+
+* At a connector.
+
+* In a gateway.
+
+* Within an ECU.
+
+Never disconnect multiple ECUs randomly. This can introduce additional DTCs and change network termination conditions.
+
+### C. Diagnostic reasoning example
+
+Simulated case
+
+Three ECUs report communication faults.
+
+The wiring diagram shows that all three share a common CAN branch.
+
+This makes the shared branch, its connectors and its network connection important investigation points.
+
+Replacing all three ECUs without testing the shared wiring would be poor diagnostic practice.
+
+### 2.9.3 Oscilloscope testing
+
+### A. Why use an oscilloscope?
+
+A multimeter displays voltage measurements, usually as an average or slowly updated value.
+
+An oscilloscope displays voltage changes over time.
+
+This allows a technician to observe actual communication activity and identify electrical abnormalities that may not be visible on a multimeter.
+
+### B. Measuring CAN-H and CAN-L
+
+For a conventional high-speed CAN network, typical illustrative signal levels are:
+
+| Bus condition | CAN-H               | CAN-L               |
+| ------------- | ------------------- | ------------------- |
+| Recessive     | Approximately 2.5 V | Approximately 2.5 V |
+| Dominant      | Approximately 3.5 V | Approximately 1.5 V |
+
+These are typical values, not universal specifications.
+
+During dominant signalling, CAN-H rises and CAN-L falls.
+
+The differential voltage is:
+
+`V_diff = V_CAN-H − V_CAN-L`
+
+For the illustrative dominant state:
+
+`V_diff = 3.5 − 1.5 = 2.0 V`
+
+In the recessive state:
+
+`V_diff = 2.5 − 2.5 = 0 V`
+
+### C. What waveforms should you look for?
+
+Common waveform observations:
+
+| Waveform condition                 | Possible interpretation                                                        |
+| ---------------------------------- | ------------------------------------------------------------------------------ |
+| Normal differential signalling     | Network communication appears electrically active                              |
+| Flat signal                        | Possible open circuit, missing activity or short, depending on the measurement |
+| Distorted edges                    | Possible wiring, termination or transceiver problem                            |
+| Excessive ringing                  | Possible impedance mismatch or reflections                                     |
+| Electrical noise                   | Possible interference or poor wiring condition                                 |
+| Intermittent waveform interruption | Possible loose connector or intermittent circuit fault                         |
+
+A waveform that looks active does not prove that messages are valid. Protocol errors, incorrect bit timing and message-content problems may require decoding or network-analysis equipment.
+
+### D. Oscilloscope connection precautions
+
+* Use suitable automotive oscilloscope probes.
+
+* Identify the reference ground and measurement arrangement before connecting.
+
+* Use differential probes or an approved isolated measurement arrangement where required.
+
+* Do not attach an earth-referenced oscilloscope ground clip to CAN-H or CAN-L.
+
+* Follow the equipment manufacturer's instructions and OEM procedures.
+
+Important: High-voltage EV systems require additional isolation precautions. Never assume a low-voltage communication wire is safe to probe merely because it is called CAN.
+
+### 2.9.4 Gateway fault investigation
+
+### A. Why investigate the gateway?
+
+A gateway transfers permitted communication between network segments.
+
+If a gateway fails, loses power or has a configuration problem, ECUs on different networks may become inaccessible to the diagnostic scanner or to one another.
+
+### B. Common gateway fault symptoms
+
+* Several ECUs become unavailable simultaneously.
+
+* Communication between different network domains is interrupted.
+
+* Multiple U-codes appear.
+
+* Diagnostic scanner access is limited to certain network segments.
+
+* Network wake-up or sleep behaviour becomes abnormal.
+
+* Certain vehicle functions stop working even though their individual ECUs have power.
+
+### C. Gateway investigation procedure
+
+1\. Scan the gateway
+
+Retrieve all gateway DTCs and record its communication status.
+
+2\. Check gateway power supply
+
+Verify the specified battery and ignition-related supplies.
+
+3\. Check gateway grounds
+
+Perform appropriate voltage-drop tests under operating conditions.
+
+4\. Check network connections
+
+Inspect CAN, LIN or Ethernet connections as applicable to the vehicle.
+
+5\. Compare network accessibility
+
+Determine which network segments are accessible and which are unavailable.
+
+6\. Check configuration
+
+Where supported, verify gateway coding, network configuration and software compatibility against OEM information.
+
+7\. Isolate the affected segment
+
+Follow the manufacturer’s diagnostic procedure to identify whether the problem originates before the gateway, inside it or beyond it.
+
+### D. Gateway fault versus network fault
+
+| Observation                                         | Possible investigation                                   |
+| --------------------------------------------------- | -------------------------------------------------------- |
+| Gateway has no communication                        | Gateway power, ground, main network or internal failure  |
+| Gateway communicates, one segment unavailable       | Segment wiring, connected ECU or gateway port            |
+| Gateway communicates, multiple segments unavailable | Shared supply, configuration or gateway internal problem |
+| Only one ECU unavailable                            | ECU power, ground, branch wiring or ECU itself           |
+
+These are diagnostic directions, not automatic fault conclusions.
+
+### 2.9.5 Verification
+
+### A. Why verification is essential
+
+A repair is not complete simply because a DTC has been cleared.
+
+The technician must establish that:
+
+* The original communication problem has been corrected.
+
+* The affected ECUs communicate correctly.
+
+* The network remains stable.
+
+* No relevant faults return.
+
+* Vehicle functions operate correctly.
+
+### B. Professional verification procedure
+
+* Save the original diagnostic report
+
+    Retain the initial DTCs and fault conditions.
+
+* Complete the repair
+
+    Repair the confirmed wiring, connector, power supply, ground or component fault.
+
+* Restore the network
+
+    Reconnect components and restore the vehicle to its specified operating condition.
+
+* Clear DTCs where appropriate
+
+    Follow OEM instructions. Some faults require specific reset or relearn procedures.
+
+* Repeat the complete network scan
+
+    Confirm that all expected ECUs are accessible.
+
+* Check live communication
+
+    Verify relevant data and communication status using the diagnostic equipment.
+
+* Perform an operational test
+
+    Reproduce the original operating conditions where safe and appropriate.
+
+* Save the final report
+
+    Document the confirmed cause, repair and final test results.
+
+### C. Example of repair verification
+
+Simulated workshop results
+
+Initial condition:
+
+* Motor controller communication DTC.
+
+* Intermittent drivetrain warning.
+
+* Oscilloscope showed intermittent communication interruption.
+
+Confirmed fault:
+
+\- Damaged CAN branch wiring near a harness support.
+
+Repair:
+
+* Wiring repaired using the manufacturer's approved method.
+
+* Harness correctly secured.
+
+Final verification:
+
+| Test                       | Result                           |
+| -------------------------- | -------------------------------- |
+| Complete vehicle scan      | All expected ECUs communicating  |
+| Original communication DTC | Did not return                   |
+| CAN waveform               | Stable under tested conditions   |
+| Drivetrain operation       | Normal during the specified test |
+| Final report               | Saved                            |
+
+These are simulated results illustrating the verification process, not evidence from an actual vehicle.
+
+### Module 2.9 — Master technician reference
+
+| Diagnostic tool                 | Primary purpose                                     |
+| ------------------------------- | --------------------------------------------------- |
+| Professional diagnostic scanner | ECU identification, DTCs and live data              |
+| OEM wiring diagrams             | Network topology, connectors and pin identification |
+| Digital multimeter              | Voltage, resistance and voltage-drop measurements   |
+| Automotive oscilloscope         | Communication waveform analysis                     |
+| Differential probe              | Safe differential signal measurement                |
+| Low-current clamp               | ECU and vehicle current-consumption investigation   |
+| Network analyser                | Message decoding, timing and communication analysis |
+
+The most important diagnostic principle: Always separate the communication symptom from the actual electrical or electronic cause. A missing ECU, a U-code or an abnormal waveform is evidence to investigate—not a reason to replace a controller immediately.
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.10 Vehicle Communication Diagnostic Cases (append below) -->
