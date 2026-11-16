@@ -3034,4 +3034,303 @@ Do not assume that clearing the warning lamp alone completes the repair.
 
 ---
 
-<!-- NEXT: Lesson 1.9 — Advanced Scanner Functions (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.9: Advanced Scanner Functions
+
+At this level, a diagnostic scanner becomes more than a tool for reading fault codes. It becomes an advanced diagnostic platform that helps technicians follow manufacturer-defined procedures, access ECU configuration, identify software versions and manage diagnostic evidence.
+
+This lesson covers the five official sections in your handbook.
+
+### 1.9.1 Guided Diagnostics
+
+Guided diagnostics is a scanner function that leads a technician through a structured fault-finding process.
+
+Instead of simply displaying a DTC, the scanner may provide:
+
+* Possible causes of the fault.
+
+* Required preliminary checks.
+
+* Wiring diagrams and connector information.
+
+* Component test procedures.
+
+* Expected measurement values.
+
+* Decision steps based on test results.
+
+Workshop example:
+
+A vehicle reports:
+
+Illustrative diagnostic example
+
+Simulated data
+
+### U0100
+
+Lost Communication With ECM/PCM
+
+Possible guided diagnostic sequence:
+
+* Confirm the DTC and identify the reporting ECU.
+
+* Check the vehicle battery and 12 V supply stability.
+
+* Inspect relevant fuses and ECU power supplies.
+
+* Check ground circuits.
+
+* Inspect CAN-H and CAN-L wiring.
+
+* Verify ECU communication and network condition.
+
+Important: Guided diagnostics provides a test pathway, not proof of the failed component. You must verify each finding through measurements and physical inspection.
+
+### 1.9.2 OEM Test Plans
+
+OEM means Original Equipment Manufacturer.
+
+An OEM test plan is a manufacturer-specific diagnostic procedure designed for a particular vehicle, ECU or fault condition.
+
+It may contain:
+
+* Preconditions for testing.
+
+* Required scanner functions.
+
+* Electrical measurement instructions.
+
+* Connector and terminal references.
+
+* Expected live-data values.
+
+* Software-specific diagnostic routines.
+
+* Pass/fail criteria.
+
+Example: HV battery cooling system
+
+An OEM test plan may instruct the technician to:
+
+* Confirm the vehicle is in the required operating condition.
+
+* Read battery temperature sensors.
+
+* Command the cooling pump using an approved active test.
+
+* Monitor commanded and actual pump operation.
+
+* Check coolant flow and temperature response.
+
+* Follow the manufacturer's fault-isolation procedure if the response is abnormal.
+
+Technician's responsibility: Follow the correct vehicle-specific procedure. Do not substitute generic test values for OEM specifications.
+
+### 1.9.3 ECU Coding and Configuration Access
+
+ECU coding changes configurable software settings within an electronic control unit.
+
+Configuration access allows a technician to inspect or modify supported vehicle settings.
+
+Examples include:
+
+* Vehicle equipment configuration.
+
+* Battery type or capacity configuration, where supported.
+
+* Installed control-unit configuration.
+
+* Communication and network options.
+
+* Market-specific equipment settings.
+
+* Replacement ECU configuration.
+
+### Coding versus programming
+
+These operations are related but different.
+
+| Operation          | Meaning                                      |
+| ------------------ | -------------------------------------------- |
+| ECU coding         | Changes configuration settings or options    |
+| ECU programming    | Loads or updates ECU software                |
+| ECU adaptation     | Learns or adjusts operating parameters       |
+| ECU initialization | Establishes initial operating state or setup |
+
+Workshop example: ECU replacement
+
+Suppose a replacement body control module is installed.
+
+The replacement ECU may require vehicle configuration so that it correctly recognizes the vehicle's installed equipment.
+
+A technician may need to:
+
+* Identify the replacement ECU.
+
+* Confirm hardware and software compatibility.
+
+* Retrieve the original configuration, if available.
+
+* Access the OEM coding procedure.
+
+* Apply the correct configuration.
+
+* Verify ECU communication and system operation.
+
+Critical caution
+
+Incorrect coding can cause missing functions, communication faults or vehicle-system malfunctions. Never change unknown configuration values experimentally.
+
+Some operations require OEM authorization, an online connection, security access or a controlled programming power supply.
+
+### 1.9.4 Software Identification
+
+Software identification allows a technician to determine which software and calibration versions are installed in an ECU.
+
+Typical identification information includes:
+
+| Parameter          | Technical meaning                                          |
+| ------------------ | ---------------------------------------------------------- |
+| ECU part number    | Hardware or assembly identification                        |
+| Hardware number    | ECU hardware revision                                      |
+| Software number    | Installed software identification                          |
+| Calibration ID     | Engine, motor or system calibration identifier             |
+| CVN                | Calibration Verification Number                            |
+| Bootloader version | Software responsible for starting or updating ECU software |
+| ECU serial number  | Individual unit identification                             |
+
+### Why software identification matters
+
+Consider an EV with intermittent inverter communication faults.
+
+Two vehicles of the same model may have different ECU software versions.
+
+The technician should establish:
+
+* Whether the correct ECU software is installed.
+
+* Whether the software version matches the vehicle specification.
+
+* Whether an applicable manufacturer software update exists.
+
+* Whether the ECU has been previously programmed.
+
+* Whether the calibration is compatible with the installed hardware.
+
+Important distinction: A newer software version is not automatically the correct version for every vehicle. Compatibility must be verified against manufacturer information.
+
+### 1.9.5 Diagnostic Data Management
+
+Diagnostic data management is the process of collecting, storing, organizing and reviewing information obtained during vehicle diagnosis.
+
+It is important because professional diagnosis must be supported by evidence.
+
+Typical diagnostic records include:
+
+* Full vehicle health reports.
+
+* ECU identification records.
+
+* DTC reports.
+
+* Freeze-frame data.
+
+* Live-data recordings.
+
+* Active-test results.
+
+* Software identification records.
+
+* Before-and-after repair reports.
+
+### Example: Recording a battery-related fault
+
+Illustrative diagnostic report
+
+Vehicle system
+
+HV Battery Management System
+
+Fault code
+
+P0A80
+
+Description
+
+Replace Hybrid Battery Pack
+
+Pack voltage
+
+198.4 V
+
+Lowest block voltage
+
+14.2 V
+
+Highest block voltage
+
+15.8 V
+
+All readings are simulated
+
+These readings illustrate report structure only. They are not evidence of an actual battery defect.
+
+The technician should retain the original scan and compare it with the post-repair scan.
+
+This helps establish whether:
+
+* The original fault was present.
+
+* The repair changed the relevant measurements.
+
+* The DTC returned.
+
+* Other faults appeared during verification.
+
+### Professional data-management practices
+
+* Save reports using a consistent vehicle identification method.
+
+* Record VIN, mileage, date and diagnostic tool details.
+
+* Preserve original scan data before clearing DTCs.
+
+* Keep before-and-after reports.
+
+* Do not alter recorded measurements.
+
+* Protect customer and vehicle information.
+
+* Follow the workshop's data-retention procedures.
+
+### How the five advanced functions work together
+
+1\. Guided diagnostics
+
+Identifies the recommended diagnostic pathway
+
+2\. OEM test plans
+
+Provides manufacturer-specific testing procedures
+
+3\. ECU coding and configuration
+
+Allows authorized configuration operations
+
+4\. Software identification
+
+Confirms ECU hardware and software identity
+
+5\. Diagnostic data management
+
+Preserves evidence and supports repair verification
+
+### Professional technician's key point
+
+An advanced diagnostic scanner does not replace engineering judgment. It provides access to information, procedures and control functions. The technician must still establish the actual cause through verified measurements, correct technical procedures and post-repair testing.
+
+---
+
+<!-- NEXT: Lesson 1.10 — Professional Scanner Diagnostic Cases (append below) -->
