@@ -317,4 +317,416 @@ Source structure: Your uploaded EV & Hybrid Master Technician Handbook – Compl
 
 ---
 
-<!-- NEXT: Lesson 1.2 — Diagnostic Scanner Types and Functions (append below) -->
+### Module 1 — Professional Diagnostic Scanner Operation
+
+### Lesson 1.2: Diagnostic Scanner Types and Functions
+
+This lesson follows the five sections in your official handbook:
+
+1.2.1 Basic code readers 1.2.2 Professional multibrand scanners 1.2.3 OEM diagnostic systems 1.2.4 Pass-through programming devices 1.2.5 EV and hybrid-specific equipment
+
+The objective is to understand the capabilities and limitations of each diagnostic tool and select the correct equipment for a professional EV or hybrid workshop.
+
+### 1.2.1 Basic code readers
+
+A basic code reader is an entry-level diagnostic device designed primarily to retrieve and clear supported diagnostic trouble codes.
+
+### Main functions
+
+* Read supported generic OBD-II DTCs.
+
+* Display basic fault descriptions.
+
+* Clear supported DTCs.
+
+* Display selected standardized live-data parameters.
+
+* Retrieve supported freeze-frame information.
+
+* Display emissions readiness monitor status.
+
+### How it works
+
+* Connect the code reader to the vehicle's diagnostic connector.
+
+* Switch the ignition or vehicle to the required diagnostic power state.
+
+* Select the diagnostic function.
+
+* The reader sends a request through its communication interface.
+
+* The ECU responds with available diagnostic information.
+
+* The reader displays the result.
+
+### Workshop example
+
+A hybrid vehicle displays a malfunction indicator lamp.
+
+A basic reader retrieves a generic powertrain DTC. This provides an initial diagnostic direction, but may not provide the detailed hybrid battery, inverter or motor-control information needed to identify the root cause.
+
+Limitation: A basic reader should not be mistaken for a complete vehicle diagnostic system.
+
+### 1.2.2 Professional multibrand scanners
+
+A professional multibrand scanner is designed to communicate with multiple vehicle manufacturers and access more diagnostic functions than a basic code reader.
+
+These scanners are widely used in independent automotive workshops.
+
+### Main functions
+
+1\. Full-system scanning
+
+Can scan multiple supported ECUs, such as:
+
+* Engine control module
+
+* Transmission control module
+
+* ABS/ESC
+
+* Airbag system
+
+* Body control module
+
+* Hybrid control system
+
+* Battery management system, where supported
+
+2\. Advanced DTC functions
+
+Can retrieve manufacturer-specific fault codes and additional ECU information when supported by the vehicle and scanner software.
+
+3\. Live-data analysis
+
+Displays operating parameters such as:
+
+* Battery voltage
+
+* Coolant temperature
+
+* Motor speed
+
+* Sensor signals
+
+* ECU supply voltage
+
+* Charging-system parameters
+
+4\. Bidirectional control
+
+Can command supported components to operate.
+
+Examples include:
+
+* Cooling fan activation.
+
+* Coolant pump activation.
+
+* Relay activation.
+
+* Selected actuator tests.
+
+5\. Service functions
+
+Depending on vehicle coverage:
+
+* Electronic parking brake service.
+
+* Steering-angle calibration.
+
+* Battery registration.
+
+* Throttle adaptation.
+
+* Component initialization.
+
+### Professional advantage
+
+A multibrand scanner provides broad vehicle coverage without requiring a separate manufacturer-specific tool for every vehicle.
+
+### Important limitation
+
+Not all multibrand scanners have equal coverage. Two scanners may support the same vehicle but provide different access to BMS data, active tests, coding and programming.
+
+Always verify the exact vehicle model, production year, ECU and function coverage.
+
+### 1.2.3 OEM diagnostic systems
+
+An OEM diagnostic system is manufacturer-specific equipment or software designed to support diagnosis, maintenance and programming of that manufacturer's vehicles.
+
+Examples include:
+
+* Toyota Techstream
+
+* BMW ISTA
+
+* Mercedes-Benz XENTRY
+
+* Volkswagen ODIS
+
+* Ford FDRS
+
+### Main capabilities
+
+1\. Manufacturer-specific ECU access
+
+Provides access to manufacturer-specific diagnostic information and functions that may not be available through generic equipment.
+
+2\. Guided diagnostics
+
+Some OEM systems provide structured diagnostic procedures that guide the technician through tests based on the vehicle's fault information.
+
+3\. Advanced live data
+
+May expose manufacturer-specific parameters that are important for EV and hybrid diagnosis.
+
+For example:
+
+* Individual battery block voltage.
+
+* Battery temperature sensor readings.
+
+* Contactor status.
+
+* Inverter operating temperatures.
+
+* Motor resolver information.
+
+* Charging-system operating status.
+
+4\. ECU programming and configuration
+
+Where supported and authorized, OEM systems may perform:
+
+* ECU software updates.
+
+* Coding and configuration.
+
+* Adaptations.
+
+* Component initialization.
+
+* Calibration procedures.
+
+### Why OEM tools matter
+
+Consider a hybrid vehicle with a battery-system warning.
+
+A multibrand scanner may identify a battery-related DTC. An OEM system may provide a more detailed manufacturer-specific diagnostic procedure, relevant battery parameters and prescribed testing sequence.
+
+However, OEM diagnostic access does not remove the need for independent verification of electrical and mechanical faults.
+
+### 1.2.4 Pass-through programming devices
+
+A pass-through programming device is an interface that allows compatible computer-based diagnostic or programming software to communicate with vehicle ECUs.
+
+One important standard associated with this equipment is SAE J2534.
+
+### Main purpose
+
+It provides a communication pathway between:
+
+* A computer running diagnostic or programming software.
+
+* A vehicle communication interface.
+
+* The vehicle's diagnostic connector.
+
+* The target ECU.
+
+### Simplified architecture
+
+Laptop / PC
+
+OEM programming application
+
+J2534 pass-through interface
+
+Communication hardware and driver
+
+Vehicle DLC / communication network
+
+Target ECU
+
+Receives supported programming or diagnostic communication
+
+Simplified programming architecture. Actual interfaces and supported protocols depend on the vehicle, software and device.
+
+### Typical applications
+
+* ECU reprogramming.
+
+* Manufacturer-authorized software updates.
+
+* Selected ECU diagnostic functions.
+
+* Calibration or configuration procedures where supported.
+
+### Critical programming precautions
+
+Programming is not the same as ordinary DTC scanning.
+
+Before programming:
+
+* Confirm the correct vehicle and ECU.
+
+* Verify the ECU part number and software compatibility.
+
+* Confirm stable vehicle power.
+
+* Use the manufacturer-specified battery support equipment and voltage requirements.
+
+* Confirm the communication interface and software compatibility.
+
+* Follow the OEM programming procedure.
+
+* Verify programming completion and perform required post-programming checks.
+
+Programming risk
+
+Interrupted or incorrect ECU programming can leave a control module unable to operate correctly. Some modules may require recovery procedures or replacement. Never interrupt programming power or communication unless the manufacturer procedure explicitly instructs you to do so.
+
+### 1.2.5 EV and hybrid-specific equipment
+
+EV and hybrid vehicles require diagnostic equipment capable of accessing their specialized high-voltage and electrified powertrain systems.
+
+### A. EV-capable diagnostic scanner
+
+A suitable EV-capable scanner may access:
+
+* Battery Management System.
+
+* Battery cell or block voltage.
+
+* Battery temperature readings.
+
+* State of Charge (SoC).
+
+* State of Health (SoH), where supported.
+
+* Battery contactor status.
+
+* Inverter control data.
+
+* Electric motor operating parameters.
+
+* Onboard charger information.
+
+* DC-DC converter data.
+
+* Charging-system DTCs.
+
+Actual access depends on vehicle coverage and manufacturer restrictions.
+
+### B. High-voltage insulation resistance tester
+
+An insulation resistance tester is used to evaluate electrical insulation resistance under the manufacturer's specified testing conditions.
+
+It is relevant when investigating suspected insulation deterioration in HV circuits.
+
+Important distinctions:
+
+* It is not an ordinary multimeter.
+
+* It applies a specified test voltage.
+
+* It must only be used on isolated circuits and components approved for that test.
+
+* Electronic modules, capacitors and other sensitive components may be damaged by inappropriate test voltage.
+
+Never apply an insulation tester to a connected HV system or ECU without an approved manufacturer procedure.
+
+### C. High-voltage measurement equipment
+
+Specialized HV-rated equipment is required for measurements on high-voltage circuits.
+
+Examples include:
+
+* Properly rated digital multimeters.
+
+* Approved HV measurement leads and probes.
+
+* Suitable current measurement equipment.
+
+* Manufacturer-approved breakout adapters where required.
+
+The equipment's voltage rating, measurement category, probe condition and operating procedure must be appropriate for the circuit being tested.
+
+### D. Battery diagnostic equipment
+
+Depending on the vehicle and battery design, specialized battery equipment may support:
+
+* Battery pack evaluation.
+
+* Module or cell assessment.
+
+* Voltage measurement.
+
+* Capacity testing.
+
+* Internal resistance evaluation.
+
+* Battery balancing or reconditioning procedures where permitted.
+
+Not every battery analyzer supports every EV battery chemistry or architecture.
+
+### 6\. Professional equipment selection
+
+| Diagnostic task                 | Appropriate equipment                               |
+| ------------------------------- | --------------------------------------------------- |
+| Basic generic DTC retrieval     | Basic OBD-II reader                                 |
+| Multi-system diagnosis          | Professional multibrand scanner                     |
+| Manufacturer-specific diagnosis | OEM diagnostic system                               |
+| Supported ECU programming       | OEM software with compatible pass-through interface |
+| HV insulation testing           | Approved insulation resistance tester               |
+| HV voltage measurement          | Properly rated HV measurement equipment             |
+| Battery condition evaluation    | Compatible battery diagnostic equipment             |
+
+### 7\. Workshop scenario
+
+Vehicle: Battery-electric vehicle (BEV)
+
+Customer complaint: Vehicle displays an electric powertrain warning and has reduced power.
+
+A professional technician should select equipment based on the diagnostic objective:
+
+* Use an EV-capable scanner with confirmed vehicle coverage.
+
+* Identify the BMS, VCU and inverter ECUs.
+
+* Retrieve and save all relevant DTCs.
+
+* Examine relevant live data.
+
+* Compare measured or reported values with manufacturer specifications.
+
+* Use additional electrical test equipment only when the diagnostic evidence indicates a need.
+
+* Confirm the root cause before replacing components.
+
+Do not assume that a battery warning means the battery pack itself has failed. The fault could originate from sensing, wiring, power supply, communication, thermal management or another associated system.
+
+### Lesson 1.2 — Technical conclusions
+
+* Basic code readers are suitable for limited standardized diagnostic access.
+
+* Professional multibrand scanners provide broader system coverage and service functions.
+
+* OEM systems provide manufacturer-specific diagnostic capabilities.
+
+* J2534 pass-through devices provide a communication interface for supported programming applications.
+
+* EV and hybrid diagnosis requires specialized scanner coverage and appropriately rated electrical test equipment.
+
+* Equipment selection must be based on the vehicle, ECU, diagnostic objective and manufacturer procedure.
+
+Next lesson: Module 1, Lesson 1.3 — Vehicle Identification and Diagnostic Connection.
+
+This will cover VIN identification and decoding, vehicle selection, DLC connector identification, communication protocols and secure gateway access.
+
+Official lesson structure: uploaded handbook, Module 1, Section 1.2.
+
+---
+
+<!-- NEXT: Lesson 1.3 — Vehicle Identification and Diagnostic Connection (append below) -->
