@@ -6206,4 +6206,443 @@ Do not assume the ADAS camera uses Ethernet or the door module uses LIN without 
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.7 Vehicle Network Topology (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.7: Vehicle Network Topology
+
+Professional EV & Hybrid Master Technician Training
+
+Vehicle network topology describes how electronic control units (ECUs), communication cables, gateways and network switches are physically and logically connected.
+
+As an EV technician, understanding topology is essential because a communication fault affecting several ECUs may originate from one shared cable, connector, gateway or network branch.
+
+For example, if several drivetrain controllers lose communication simultaneously, you need to determine whether they share the same network segment before condemning individual ECUs.
+
+Official lesson structure:
+
+* 2.7.1 Bus, star and hybrid topologies
+
+* 2.7.2 Gateway modules
+
+* 2.7.3 Domain controllers
+
+* 2.7.4 Centralized and zonal architecture
+
+* 2.7.5 Network segmentation
+
+### 2.7.1 Bus, star and hybrid topologies
+
+### A. Bus topology
+
+In a bus topology, multiple ECUs connect to a shared communication backbone.
+
+A typical high-speed CAN network uses a twisted-pair backbone with termination at the two physical ends of the bus.
+
+Example:
+
+* Battery Management System
+
+* Vehicle Control Unit
+
+* Motor Control Unit
+
+* DC-DC converter
+
+These controllers communicate through the shared network.
+
+Advantages
+
+* Relatively simple wiring architecture.
+
+* Efficient use of communication conductors.
+
+* Multiple ECUs can share the same network.
+
+Disadvantages
+
+* Damage to the main backbone can affect several controllers.
+
+* Incorrect termination can degrade communication.
+
+* Additional wiring branches can create signal-reflection problems if improperly designed.
+
+Workshop diagnosis: If several ECUs on the same bus report communication faults, investigate the shared backbone, termination and common power or ground conditions.
+
+### B. Star topology
+
+In a star topology, multiple network connections converge at a central device, such as a switch or hub.
+
+Each connected ECU has an individual connection to the central point.
+
+Advantages
+
+* A fault in one individual branch may affect only its connected ECU.
+
+* Individual branches can be easier to isolate.
+
+* Centralised connection management.
+
+Disadvantages
+
+* The central switch can become a critical failure point.
+
+* More individual wiring runs may be required.
+
+* A central connection fault can affect multiple devices.
+
+Workshop diagnosis: If one ECU is offline while other devices connected to the same switch remain operational, inspect that ECU's branch, connector, supply and transceiver.
+
+### C. Hybrid topology
+
+A hybrid topology combines two or more network arrangements.
+
+For example:
+
+* A CAN bus connects drivetrain ECUs.
+
+* An Ethernet switch connects ADAS controllers.
+
+* A gateway links the two network domains.
+
+* LIN networks connect local door and seat devices.
+
+This is common in complex vehicle electrical architectures.
+
+Technician's principle: Always identify the actual topology before performing network resistance tests or disconnecting ECUs. A measurement appropriate for a conventional two-terminator CAN bus may be invalid on a different network arrangement.
+
+### 2.7.2 Gateway modules
+
+### A. What is a gateway?
+
+A vehicle gateway is an electronic device that connects different vehicle communication networks.
+
+It receives messages from one network and routes or translates appropriate information to another network.
+
+For example, a gateway may connect:
+
+* Powertrain CAN
+
+* Body CAN
+
+* Chassis CAN
+
+* Automotive Ethernet
+
+* Diagnostic communication networks
+
+### B. Main gateway functions
+
+1\. Message routing
+
+Transfers permitted messages between network segments.
+
+2\. Protocol interfacing
+
+Supports communication between networks using different communication technologies.
+
+3\. Network isolation
+
+Separates network segments so that faults or traffic on one network do not necessarily propagate freely to others.
+
+4\. Diagnostic communication
+
+Allows diagnostic equipment to access multiple ECUs through a diagnostic interface.
+
+5\. Security filtering
+
+Controls which messages and diagnostic requests are allowed to pass between network domains.
+
+### C. Gateway diagnostic example
+
+Simulated workshop example
+
+A vehicle has three communication domains:
+
+| Network        | Connected systems           |
+| -------------- | --------------------------- |
+| Powertrain CAN | BMS, VCU, motor controller  |
+| Body CAN       | BCM, door modules, lighting |
+| Ethernet       | ADAS and central computing  |
+
+Suppose the scanner communicates with body ECUs but cannot access several powertrain ECUs.
+
+Possible causes include:
+
+* Powertrain CAN wiring fault.
+
+* Gateway power or ground problem.
+
+* Gateway internal fault.
+
+* Network configuration problem.
+
+* Gateway security or communication restrictions.
+
+The correct diagnostic procedure is to inspect gateway DTCs, communication status, network topology and electrical conditions before replacing the gateway.
+
+### 2.7.3 Domain controllers
+
+### A. What is a domain controller?
+
+A domain controller is an ECU responsible for managing or coordinating a particular functional area of the vehicle.
+
+Instead of every individual ECU operating independently, multiple functions can be coordinated through a more powerful controller.
+
+Typical vehicle domains include:
+
+| Domain       | Responsibilities                                   |
+| ------------ | -------------------------------------------------- |
+| Powertrain   | Motor torque, inverter coordination and propulsion |
+| Body         | Lighting, doors, windows and comfort systems       |
+| Chassis      | Braking, steering and vehicle dynamics             |
+| ADAS         | Driver assistance and sensor processing            |
+| Infotainment | Displays, navigation and multimedia                |
+
+### B. Domain controller versus ordinary ECU
+
+An ordinary ECU may control a specific function, such as a window motor.
+
+A domain controller coordinates multiple related functions and may exchange data with many other controllers.
+
+For example, a powertrain domain controller may coordinate:
+
+* Battery power limits.
+
+* Motor torque requests.
+
+* Regenerative braking.
+
+* Thermal restrictions.
+
+* Vehicle propulsion status.
+
+### C. Diagnostic importance
+
+A fault in a domain controller can affect several related functions simultaneously.
+
+When diagnosing multiple DTCs, identify whether they share a common domain controller.
+
+However, multiple fault codes do not prove that the domain controller is defective. Check its power supply, grounds, communication connections, software status and dependent ECUs.
+
+### 2.7.4 Centralized and zonal architecture
+
+These are two important approaches to designing modern vehicle electrical and electronic systems.
+
+### A. Centralized architecture
+
+In a centralized architecture, powerful central computing units perform many functions that were previously distributed across numerous individual ECUs.
+
+Characteristics:
+
+* Greater concentration of computing resources.
+
+* Fewer independent control units for some functions.
+
+* Centralised software and data processing.
+
+* High-speed communication between central computers and other vehicle systems.
+
+Advantages
+
+* Can reduce duplicated hardware and software.
+
+* Can simplify certain control and software update processes.
+
+* Supports complex vehicle functions and integration.
+
+Disadvantages
+
+* Central computers can become critical failure points.
+
+* Greater software complexity.
+
+* Requires careful thermal management and power-supply design.
+
+### B. Zonal architecture
+
+Zonal architecture organises vehicle electronics according to their physical location rather than only their functional purpose.
+
+For example, a vehicle may have:
+
+* Front-left zone controller.
+
+* Front-right zone controller.
+
+* Rear-left zone controller.
+
+* Rear-right zone controller.
+
+* Central computing unit.
+
+Each zone controller manages local electrical devices and communicates with central computing resources through high-speed network connections.
+
+### C. How zonal architecture works
+
+Consider a front-left zone controller.
+
+It may connect to:
+
+* Headlamp.
+
+* Wheel-speed sensor interface.
+
+* Door electronics.
+
+* Local temperature sensors.
+
+* Other nearby electrical devices.
+
+Instead of running every individual signal wire across the entire vehicle to a central ECU, local devices connect to a nearby zone controller where the architecture permits.
+
+The zone controller then communicates relevant information to central computing units.
+
+### D. Advantages of zonal architecture
+
+* Can reduce long wiring runs.
+
+* Can reduce harness complexity and weight.
+
+* Improves physical organisation of vehicle electronics.
+
+* Supports centralised software processing.
+
+* Makes it easier to expand some electrical architectures.
+
+Important distinction: A domain is organised by vehicle function, while a zone is organised by physical location. A zonal controller may support several functional domains.
+
+### E. Centralized versus zonal architecture
+
+| Feature               | Centralized                          | Zonal                                               |
+| --------------------- | ------------------------------------ | --------------------------------------------------- |
+| Organisation          | Central computing resources          | Physical vehicle locations                          |
+| Main concept          | Consolidate computing                | Consolidate local connections                       |
+| Wiring strategy       | Depends on central architecture      | Local devices connect to zone controllers           |
+| Computing             | Centralised                          | Often centralised with distributed zonal interfaces |
+| Main diagnostic focus | Central computers and their networks | Zone controllers, local wiring and backbone         |
+
+### 2.7.5 Network segmentation
+
+### A. What is network segmentation?
+
+Network segmentation means dividing a vehicle communication system into separate network sections or domains.
+
+Each segment has its own communication connections and may have different access rules.
+
+For example, a vehicle may separate:
+
+* Powertrain network.
+
+* Body network.
+
+* Chassis network.
+
+* Infotainment network.
+
+* ADAS network.
+
+A gateway or central computing platform controls communication between selected segments.
+
+### B. Why is segmentation important?
+
+1\. Fault containment
+
+A fault in one network segment may be prevented from affecting unrelated segments.
+
+2\. Cybersecurity
+
+Segmentation restricts access to sensitive vehicle control systems.
+
+3\. Traffic management
+
+Separating communication domains helps manage message traffic and performance.
+
+4\. Functional separation
+
+Safety-critical and non-safety-critical systems can have different communication and access requirements.
+
+### C. Example: EV network segmentation
+
+Simplified architecture
+
+| Segment      | Example systems                       | Diagnostic priority                  |
+| ------------ | ------------------------------------- | ------------------------------------ |
+| Powertrain   | BMS, VCU, motor controller            | Propulsion and battery communication |
+| Chassis      | ABS/ESC, steering                     | Vehicle dynamics communication       |
+| Body         | BCM, doors, lighting                  | Comfort and body functions           |
+| ADAS         | Cameras, radar, assistance controller | Sensor and assistance communication  |
+| Infotainment | Display, audio, navigation            | Multimedia communication             |
+
+The gateway controls which information is permitted to pass between these segments.
+
+For example, an infotainment device should not automatically have unrestricted access to safety-critical powertrain control messages.
+
+### D. Workshop fault-isolation strategy
+
+When diagnosing a network segmentation problem:
+
+* Identify the affected ECU and its network segment.
+
+* Check whether other ECUs in that segment are communicating.
+
+* Check the gateway's communication status and DTCs.
+
+* Examine the wiring diagram and network topology.
+
+* Verify the relevant power, ground and communication circuits.
+
+* Check whether gateway filtering, configuration or software is involved.
+
+* Confirm communication after repairs.
+
+Do not bypass gateway security controls or connect network segments together as a diagnostic shortcut.
+
+### Practical master-technician case
+
+Simulated diagnostic case — not real vehicle data
+
+Vehicle: Modern battery electric vehicle with zonal architecture.
+
+Customer complaint: Several front-left electrical functions stop operating intermittently.
+
+Affected functions:
+
+* Left headlamp.
+
+* Left front door electronics.
+
+* One local sensor interface.
+
+Other vehicle functions remain operational.
+
+Initial diagnostic reasoning
+
+Because several affected devices are physically located in the same area, investigate whether they share a front-left zone controller or its local power and communication connections.
+
+Possible fault areas:
+
+| Suspected area         | What to investigate                           |
+| ---------------------- | --------------------------------------------- |
+| Zone controller supply | Voltage stability and fuse connections        |
+| Zone controller ground | Ground integrity and voltage drop             |
+| Local harness          | Damaged wires and connector condition         |
+| Network connection     | Communication integrity with central computer |
+| Zone controller        | Internal fault, configuration or software     |
+
+Correct diagnostic approach: Use the OEM topology and wiring diagrams to establish which devices actually share the zone controller. Then test the common supply, ground and communication path before replacing components.
+
+### Module 2.7 — Technical summary
+
+| Topic                    | Essential understanding                                                   |
+| ------------------------ | ------------------------------------------------------------------------- |
+| Bus topology             | Multiple ECUs share a communication backbone                              |
+| Star topology            | Network connections converge at a central device                          |
+| Hybrid topology          | Combines different network structures                                     |
+| Gateway                  | Connects and controls communication between network segments              |
+| Domain controller        | Coordinates a functional area of the vehicle                              |
+| Centralized architecture | Consolidates computing functions                                          |
+| Zonal architecture       | Organises electronics by physical location                                |
+| Network segmentation     | Separates networks for fault containment, security and traffic management |
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.8 ECU Communication and Network Management (append below) -->
