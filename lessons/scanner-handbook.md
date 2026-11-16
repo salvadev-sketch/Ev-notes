@@ -7609,4 +7609,532 @@ The most important diagnostic principle: Always separate the communication sympt
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.10 Vehicle Communication Diagnostic Cases (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.10: Vehicle Communication Diagnostic Cases
+
+This lesson brings together the network principles and diagnostic methods from Module 2. We will work through five workshop cases, following the fault from the initial symptoms to root-cause confirmation and repair verification.
+
+The five official topics are:
+
+* 2.10.1 Complete CAN failure
+
+* 2.10.2 Intermittent communication faults
+
+* 2.10.3 Multiple ECU errors
+
+* 2.10.4 Gateway failure
+
+* 2.10.5 Network repair verification
+
+Workshop principle: Do not replace an ECU simply because the scanner cannot communicate with it. First establish whether the fault is in the ECU, its power supply, its ground, the network wiring, or another module affecting the network.
+
+The diagnostic readings and vehicle symptoms below are simulated training examples, not measurements from a real vehicle.
+
+### 2.10.1 Complete CAN failure
+
+### A. Fault description
+
+A vehicle arrives at the workshop with several symptoms:
+
+* Engine or vehicle control warning indicators illuminated.
+
+* Multiple ECUs are inaccessible through the diagnostic scanner.
+
+* Instrument cluster displays communication warnings.
+
+* Some vehicle functions are disabled.
+
+* The scanner reports several U-codes, such as U0100 — Lost Communication With ECM/PCM.
+
+A complete CAN failure means that communication on the affected CAN network has been lost or severely disrupted. It does not necessarily mean every network in the vehicle has failed.
+
+### B. Understand the possible failure points
+
+The main areas to investigate are:
+
+| Area                | Possible fault                          |
+| ------------------- | --------------------------------------- |
+| CAN-H wiring        | Open circuit or short circuit           |
+| CAN-L wiring        | Open circuit or short circuit           |
+| CAN-H to CAN-L      | Short circuit                           |
+| Network termination | Missing or defective termination        |
+| ECU power supply    | Missing battery or ignition supply      |
+| ECU ground          | High resistance or open ground          |
+| ECU transceiver     | Internal communication hardware failure |
+
+### C. Diagnostic procedure
+
+Step 1 — Perform a complete vehicle scan
+
+Record:
+
+* Which ECUs communicate.
+
+* Which ECUs do not communicate.
+
+* All communication DTCs.
+
+* Whether the fault affects one network or multiple networks.
+
+Do not clear DTCs at this stage.
+
+Step 2 — Identify the affected network
+
+Use the manufacturer's network topology diagram to identify:
+
+* Which ECUs are connected to the affected CAN bus.
+
+* Whether the network passes through a gateway.
+
+* Where the termination resistors are located.
+
+* Whether any modules are connected through branches or junctions.
+
+Step 3 — Check ECU power and ground
+
+Before suspecting a communication circuit, verify the power supply and ground at the affected modules using the OEM wiring diagram and specified test procedure.
+
+A module with no power cannot communicate, even when the CAN wiring is healthy.
+
+Step 4 — Inspect CAN electrical condition
+
+With the vehicle powered down and the network in the manufacturer's specified test condition, measure resistance between CAN-H and CAN-L where the OEM procedure permits.
+
+A conventional high-speed CAN network with two 120 Ω termination resistors in parallel typically measures approximately:
+
+`R_T = (120 × 120) / (120 + 120) = 60 Ω`
+
+A reading around 60 Ω is typical for this arrangement, but it is not a universal pass/fail value. Some networks use different topologies or termination arrangements. Follow the vehicle-specific specification.
+
+Step 5 — Use an oscilloscope
+
+Inspect CAN-H and CAN-L waveforms for:
+
+* Missing differential activity.
+
+* Distorted dominant or recessive states.
+
+* Excessive noise.
+
+* Intermittent signal interruptions.
+
+* Abnormal voltage levels.
+
+### D. Example fault conclusion
+
+Simulated findings:
+
+* Multiple ECUs on one CAN segment are inaccessible.
+
+* Their power and grounds are correct.
+
+* CAN-H and CAN-L are shorted together at a damaged harness section.
+
+* Repairing the damaged wiring restores communication.
+
+Root cause: CAN wiring short circuit, not multiple failed ECUs.
+
+### 2.10.2 Intermittent communication faults
+
+### A. Fault description
+
+The vehicle communicates normally during initial scanning, but communication disappears under certain conditions.
+
+Possible symptoms:
+
+* Intermittent warning lights.
+
+* Random U-codes.
+
+* Temporary loss of instrument display information.
+
+* Communication failure during vibration or road movement.
+
+* Fault appears when the vehicle is hot or after rain.
+
+Intermittent faults are difficult because the circuit may test correctly when stationary.
+
+### B. Common causes
+
+| Cause                   | Electrical effect                |
+| ----------------------- | -------------------------------- |
+| Loose connector         | Intermittent electrical contact  |
+| Corroded terminal       | Increased contact resistance     |
+| Damaged wire            | Connection changes with movement |
+| Poor ground             | Voltage instability              |
+| Water ingress           | Leakage or short circuit         |
+| Failing ECU transceiver | Unstable network signalling      |
+
+### C. Diagnostic procedure
+
+Step 1 — Preserve fault evidence
+
+Record the DTCs, freeze-frame information where available, fault frequency and operating conditions.
+
+Determine whether the problem occurs:
+
+* During engine or motor operation.
+
+* During charging.
+
+* When the vehicle is moving.
+
+* After thermal soak.
+
+* During vibration.
+
+Step 2 — Inspect connectors and harnesses
+
+Pay particular attention to:
+
+* Connector locking mechanisms.
+
+* Bent or pushed-back terminals.
+
+* Corrosion.
+
+* Harness contact with sharp edges.
+
+* Areas exposed to water or heat.
+
+Step 3 — Perform a controlled wiggle test
+
+With suitable precautions, monitor network communication or the relevant electrical signal while carefully moving the suspected harness section.
+
+Do not pull wiring aggressively or disturb high-voltage components.
+
+Step 4 — Monitor the network with an oscilloscope
+
+Capture the waveform while reproducing the fault.
+
+Look for momentary loss of signal, waveform distortion or electrical noise that coincides with the communication failure.
+
+Step 5 — Check temperature-related faults
+
+If the fault occurs only when hot or cold, use a controlled procedure to reproduce the temperature condition. Compare the network waveform and module supply voltage before and during the failure.
+
+### D. Example fault conclusion
+
+Simulated findings:
+
+* Communication is normal when the vehicle is stationary.
+
+* The fault appears when the harness near a connector is moved.
+
+* Oscilloscope capture shows brief loss of CAN activity.
+
+* Inspection reveals a loose terminal with poor contact tension.
+
+Root cause: Intermittent connector contact.
+
+The correct repair is to restore the terminal connection using the approved repair method, not automatically replace the ECU.
+
+### 2.10.3 Multiple ECU errors
+
+### A. Fault description
+
+A diagnostic scanner reports communication faults in several ECUs at the same time.
+
+For example:
+
+* U0100 — Lost Communication With ECM/PCM.
+
+* U0121 — Lost Communication With ABS Control Module.
+
+* U0140 — Lost Communication With Body Control Module.
+
+These codes identify communication losses from the reporting module's perspective. They do not prove that all the named modules have failed.
+
+### B. Understand the common-cause principle
+
+When several ECUs report communication faults simultaneously, investigate shared causes before diagnosing each ECU independently.
+
+Potential common causes include:
+
+* Failure of a shared CAN network segment.
+
+* Loss of power to a common supply circuit.
+
+* Poor shared ground.
+
+* Gateway or network junction failure.
+
+* A defective ECU disrupting the bus.
+
+* Network wiring damage.
+
+### C. Diagnostic procedure
+
+Step 1 — Identify the reporting modules
+
+Determine which ECUs recorded the DTCs and which ECUs are actually inaccessible.
+
+These are not always the same.
+
+Step 2 — Compare the DTC timestamps and status
+
+If the faults occurred together, a common event may have affected several modules.
+
+Check available freeze-frame data and fault history.
+
+Step 3 — Look for the shared network
+
+Use the topology diagram to identify whether the affected modules share:
+
+* The same CAN bus.
+
+* The same gateway.
+
+* A common power distribution point.
+
+* A common ground connection.
+
+Step 4 — Check the shared electrical supply
+
+Measure the relevant supply and ground circuits under appropriate load conditions. A voltage reading without load may fail to reveal a high-resistance connection.
+
+Step 5 — Isolate the network systematically
+
+If the OEM diagnostic procedure permits, isolate branches or modules one at a time while monitoring network recovery.
+
+Never disconnect modules randomly, especially on an active vehicle network. Follow the specified shutdown and reconnection procedure.
+
+### D. Example fault conclusion
+
+Simulated findings:
+
+* Four ECUs report communication faults.
+
+* All four belong to the same CAN segment.
+
+* Other vehicle networks remain operational.
+
+* The affected segment has an open circuit at a shared connector.
+
+* Restoring the connection brings all four ECUs back online.
+
+Root cause: One shared network wiring fault created several secondary DTCs.
+
+Technician lesson: Multiple communication DTCs can have one physical cause.
+
+### 2.10.4 Gateway failure
+
+### A. Understand the gateway's function
+
+A vehicle gateway is a communication controller that connects different vehicle networks and manages the transfer of information between them.
+
+For example, a vehicle may have separate:
+
+* Powertrain CAN.
+
+* Body CAN.
+
+* Chassis CAN.
+
+* Diagnostic communication network.
+
+* Automotive Ethernet network.
+
+The gateway may perform several functions:
+
+* Route messages between networks.
+
+* Filter or control message transmission.
+
+* Support diagnostic communication.
+
+* Manage network wake-up and sleep.
+
+* Provide network isolation and security functions.
+
+A gateway fault can therefore affect communication between otherwise healthy networks.
+
+### B. Typical gateway failure symptoms
+
+* Scanner cannot communicate with several ECUs on different networks.
+
+* Some ECUs communicate locally but cannot exchange information with other vehicle systems.
+
+* Multiple network-related DTCs appear.
+
+* Diagnostic communication with certain modules is unavailable.
+
+* Vehicle functions depending on cross-network messages become disabled.
+
+### C. Diagnostic procedure
+
+Step 1 — Attempt direct gateway communication
+
+Use the manufacturer's diagnostic scanner to identify whether the gateway itself responds.
+
+If it does not respond, do not immediately conclude that the gateway is defective.
+
+Step 2 — Verify gateway power and ground
+
+Using the correct wiring diagram, inspect:
+
+* Permanent battery supply.
+
+* Ignition or wake-up supply, where applicable.
+
+* Ground circuits.
+
+* Relevant fuses and connectors.
+
+Perform voltage-drop tests where appropriate.
+
+Step 3 — Check network inputs and outputs
+
+Determine whether communication is reaching the gateway and whether the gateway is transmitting on the affected network.
+
+Use an oscilloscope and the OEM network test procedure to compare the relevant network sides.
+
+Step 4 — Investigate gateway DTCs and configuration
+
+If the gateway communicates, examine:
+
+* Internal gateway DTCs.
+
+* Network status.
+
+* Bus-off or communication error records.
+
+* Configuration and coding status.
+
+* Software or programming faults.
+
+Step 5 — Check whether the failure is internal or external
+
+A gateway may appear faulty because one connected network has a short circuit or another module is disrupting communication.
+
+Isolate the relevant network only using the manufacturer's approved procedure.
+
+### D. Example fault conclusion
+
+Simulated findings:
+
+* The powertrain CAN communicates normally.
+
+* The body CAN also communicates locally.
+
+* Cross-network messages are missing.
+
+* Gateway power, ground and network wiring are verified.
+
+* The gateway records an internal communication-processing fault.
+
+Possible root cause: Internal gateway malfunction.
+
+Replacement or programming should only follow the manufacturer's diagnostic confirmation and configuration procedure.
+
+### 2.10.5 Network repair verification
+
+A repair is not complete simply because the warning light disappears or the DTC has been cleared.
+
+The technician must demonstrate that the original communication problem has been corrected and that the affected systems operate normally.
+
+### A. Verification procedure
+
+Step 1 — Inspect the completed repair
+
+Check:
+
+* Correct wire type and specification.
+
+* Correct wire size and routing.
+
+* Proper terminal crimping or approved splicing.
+
+* Connector locking and terminal retention.
+
+* Insulation and protection.
+
+* Harness support and clearance from heat or moving parts.
+
+Use the manufacturer's approved wiring repair method. CAN wiring impedance and twisted-pair geometry must be maintained where specified.
+
+Step 2 — Recheck electrical characteristics
+
+Repeat the relevant tests performed during diagnosis:
+
+* Network resistance, if applicable.
+
+* CAN-H and CAN-L voltage checks.
+
+* Oscilloscope waveform inspection.
+
+* Power-supply and ground voltage-drop tests.
+
+Compare results with OEM specifications and the original fault condition.
+
+Step 3 — Perform a complete vehicle scan
+
+Confirm:
+
+* All expected ECUs communicate.
+
+* No new communication DTCs have appeared.
+
+* Original DTCs do not return as current or active faults.
+
+* Gateway and network status are normal.
+
+Historical or stored DTCs may remain until cleared according to the OEM procedure. Record them before clearing.
+
+Step 4 — Reproduce the original operating conditions
+
+If the fault occurred during vibration, temperature changes, charging or vehicle operation, repeat the appropriate controlled test.
+
+Do not claim an intermittent fault is repaired merely because the vehicle passed a stationary scan.
+
+Step 5 — Confirm vehicle functions
+
+Check the functions associated with the affected network and confirm that the relevant modules exchange information correctly.
+
+Step 6 — Document the repair
+
+Record the initial symptoms, DTCs, measurements, root cause, repair performed and final verification results.
+
+### B. Example verification record
+
+SIMULATED WORKSHOP RECORD — NOT REAL VEHICLE DATA
+
+| Verification item            | Result                                 |
+| ---------------------------- | -------------------------------------- |
+| Original communication fault | CAN segment open circuit               |
+| Wiring repair                | Completed using approved repair method |
+| Network resistance           | 60.2 Ω, where 60 Ω is specified        |
+| CAN waveform                 | Normal for the tested network          |
+| ECU communication scan       | All expected ECUs responding           |
+| Original active DTC          | Not returning                          |
+| Functional test              | Passed                                 |
+| Road test                    | Passed under reproduced conditions     |
+
+The 60.2 Ω value is an illustrative result for a conventional two-terminator CAN network, not a universal specification.
+
+### C. Final diagnostic report structure
+
+A professional network repair report should contain:
+
+* Customer complaint.
+
+* Initial vehicle scan and DTC list.
+
+* Network topology and affected ECUs.
+
+* Diagnostic measurements and test conditions.
+
+* Confirmed root cause.
+
+* Repair procedure and parts used.
+
+* Post-repair electrical measurements.
+
+* Final scan and functional test results.
+
+* Technician conclusion.
+
+---
+
+<!-- NEXT: Module 3 — Lesson 3.1 Electrical Fundamentals (append below) -->
