@@ -4418,4 +4418,468 @@ The absence of a generic OBD-II fault code is not proof that the vehicle is faul
 
 ---
 
-<!-- NEXT: Module 2 — Lesson 2.3 Controller Area Network (CAN Bus) (append below) -->
+### Module 2 — OBD-II, CAN Bus & ECU Communication
+
+### Lesson 2.3: Controller Area Network (CAN Bus)
+
+CAN stands for Controller Area Network. It is one of the most important communication technologies used in modern vehicles.
+
+For an EV technician, understanding CAN is essential because the VCU, BMS, inverter, ABS, charging controller and other ECUs must exchange information reliably.
+
+A CAN fault can cause multiple warning lights, communication DTCs, reduced power or even prevent a vehicle from entering READY mode.
+
+This lesson covers the five official sections.
+
+### 2.3.1 CAN Principles
+
+CAN is a serial communication protocol originally developed for automotive applications. It allows multiple electronic control units to communicate over a shared network.
+
+Instead of requiring a separate communication wire between every pair of ECUs, multiple controllers can connect to the same CAN bus.
+
+### Basic CAN network architecture
+
+A simplified network contains:
+
+* CAN-H communication conductor.
+
+* CAN-L communication conductor.
+
+* Multiple ECU nodes.
+
+* Termination resistors at the ends of the bus.
+
+* CAN transceivers inside communicating ECUs.
+
+Each ECU connects to the bus through a CAN transceiver.
+
+The transceiver converts the controller's digital logic signals into electrical signals on the CAN network and converts received electrical signals back into digital information.
+
+### How CAN communication works
+
+Suppose the BMS needs to communicate a battery power limitation.
+
+* The BMS measures battery operating conditions.
+
+* Its controller calculates the permitted power limit.
+
+* The BMS prepares a CAN message.
+
+* The CAN transceiver transmits the message onto the network.
+
+* Other ECUs receive the message.
+
+* The VCU processes the information and adjusts the vehicle's operating strategy.
+
+The message is available to network nodes, but each ECU processes only the messages relevant to its programmed functions.
+
+### Important CAN characteristics
+
+| Characteristic          | Explanation                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------ |
+| Multi-master            | Multiple ECUs can initiate communication                                             |
+| Message-based           | Information is transmitted in messages, not simply as a direct ECU-to-ECU connection |
+| Broadcast               | Transmitted messages can be received by multiple network nodes                       |
+| Arbitration             | Determines which message gains access when several ECUs transmit simultaneously      |
+| Error detection         | CAN includes mechanisms for detecting transmission errors                            |
+| Differential signalling | Uses the voltage difference between CAN-H and CAN-L                                  |
+
+Important: CAN messages are generally identified by message identifiers, not by a simple destination address. The receiving ECUs decide which messages are relevant.
+
+### 2.3.2 CAN High and CAN Low
+
+A conventional high-speed CAN network uses two communication wires:
+
+* CAN High (CAN-H).
+
+* CAN Low (CAN-L).
+
+These wires carry complementary electrical signals.
+
+### Recessive state
+
+In the recessive state, both lines are approximately at:
+
+* CAN-H: 2.5 V.
+
+* CAN-L: 2.5 V.
+
+The voltage difference is approximately zero.
+
+### Dominant state
+
+In a typical high-speed CAN network, during the dominant state:
+
+* CAN-H rises towards approximately 3.5 V.
+
+* CAN-L falls towards approximately 1.5 V.
+
+The differential voltage becomes approximately 2 V.
+
+These are typical illustrative values for high-speed CAN, not universal specifications for every automotive network.
+
+### Dominant versus recessive
+
+| Condition | CAN-H | CAN-L | Differential voltage |
+| --------- | ----- | ----- | -------------------- |
+| Recessive | 2.5 V | 2.5 V | Approximately 0 V    |
+| Dominant  | 3.5 V | 1.5 V | Approximately 2 V    |
+
+The CAN bus uses the dominant state to represent a logical 0 and the recessive state to represent a logical 1.
+
+### Why two wires?
+
+The two-wire arrangement improves resistance to electrical interference.
+
+External interference that affects both wires similarly can be rejected by the differential receiver, because it evaluates the voltage difference rather than relying only on either wire's voltage relative to ground.
+
+This is particularly useful in vehicles containing:
+
+* Electric traction motors.
+
+* Inverters.
+
+* DC-DC converters.
+
+* High-current switching circuits.
+
+* Battery charging equipment.
+
+### 2.3.3 Differential Voltage Signalling
+
+Differential signalling means that the receiver interprets the difference between two electrical signals.
+
+The important measurement is:
+
+`V_diff = V_CAN-H − V_CAN-L`
+
+Where:
+
+* `V_diff` = differential voltage.
+
+* `V_CAN-H` = CAN High voltage.
+
+* `V_CAN-L` = CAN Low voltage.
+
+### Worked calculation 1 — Dominant state
+
+Assume the oscilloscope or measurement equipment indicates:
+
+`V_CAN-H = 3.5 V`
+
+`V_CAN-L = 1.5 V`
+
+Therefore:
+
+`V_diff = 3.5 − 1.5 = 2.0 V`
+
+This is a typical dominant-state differential voltage.
+
+### Worked calculation 2 — Recessive state
+
+Assume:
+
+`V_CAN-H = 2.5 V`
+
+`V_CAN-L = 2.5 V`
+
+Therefore:
+
+`V_diff = 2.5 − 2.5 = 0 V`
+
+This is the typical recessive-state condition.
+
+### Why differential signalling matters in EV diagnosis
+
+Imagine an inverter generates electrical interference that affects both CAN conductors.
+
+If the interference is approximately equal on both wires, the receiver can still distinguish the intended differential signal.
+
+However, if one conductor becomes open-circuit, shorted or severely distorted, the differential signal may become unreliable.
+
+Possible symptoms include:
+
+* Lost communication DTCs.
+
+* Intermittent ECU communication.
+
+* Invalid or missing messages.
+
+* Reduced power.
+
+* Vehicle operating restrictions.
+
+### Common-mode voltage
+
+Another useful engineering concept is common-mode voltage.
+
+`V_CM = (V_CAN-H + V_CAN-L) / 2`
+
+Using the typical dominant-state values:
+
+`V_CM = (3.5 + 1.5) / 2 = 2.5 V`
+
+This is the average voltage of the two communication conductors relative to the measurement reference.
+
+A receiver must tolerate an appropriate common-mode voltage range as defined by the transceiver specification.
+
+### 2.3.4 CAN Message Structure
+
+CAN does not transmit information as an unstructured collection of electrical pulses. It organizes information into frames.
+
+A CAN frame contains defined fields that allow receiving controllers to identify, validate and process the transmitted information.
+
+### Main fields of a classical CAN data frame
+
+| Field         | Function                                                   |
+| ------------- | ---------------------------------------------------------- |
+| SOF           | Start of Frame; marks the beginning                        |
+| Identifier    | Identifies the message and determines arbitration priority |
+| Control field | Contains control information, including data length        |
+| Data field    | Carries the actual information                             |
+| CRC           | Cyclic Redundancy Check for error detection                |
+| ACK           | Acknowledgment field                                       |
+| EOF           | End of Frame                                               |
+
+### 1\. Start of Frame (SOF)
+
+The SOF indicates that a new CAN frame is beginning.
+
+It uses a dominant bit.
+
+### 2\. Identifier
+
+The identifier provides message identification and establishes arbitration priority.
+
+Classical CAN supports:
+
+* 11-bit standard identifiers.
+
+* 29-bit extended identifiers.
+
+A lower numerical identifier has higher arbitration priority when competing identifiers are compared using the CAN arbitration process.
+
+### 3\. Control field
+
+The control field includes information such as the Data Length Code (DLC), which indicates the number of data bytes.
+
+### 4\. Data field
+
+In classical CAN, the data field can contain up to 8 bytes.
+
+CAN FD (Flexible Data-Rate) supports larger payloads, up to 64 bytes.
+
+### 5\. CRC field
+
+CRC is used to detect certain transmission errors.
+
+The receiving controller calculates and checks the frame's integrity.
+
+### 6\. ACK field
+
+The ACK field allows a receiving node that correctly receives the frame to acknowledge it.
+
+The transmitting node checks whether the frame was acknowledged.
+
+### 7\. End of Frame
+
+The EOF field marks the end of the CAN frame.
+
+### Example: CAN message carrying battery information
+
+Illustrative simulated message
+
+Example CAN data frame
+
+| Parameter  | Example         |
+| ---------- | --------------- |
+| Identifier | 0x180           |
+| Format     | Standard 11-bit |
+| DLC        | 4 bytes         |
+| Data       | 2A 01 64 00     |
+
+This is an invented example to demonstrate frame structure. It is not a real vehicle message definition.
+
+The meaning of the four data bytes cannot be determined from the frame alone.
+
+You need the vehicle's CAN database or manufacturer documentation to establish:
+
+* Which bits represent a parameter.
+
+* Whether the data is signed or unsigned.
+
+* Byte order.
+
+* Scaling factor.
+
+* Offset.
+
+* Units.
+
+* Valid range.
+
+For example, a temperature signal might use a conversion formula:
+
+`T = (Raw value × Scaling factor) + Offset`
+
+Never assume the scaling or interpretation without the correct message definition.
+
+### 2.3.5 Arbitration and Priority
+
+CAN uses a process called non-destructive bitwise arbitration.
+
+This allows multiple ECUs to begin transmitting simultaneously without corrupting the message from the highest-priority transmitter.
+
+### Why arbitration is necessary
+
+Imagine three ECUs want to transmit at the same time:
+
+* BMS.
+
+* VCU.
+
+* ABS/ESC.
+
+All three monitor the bus while transmitting.
+
+If an ECU transmits a recessive bit but detects a dominant bit on the bus, it knows that another ECU is transmitting a higher-priority identifier.
+
+The ECU that loses arbitration stops transmitting and waits for another opportunity.
+
+The winning message continues without being corrupted.
+
+### Example of arbitration
+
+Simplified illustrative identifiers
+
+Suppose three ECUs attempt to transmit these 11-bit identifiers:
+
+| ECU   | Identifier | Priority |
+| ----- | ---------- | -------- |
+| ECU A | 0x080      | Highest  |
+| ECU B | 0x180      | Second   |
+| ECU C | 0x280      | Third    |
+
+Arbitration result
+
+ECU A — 0x080
+
+Wins
+
+Continues transmitting its complete message.
+
+ECU B — 0x180
+
+Waits
+
+Stops transmitting when it detects that it has lost arbitration.
+
+ECU C — 0x280
+
+Waits
+
+Also stops transmitting and retries later.
+
+### Why does the lowest identifier win?
+
+CAN uses dominant and recessive bit states:
+
+* Dominant = logical 0.
+
+* Recessive = logical 1.
+
+During arbitration, dominant bits overwrite recessive bits on the bus.
+
+A transmitter that sends a recessive bit but reads a dominant bit knows that another transmitter has higher priority.
+
+For the three identifiers above:
+
+```text
+ECU A: 00000010000
+ECU B: 00110000000
+ECU C: 01010000000
+```
+
+The first differing bit determines which transmitter loses arbitration.
+
+ECU A has the highest priority because its identifier has the lowest numerical value.
+
+Important: Arbitration priority is determined by the identifier, not by which ECU is physically closest to the bus or which ECU starts first.
+
+### Diagnostic significance
+
+If high-priority messages occupy too much network capacity, lower-priority messages may experience delays.
+
+This can become important when diagnosing:
+
+* Network overload.
+
+* Excessive message traffic.
+
+* Incorrect ECU configuration.
+
+* Faulty communication behaviour.
+
+* Timing-related communication problems.
+
+### Workshop application: Diagnosing a CAN communication fault
+
+Simulated case
+
+Vehicle complaint: EV displays a powertrain warning and enters reduced-power mode.
+
+Scanner results:
+
+| ECU      | Communication status |
+| -------- | -------------------- |
+| VCU      | Communicating        |
+| BMS      | Communicating        |
+| Inverter | Intermittent         |
+| ABS/ESC  | Communicating        |
+| OBC      | Communicating        |
+
+### Initial technical interpretation
+
+The intermittent communication with the inverter may indicate a problem affecting its network connection, power supply or internal communication interface.
+
+It does not prove that the inverter itself is defective.
+
+### Diagnostic direction
+
+* Save the complete vehicle scan.
+
+* Identify which network carries inverter communication.
+
+* Check the inverter's low-voltage power supply and ground.
+
+* Inspect its network connector and wiring.
+
+* Examine CAN-H and CAN-L using an appropriate oscilloscope.
+
+* Compare the waveform with the manufacturer's specifications.
+
+* Check for network errors and communication interruptions.
+
+* Follow the OEM diagnostic procedure before deciding on a repair.
+
+The detailed electrical tests for termination resistance, voltage measurements, open circuits, shorts and waveform analysis are covered in Module 2.4.
+
+### Key workshop reference
+
+| Concept               | Essential point                                |
+| --------------------- | ---------------------------------------------- |
+| CAN                   | Multi-node automotive communication protocol   |
+| CAN-H                 | High-side communication conductor              |
+| CAN-L                 | Low-side communication conductor               |
+| Recessive             | Typical CAN-H and CAN-L both near 2.5 V        |
+| Dominant              | Typical CAN-H near 3.5 V and CAN-L near 1.5 V  |
+| Differential voltage  | CAN-H minus CAN-L                              |
+| Standard identifier   | 11 bits                                        |
+| Extended identifier   | 29 bits                                        |
+| Classical CAN payload | Up to 8 bytes                                  |
+| CAN FD payload        | Up to 64 bytes                                 |
+| Arbitration           | Lower numerical identifier has higher priority |
+| CRC                   | Detects transmission errors                    |
+
+---
+
+<!-- NEXT: Module 2 — Lesson 2.4 CAN Bus Electrical Diagnosis (append below) -->
